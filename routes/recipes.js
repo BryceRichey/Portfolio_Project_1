@@ -40,6 +40,14 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
 router.post('/recipes/', (req, res, _next) => {
     // 'create' route
     // This route accepts data from the form at '/recipes/new' and inserts it into the database
+    
+    db.query('INSERT INTO recipes SET ?', { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, result) => {
+        if (err) {
+            throw err
+        } else
+            console.log('data inserted into database');
+        res.redirect('/recipes');
+    })
 }
 
 router.post('/recipes/:id', (req, res, _next) => {
