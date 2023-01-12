@@ -21,6 +21,24 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+app.get('/login', (req, res) => {
+    res.render('login')
+});
+
+app.get('/sign_up', (req, res) => {
+    res.render('sign_up')
+});
+
+app.post('/sign_up', (req, res, next) => {
+    db.query('INSERT INTO login SET ?', { f_name: req.body.f_name, l_name: req.body.l_name, email: req.body.email, p_word: req.body.p_word }, (err, result) => {
+        if (err) {
+            throw err;
+        } else
+            console.log('data inserted into database');
+        res.redirect('/');
+    })
+});
+
 const port = 3000;
 app.listen(port, () => {
     console.log(`Project_1 listening on port ${port}`)
