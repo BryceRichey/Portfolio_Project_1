@@ -11,17 +11,35 @@
             <div class="col-4">
                 <h1>Recipes</h1>
                 <p>Submited by: </p>
-
             </div>
         </Header>
-        
-        <%= Recipes %> 
-
-        <br>
-
-
-
-        <%- include('../partials/footer') %>
+        <% JSON.stringify(recipes) %>
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <td>
+                            Title
+                        </td>
+                        <td>
+                            Serving
+                        </td>
+                <tbody>
+                    <% recipes.foreach((recipe)=> {%>
+                        <tr>
+                            <td>
+                                <%= recipe['r_title'] %>
+                            </td>
+                            <td>
+                                <%= recipe['num_serv'] %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+                </tr>
+                </thead>
+            </table>
+            <%- include('../partials/footer') %>
 </body>
 
 </html>
