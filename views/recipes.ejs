@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+        <Header class="container text-centered mt-5">
+            <div class="col-4">
+                <% if (action=='add' ) {%>
+                    <% } else { %>
+                        <% } %>
+                            <p>Submited by: </p>
+            </div>
+        </Header>
+        <br>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>
