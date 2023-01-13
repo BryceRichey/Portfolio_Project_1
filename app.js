@@ -5,7 +5,8 @@ const session = require('express-session');
 const bodyparser = require('body-parser');
 const path = require('path');
 const db = require('./database');
-const router = require('./routes/recipes')
+const recipeRouter = require('./routes/recipes');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyparser.urlencoded({ extended: false }));
-app.use(router);
+app.use(recipeRouter);
+app.use(usersRouter);
 
 app.get('/', (req, res) => {
     res.render('home')
