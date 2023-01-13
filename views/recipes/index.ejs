@@ -15,7 +15,7 @@
         </Header>
         <% JSON.stringify(recipes) %>
             <br>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <td>
@@ -24,8 +24,13 @@
                         <td>
                             Serving
                         </td>
+                        <td>
+                            Show Page
+                        </td>
+                    </tr>
+                </thead>
                 <tbody>
-                    <% recipes.foreach((recipe)=> {%>
+                    <% recipes.forEach((recipe)=> { %>
                         <tr>
                             <td>
                                 <%= recipe['r_title'] %>
@@ -33,11 +38,14 @@
                             <td>
                                 <%= recipe['num_serv'] %>
                             </td>
+                            <td>
+                                <a href="<%= `/recipes/${recipe['id']}` %>">
+                                    Show
+                                </a>
+                            </td>
                         </tr>
                         <% }) %>
                 </tbody>
-                </tr>
-                </thead>
             </table>
             <%- include('../partials/footer') %>
 </body>
