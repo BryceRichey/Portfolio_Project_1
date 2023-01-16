@@ -24,6 +24,9 @@
                         <td>
                             Directions
                         </td>
+                        <td>
+                            Edit Recipe
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +43,9 @@
                             </td>
                             <td>
                                 <%= recipe_info['directions'] %>
+                            </td>
+                            <td>
+                                <a href="<%= `/recipes/${recipe['id']}/edit` %> ">Edit</a>
                             </td>
                         </tr>
                         <% }); %>
