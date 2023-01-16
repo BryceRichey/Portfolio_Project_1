@@ -7,13 +7,45 @@
 
 <body>
     <%- include('../partials/header') %>
-        <Header class="container text-centered mt-5">
-            <div class="col-4">
-                <h1>Recipes <%= id %> </h1>
-                <p>Submited by: </p>
-            </div>
-        </Header>
-        <%- include('../partials/footer') %>
+        <% JSON.stringify(recipe) %>
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>
+                            Title
+                        </td>
+                        <td>
+                            Servings
+                        </td>
+                        <td>
+                            Ingredients
+                        </td>
+                        <td>
+                            Directions
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% recipe.forEach((recipe_info)=> {%>
+                        <tr>
+                            <td>
+                                <%= recipe_info['r_title'] %>
+                            </td>
+                            <td>
+                                <%= recipe_info['num_serv'] %>
+                            </td>
+                            <td>
+                                <%= recipe_info['ingredients'] %>
+                            </td>
+                            <td>
+                                <%= recipe_info['directions'] %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <%- include('../partials/footer') %>
 </body>
 
 </html>
