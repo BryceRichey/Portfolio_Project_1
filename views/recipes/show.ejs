@@ -27,6 +27,9 @@
                         <td>
                             Edit Recipe
                         </td>
+                        <td>
+                            Delete Recipe
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +48,10 @@
                                 <%= recipe_info['directions'] %>
                             </td>
                             <td>
-                                <a href="<%= `/recipes/${recipe['id']}/edit` %> ">Edit</a>
+                                <a href="<%= `/recipes/${recipe_info['id']}/edit` %> ">Edit</a>
+                            </td>
+                            <td>
+                                <a href="<%= `/recipes/${recipe_info['id']}/delete` %> ">Delete</a>
                             </td>
                         </tr>
                         <% }); %>

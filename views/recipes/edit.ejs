@@ -11,7 +11,7 @@
             <h1>Edit your recipe</h1>
         </header>
         <br>
-        <%= JSON.stringify(recipe) %>
+        <% JSON.stringify(recipe) %>
             <% recipe.forEach((recipe_info)=> { %>
                 <form action="/recipes/<%= id %>/edit" class="container" method="POST">
                     <div>
