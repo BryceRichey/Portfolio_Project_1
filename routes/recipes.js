@@ -80,4 +80,14 @@ router.post('/recipes/:id/edit', (req, res, next) => {
     })
 });
 
+router.get('/recipes/:id/delete', (req, res, next) => {
+    db.query(`DELETE FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            res.redirect(`/recipes`)
+        }
+    })
+});
+
 module.exports = router;
