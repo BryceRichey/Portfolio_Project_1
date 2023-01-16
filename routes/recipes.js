@@ -31,7 +31,13 @@ router.get('/recipes/new', (req, res, next) => {
 // This page displays the information for a single recipe with id matching the URL parameter
 // For example, `/recipes/10` will display the recipe with id=10
 router.get('/recipes/:id', (req, res, next) => {
-    res.render('recipes/show', { id: req.params.id });
+    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
+        if(err) {
+            throw err
+        } else {
+            res.render('recipes/show', { recipe: data});
+        }
+    })
 });
 
 
@@ -44,7 +50,7 @@ router.get('/recipes/:id/edit', (req, res, next) => {
 
 // 'create' route
 // This route accepts data from the form at '/recipes/new' and inserts it into the database
-router.post('/recipes/', (req, res, next) => {
+router.post('/recipes/new', (req, res, next) => {
     db.query('INSERT INTO recipes SET ?', { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, result) => {
         if (err) {
             throw err
