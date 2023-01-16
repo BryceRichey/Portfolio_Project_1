@@ -3,11 +3,11 @@ const router = express.Router();
 const db = require('../database');
 
 router.get('/login', (req, res, next) => {
-    res.render('users/login')
+    res.render('users/login.ejs')
 });
 
 router.get('/sign_up', (req, res, next) => {
-    res.render('users/sign_up')
+    res.render('users/sign_up.ejs')
 });
 
 router.post('/sign_up', (req, res, next) => {
