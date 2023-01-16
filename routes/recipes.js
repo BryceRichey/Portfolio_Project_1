@@ -32,10 +32,10 @@ router.get('/recipes/new', (req, res, next) => {
 // For example, `/recipes/10` will display the recipe with id=10
 router.get('/recipes/:id', (req, res, next) => {
     db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
-        if(err) {
+        if (err) {
             throw err
         } else {
-            res.render('recipes/show', { recipe: data});
+            res.render('recipes/show', { recipe: data });
         }
     })
 });
@@ -44,7 +44,13 @@ router.get('/recipes/:id', (req, res, next) => {
 // 'edit' route
 // This page displays a form to edit a specific recipe with id matching the URL parameter
 router.get('/recipes/:id/edit', (req, res, next) => {
-    res.render('recipes/edit', { id: req.params.id });
+    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            res.render('recipes/edit', { id: req.params.id, recipe: data });
+        }
+    })
 });
 
 
@@ -54,16 +60,24 @@ router.post('/recipes/new', (req, res, next) => {
     db.query('INSERT INTO recipes SET ?', { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, result) => {
         if (err) {
             throw err
-        } else
+        } else {
             console.log('data inserted into database');
-        res.redirect('/recipes');
+            res.redirect('/recipes');
+        }
     })
 });
 
 
 // 'update' route
 // This route accepts data from the form at '/recipes/:id/edit' and updates the record in the database
-router.post('/recipes/:id', (req, res, next) => {
+router.post('/recipes/:id/edit', (req, res, next) => {
+    db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            res.redirect(`/recipes/${req.params.id}`)
+        }
+    })
 });
 
 module.exports = router;
