@@ -16,6 +16,15 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyparser.urlencoded({ extended: false }));
+app.use(session({
+    secret: '12345',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7
+    }
+}))
 app.use(recipeRouter);
 app.use(usersRouter);
 
