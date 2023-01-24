@@ -3,6 +3,7 @@ const app = require('../app');
 const router = express.Router();
 const db = require('../database');
 
+
 router.get('/sign_up', (req, res, next) => {
     res.render('users/sign_up.ejs')
 });
@@ -48,7 +49,6 @@ router.post('/login', (req, res, next) => {
             req.session.email = email;
             res.redirect('/');
         } else {
-            // msg = 'Your email or password is incorrect, please try again.'
             res.render('users/login')
         }
     })
