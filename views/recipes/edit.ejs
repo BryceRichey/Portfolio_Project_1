@@ -16,23 +16,23 @@
                 <form action="/recipes/<%= id %>/edit" class="container" method="POST">
                     <div>
                         <label for="r_title" class="form-label">Recipe Title</label>
-                        <input type="text" name="r_title" id="r_title" class="form-control" value="<%= recipe_info['r_title'] %> "
-                            required>
+                        <input type="text" name="r_title" id="r_title" class="form-control"
+                            value="<%= recipe_info['r_title'] %>" required>
                     </div>
                     <div class="mt-4">
                         <label for="num_serv" class="form-label">Number of Servings</label>
-                        <input type="number" name="num_serv" id="num_serv" class="form-control" value="<%= recipe_info['num_serv'] %> "
-                            required>
+                        <input type="number" name="num_serv" id="num_serv" class="form-control"
+                            value="<%= recipe_info['num_serv'] %>" required>
                     </div>
                     <div class="mt-4">
                         <label for="ingredients" class="form-label">Ingredients</label>
                         <input type="text" name="ingredients" id="ingredients" class="form-control"
-                            value="<%= recipe_info['ingredients'] %> " required>
+                            value="<%= recipe_info['ingredients'] %>" required>
                     </div>
                     <div class="mt-4">
                         <label for="directions" class="form-label">Directions</label>
                         <input type="text" name="directions" id="directions" class="form-control"
-                            value="<%= recipe_info['directions'] %> " required>
+                            value="<%= recipe_info['directions'] %>" required>
                     </div>
                     <div class="input-group mt-4">
                         <input type="file" name="photos" id="photos" class="form-control">

@@ -16,6 +16,11 @@ router.get('/recipes', (req, res, next) => {
             res.render('recipes/index', { recipes: data });
         }
     })
+    // db.query('SELECT * FROM recipes ORDER BY id DESC').then((data) => {
+    //     res.render('recipes/index', { recipes: data });
+    // }).error((err) => {
+    //     throw err
+    // });
 });
 
 

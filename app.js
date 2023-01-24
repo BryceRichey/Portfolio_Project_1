@@ -1,14 +1,17 @@
+require('dotenv').config();
+
 const express = require('express');
-const mysql = require('mysql2');
-const flash = require('express-flash');
-const session = require('express-session');
+const app = express();
 const bodyparser = require('body-parser');
 const path = require('path');
-const db = require('./database');
+
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+
 const recipeRouter = require('./routes/recipes');
 const usersRouter = require('./routes/users');
 
-const app = express();
+const db = require('./database');
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -16,15 +19,19 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyparser.urlencoded({ extended: false }));
+
+const sessionStore = new MySQLStore({}, db.promise());
 app.use(session({
-    secret: '12345',
+    secret: process.env.SESSION_SECRET,
+    store: sessionStore,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        maxAge: Date.now() + 1000 * 60 * 60 * 24 * 7
+        secure: true
     }
-}))
+}));
+
 app.use(recipeRouter);
 app.use(usersRouter);
 
