@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database');
+const db = require('../config/database');
 
 // Views should follow a consistent naming structure: '/views/recipes/[action].ejs'
 // For example: the index view would be '/views/recipes/index.ejs'

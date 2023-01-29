@@ -7,35 +7,41 @@ const path = require('path');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const passport = require('passport');
+
 
 const recipeRouter = require('./routes/recipes');
 const usersRouter = require('./routes/users');
 
-const db = require('./database');
+const db = require('./config/database');
+const bodyParser = require('body-parser');
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-app.use(express.json())
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const sessionStore = new MySQLStore({}, db.promise());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     store: sessionStore,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-        httpOnly: true,
-        secure: true
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24
     }
 }));
 
 app.use(recipeRouter);
 app.use(usersRouter);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
     res.render('home')
 });
 
