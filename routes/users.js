@@ -1,7 +1,5 @@
 const express = require('express');
-const session = require('express-session');
 const router = express.Router();
-const app = require('../app');
 const db = require('../config/database');
 const passport = require('../config/passport');
 
@@ -13,13 +11,13 @@ router.post('/sign_up', [passport.userExists, (req, res, next) => {
     sign_up = {
         f_name: req.body.f_name,
         l_name: req.body.l_name,
-        u_name: req.body.u_name,
+        username: req.body.username,
         email: req.body.email
     }
     const saltHash = genPassword(req.body.p_word);
     const salt = saltHash.salt;
     const hash = saltHash.hash;
-    db.query('INSERT INTO users(f_name, l_name, u_name, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(sign_up), hash, salt], (err, data, fileds) => {
+    db.query('INSERT INTO users(f_name, l_name, username, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(sign_up), hash, salt], (err, data, fileds) => {
         if (err) {
             console.log(err);
         } else {
@@ -33,7 +31,7 @@ router.get('/login', (req, res, next) => {
     res.render('users/login.ejs')
 });
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', passport.passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureMessage: true

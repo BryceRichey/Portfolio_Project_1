@@ -94,4 +94,4 @@ passport.deserializeUser((id, done) => {
 });
 
 
-module.exports = { passport: passport, isAuth: isAdmin, userExists };
+module.exports = { passport, isAuth, isAdmin, userExists };

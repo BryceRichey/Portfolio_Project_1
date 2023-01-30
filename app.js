@@ -9,17 +9,16 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const passport = require('passport');
 
-
 const recipeRouter = require('./routes/recipes');
 const usersRouter = require('./routes/users');
 
 const db = require('./config/database');
 const bodyParser = require('body-parser');
+const sessionStore = new MySQLStore({}, db.promise());
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-const sessionStore = new MySQLStore({}, db.promise());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     store: sessionStore,
