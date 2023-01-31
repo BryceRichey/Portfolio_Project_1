@@ -29,13 +29,23 @@ router.post('/sign_up', [passport.userExists, (req, res, next) => {
 
 router.get('/login', (req, res, next) => {
     res.render('users/login.ejs')
+    console.log(req.session);
+    console.log(req.user);
 });
 
 router.post('/login', passport.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureMessage: true }));
 
+router.get('/my_account', passport.isAuth, (req, res, next) => {
+    res.render('users/account.ejs')
+});
 
 router.get('/logout', (req, res, next) => {
-    req.logout();
+    req.logout((err) => {
+        if(err) {
+            console.log(err)
+        }
+        res.redirect('/')
+    });
     res.redirect('/login');
 });
 
