@@ -9,13 +9,89 @@
     <%- include('../partials/header') %>
         <header class="container text-centered mt-5">
             <h1>Acconut</h1>
-            <p>Everything relating to your account</p>
         </header>
         <br>
-        <div class="container">
-
-        </div>
-        <%- include('../partials/footer') %>
+        <% JSON.stringify(users) %>
+            <% users.forEach((users_info)=> {%>
+                <div class="container">
+                    <form action="/account" method="POST">
+                        <div class="container bg-secondary-subtle pt-2 pb-1 rounded-4">
+                            <div class="mt-2 ms-2 fw-semibold fs-5">
+                                <p class="d-inline-block">Need to update something?</p>
+                                <button type="submit" class="btn btn-dark float-end me-3">Save</button>
+                            </div>
+                            <div class="row my-4 mx-auto fw-semibold">
+                                <div class="col-4">
+                                    <label for="f_name" class="form-label">First new</label>
+                                    <input type="text" class="form-control" name="f_name" id="f_name"
+                                        placeholder="<%=users_info['f_name']%>">
+                                </div>
+                                <div class="col-4">
+                                    <label for="l_name" class="form-label">Last name</label>
+                                    <input type="text" class="form-control" name="f_name" id="f_name"
+                                    placeholder="<%=users_info['l_name']%>">
+                                </div>
+                                <div class="col-4">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="username" id="username"
+                                    placeholder="<%= users_info['username'] %>">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="container bg-secondary-subtle pt-2 pb-1 rounded-4">
+                            <div class="mt-2 ms-2 fw-semibold fs-5">
+                                <p class="d-inline-block">Change email</p>
+                                <button type="submit" class="btn btn-dark float-end me-3">Save</button>
+                            </div>
+                            <div class="row my-4 mx-auto fw-semibold">
+                                <div class="col-4">
+                                    <label for="email" class="form-label">Current email</label>
+                                    <input type="text" class="form-control" name="email" id="email"
+                                        placeholder="<%= users_info['email']%>">
+                                </div>
+                                <div class="col-4">
+                                    <label for="email" class="form-label">New email</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                </div>
+                                <div class="col-4">
+                                    <label for="email" class="form-label">Retype new mail</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="container bg-secondary-subtle pt-2 pb-1 rounded-4">
+                            <div class="row">
+                                <div class="mt-2 ms-2 fw-semibold fs-5">
+                                    <p class="d-inline-block">Change password</p>
+                                    <button type="submit" class="btn btn-dark float-end me-3">Save</button>
+                                </div>
+                                <div class="row my-4 mx-auto fw-semibold">
+                                    <div class="col-4">
+                                        <div>
+                                            <label for="password" class="form-label">Current Password</label>
+                                            <input type="password" class="form-control" name="password" id="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div>
+                                            <label for="password" class="form-label">New Password</label>
+                                            <input type="password" class="form-control" name="password" id="password">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div>
+                                            <label for="password" class="form-label">Retype New Password</label>
+                                            <input type="password" class="form-control" name="password" id="password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                    <% }) %>
+                </div>
+                <%- include('../partials/footer') %>
 </body>
 
 </html>
