@@ -35,13 +35,19 @@ router.get('/login', (req, res, next) => {
 
 router.post('/login', passport.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureMessage: true }));
 
-router.get('/my_account', passport.isAuth, (req, res, next) => {
-    res.render('users/account.ejs')
+router.get('/account', passport.isAuth, (req, res, next) => {
+    db.query(`SELECT id, f_name, l_name, username, email FROM users WHERE id = ${req.user.id}`, (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            res.render('users/account.ejs', { users: data });
+        }
+    })
 });
 
 router.get('/logout', (req, res, next) => {
     req.logout((err) => {
-        if(err) {
+        if (err) {
             console.log(err)
         }
         res.redirect('/')
