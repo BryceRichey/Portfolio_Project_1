@@ -45,6 +45,20 @@ router.get('/account', passport.isAuth, (req, res, next) => {
     })
 });
 
+const account_update = (
+    router.post('/account', (req, res, next) => {
+        if (req.body.f_name) {
+            db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { f_name: req.body.f_name, l_name: req.body.l_name, username: req.body.username, email: req.body.email}, (err, data) => {
+                if (err) {
+                    throw err
+                } else {
+                    res.redirect('/account');
+                }
+            })
+        }
+    })
+)
+
 router.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) {
