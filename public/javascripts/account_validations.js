@@ -9,12 +9,12 @@ const confirm_email = document.getElementById('confirm_email').value;
 update_email.addEventListener('submit', e => {
     if (new_email == null || confirm_email == null) {
         (new_email && confirm_email === email);
-        acconut_update();
+        account_update();
     } else if (new_email != confirm_email) {
         console.log('Make sure new email matches');
     } 
     else if (new_email === confirm_email) {
         let email = confirm_email;
-        acconut_update({email});
+        account_update({email});
     }
 });
