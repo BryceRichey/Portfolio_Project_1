@@ -14,6 +14,7 @@ const usersRouter = require('./routes/users');
 const db = require('./config/database');
 const bodyParser = require('body-parser');
 const sessionStore = new MySQLStore({}, db.promise());
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 

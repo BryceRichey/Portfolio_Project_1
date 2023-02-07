@@ -1,20 +1,42 @@
-const account_update = require('../routes/users');
+const updateEmail = document.querySelector('#updateEmail');
 
-const update_email = document.querySelector('#update_email');
-
-const email = document.getElementById('email').value;
-const new_email = document.getElementById('new_email').value;
-const confirm_email = document.getElementById('confirm_email').value;
-
-update_email.addEventListener('submit', e => {
-    if (new_email == null || confirm_email == null) {
-        (new_email && confirm_email === email);
-        account_update();
-    } else if (new_email != confirm_email) {
-        console.log('Make sure new email matches');
-    } 
-    else if (new_email === confirm_email) {
-        let email = confirm_email;
-        account_update({email});
-    }
+updateEmail.addEventListener('submit', e => {
+    validateEmail();
 });
+
+function validateEmail() {
+    const newEmail = document.getElementById('newEmail').value.trim();
+    const confirmEmail = document.getElementById('confirmEmail').value.trim();
+
+    if (newEmail == "" || confirmEmail == "") {
+        alert('No blank values allowed');
+        return false;
+    } else if (newEmail != confirmEmail) {
+        alert('Make sure new email matches');
+        return false;
+    } else if (newEmail === confirmEmail) {
+        return true;
+    }
+}
+
+
+const updatePassword = document.querySelector('#updatePassword');
+
+updatePassword.addEventListener('submit', e => {
+    validatePassword();
+});
+
+function validatePassword() {
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+    if (newPassword == "" || confirmPassword == "") {
+        alert('No blank values allowed');
+        return false;
+    } else if (newPassword != confirmPassword) {
+        alert('Make sure new password matches');
+        return false;
+    } else if (newPassword === confirmPassword) {
+        return true;
+    }
+}
