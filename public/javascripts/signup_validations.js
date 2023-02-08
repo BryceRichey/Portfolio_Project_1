@@ -1,26 +1,25 @@
-const signUp = document.querySelector('#signUp');
+const updateNames = document.querySelector('#newNames');
 
-signUp.addEventListener('submit', e => {
-    validateSignUp();
-})
+updateNames.addEventListener('submit', e => {
+    validateNames();
+});
 
-function validateSignUp() {
-    const f_name = document.getElementById('f_name').value.trim();
-    const l_name = document.getElementById('l_name').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+function validateNames() {
+    const newFirstName = document.getElementById('f_name').value.trim();
+    const newLastName = document.getElementById('l_name').value.trim();
+    const newUsername = document.getElementById('username').value.trim();
 
-    if (f_name == "") {
+    if (newFirstName == "") {
         alert('First name cannot be left blank');
         return false;
-    } else if (l_name == "") {
+    } else if (newLastName == "") {
         alert('Last name cannot be left blank');
         return false;
-    } else if (username == "") {
-        alert('Username cannot be left blank');
+    } else if (newUsername == "") {
+        alert('Username cannot be left blank')
         return false;
-    } else if (password == "") {
-        alert('Password cannot be laft blank');
+    } else if (newFirstName == "" && newLastName == "") {
+        alert('First and last name cannot be left blank')
         return false;
     } else {
         return true;
