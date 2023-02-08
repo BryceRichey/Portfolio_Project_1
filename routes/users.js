@@ -45,6 +45,18 @@ router.get('/account', passport.isAuth, (req, res, next) => {
     })
 });
 
+router.post('/account/new_names', (req, res, next) => {
+    if (req.body.f_name != "" && req.body.l_name != "" && req.body.username != "") {
+        db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { f_name: req.body.f_name, l_name: req.body.l_name, username: req.body.username }, (err, data) => {
+            if (err) {
+                throw err
+            } else {
+                res.redirect('/account');
+            }
+        });
+    }
+});
+
 router.post('/account/change_email', (req, res, next) => {
     if (req.body.newEmail === req.body.confirmEmail) {
         db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { email: req.body.confirmEmail }, (err, data) => {
@@ -53,9 +65,9 @@ router.post('/account/change_email', (req, res, next) => {
             } else {
                 res.redirect('/account');
             }
-        })
+        });
     }
-})
+});
 
 // router.post('/account/change_password', [passport.genPassword, (req, res, next) => {
 //     const saltHash = genPassword(req.body.confirmPassword);

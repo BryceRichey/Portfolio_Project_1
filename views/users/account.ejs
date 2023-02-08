@@ -14,7 +14,7 @@
         <br>
         <% let users_info=users[0]%>
             <div class="container">
-                <form action="/account" class="f_name-l_name-username" method="POST">
+                <form onsubmit="return validateNames()" action="account/new_names" id="newNames" method="POST">
                     <div class="container bg-secondary-subtle pt-2 pb-1 rounded-4">
                         <div class="mt-2 ms-2 fw-semibold fs-5">
                             <p class="d-inline-block">Need to update something?</p>
@@ -40,7 +40,7 @@
                     </div>
                 </form>
                 <br>
-                <form onsubmit="return validateEmail()" action="/account/change_email" id="updateEmail" method="POST">
+                <form onsubmit="return validateEmail()" action="account/change_email" id="updateEmail" method="POST">
                     <div class="container bg-secondary-subtle pt-2 pb-1 rounded-4">
                         <div class="mt-2 ms-2 fw-semibold fs-5">
                             <p class="d-inline-block">Change email</p>
@@ -55,16 +55,10 @@
                             <div class="col-4">
                                 <label for="newEmail" class="form-label">New Email</label>
                                 <input type="text" class="form-control" name="newEmail" id="newEmail">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <i class="bi bi-x-circle-fill"></i>
-                                <small class="ms-4">Error message</small>
                             </div>
                             <div class="col-4 error">
                                 <label for="confirmEmail" class="form-label">Confirm Email</label>
                                 <input type="text" class="form-control" name="confirmEmail" id="confirmEmail">
-                                <i class="bi bi-check-circle-fill"></i>
-                                <i class="bi bi-x-circle-fill"></i>
-                                <small>Error message</small>
                             </div>
                         </div>
                     </div>
