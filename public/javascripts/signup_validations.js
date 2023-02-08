@@ -22,7 +22,7 @@ function validateAccount() {
     } else if (email == "") {
         alert('Email cannot be left blank')
         return false;
-    } else if (firstName == "" && fastName == "") {
+    } else if (firstName == "" && lastName == "") {
         alert('First and last name cannot be left blank')
         return false;
     } else {
