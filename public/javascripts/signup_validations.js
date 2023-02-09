@@ -1,6 +1,7 @@
 const createAccount = document.querySelector('#createAccount');
 
 createAccount.addEventListener('submit', e => {
+    e.preventDefault;
     validateAccount();
 });
 
@@ -29,3 +30,21 @@ function validateAccount() {
         return true;
     }
 }
+
+async function validateUniqueness(name, value) {
+    let data = {}
+    data[name] = value;
+
+    const urlParams = new URLSearchParams(Object.entries(data));
+
+    let validation = await fetch(`/sign_up/user/validations?${urlParams}`)
+        .then(response => (response.json()))
+        .then(data => (data));
+
+    console.log(validation);
+}
+
+['username', 'email'].forEach(field => {
+    let element = document.getElementById(field);
+    element.addEventListener('blur', e => validateUniqueness(field, e.target.value))
+});
