@@ -8,56 +8,50 @@
 <body>
     <%- include('../partials/header') %>
         <% JSON.stringify(recipe) %>
-            <br>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>
-                            Title
-                        </td>
-                        <td>
-                            Servings
-                        </td>
-                        <td>
-                            Ingredients
-                        </td>
-                        <td>
-                            Directions
-                        </td>
-                        <td>
-                            Edit Recipe
-                        </td>
-                        <td>
-                            Delete Recipe
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% recipe.forEach((recipe_info)=> {%>
-                        <tr>
-                            <td>
-                                <%= recipe_info['r_title'] %>
-                            </td>
-                            <td>
-                                <%= recipe_info['num_serv'] %>
-                            </td>
-                            <td>
-                                <%= recipe_info['ingredients'] %>
-                            </td>
-                            <td>
-                                <%= recipe_info['directions'] %>
-                            </td>
-                            <td>
-                                <a href="<%= `/recipes/${recipe_info['id']}/edit` %> ">Edit</a>
-                            </td>
-                            <td>
-                                <a href="<%= `/recipes/${recipe_info['id']}/delete` %> ">Delete</a>
-                            </td>
-                        </tr>
-                        <% }); %>
-                </tbody>
-            </table>
-            <%- include('../partials/footer') %>
+            <% recipe.forEach((recipe_info)=> {%>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <header class="container mt-5 mx-3 px-5">
+                                <h1>
+                                    <%= recipe_info['r_title'] %>
+                                </h1>
+                                <p class="mb-5">Add one sentence description of recipe here</p>
+                            </header>
+                            <div class="mx-3 px-5 mb-4">
+                                <p class="fw-semibold fs-5 mb-1">Ingredients</p>
+                                <p>
+                                    <%= recipe_info['ingredients'] %>
+                                </p>
+                            </div>
+                            <div class="mx-3 px-5">
+                                <p class="fw-semibold fs-5 mb-1">Directions</p>
+                                <p>
+                                    <%= recipe_info['directions'] %>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row mt-5 me-3 pe-5">
+                                <div class="bg-secondary-subtle py-5">
+                                    <p class="text-center">IMAGE GOES HERE</p>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <div class="me-3 pe-5 float-end">
+                                        <a href="<%=`/recipes/${recipe_info['id']}/edit`%>" class="btn btn-dark">Edit</a>
+                                        <a href="<%=`/recipes/${recipe_info['id']}/delete`%>" class="btn btn-dark">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <% }); %>
+                    <%- include('../partials/footer') %>
 </body>
 
 </html>
