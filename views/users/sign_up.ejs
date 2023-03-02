@@ -16,30 +16,45 @@
                 </header>
                 <div class="mt-5 mx-3 px-5">
                     <form action="sign_up" id="createAccount" method="POST">
-                        <div class="justify-content-center d-inline-flex">
-                            <div class="form-floating">
+                        <div class="d-flex gap-3">
+                            <div class="form-floating flex-grow-1">
                                 <input type="text" class="form-control" id="f_name" name="f_name" placeholder="John">
                                 <label for="f_name">First name</label>
+                                <div class="invalid-feedback"></div>
                             </div>
-                            <div class="mx-2">
-                            </div>
-                            <div class="form-floating">
+                            <div class="form-floating flex-grow-1">
                                 <input type="text" class="form-control" id="l_name" name="l_name" placeholder="Doe">
                                 <label for="l_name">Last name</label>
+                                <div class="invalid-feedback"></div>
                             </div>
                         </div>
+
                         <div class="form-floating mt-3">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="John_Doe">
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="John_Doe">
                             <label for="username">Username</label>
+                            <div class="valid-feedback">
+                                Username available
+                            </div>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-floating mt-3">
                             <input type="email" class="form-control" id="email" name="email"
                                 placeholder="example@email.com">
                             <label for="email">Email address</label>
+                            <div class="valid-feedback">
+                                Email available
+                            </div>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-floating mt-3">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,20}">
                             <label for="password">Password</label>
+                            <div class="valid-feedback">
+                                Password looks good
+                            </div>
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="d-flex text-center">
                             <button type="submit" class="btn btn-dark mt-4 mb-5 py-3 flex-fill">Create account</button>

@@ -7,13 +7,13 @@ router.get('/sign_up', (req, res, next) => {
     res.render('users/sign_up.ejs')
 });
 
-router.get('/sign_up/user/validations', (req, res, next) => {
+router.get('/sign_up/user/validations', (req, res, _next) => {
     const username = req.query.username
     const email = req.query.email
 
     if (username) {
-        db.query(`SELECT username FROM users WHERE username = ${username}`, (err, data) => {
-            if (!data || err) {
+        db.query(`SELECT username FROM users WHERE username = '${username}'`, (err, data) => {
+            if (!(data && data.length) || err) {
                 res.json({
                     username: true
                 }).end();
@@ -23,11 +23,9 @@ router.get('/sign_up/user/validations', (req, res, next) => {
                 }).end();
             }
         });
-    }
-
-    if (email) {
-        db.query(`SELECT email FROM users WHERE email = ${email}`, (err, data) => {
-            if (!data || err) {
+    } else if (email) {
+        db.query(`SELECT email FROM users WHERE email = '${email}'`, (err, data) => {
+            if (!(data && data.length) || err) {
                 res.json({
                     email: true
                 }).end();
