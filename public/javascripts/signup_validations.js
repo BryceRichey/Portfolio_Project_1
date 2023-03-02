@@ -64,9 +64,32 @@ async function validateUniqueness(name, value) {
     }
 }
 
-['f_name', 'l_name', 'username', 'email', 'password'].forEach(field => {
+['username', 'email'].forEach(field => {
     let element = document.getElementById(field);
     element.addEventListener('blur', e => {
         validateUniqueness(field, e.target.value)
     });
 });
+
+
+async function validateNotBlank(name, value) {
+    const element = document.getElementById(name);
+    const invalidElement = element.parentElement.querySelector('.invalid-feedback');
+    const errorName = name.charAt(0).toUpperCase() + name.slice(1);
+
+    element.classList.remove('is-invalid', 'is-valid');
+
+    if (element.value.length < 1) {
+        // add 'cannot be blank' message
+        const errorMsg = errorName + ' cannot be blank';
+        invalidElement.innerHTML = errorMsg;
+        element.classList.add('is-invalid');
+        return;
+    }
+    ['f_name', 'l_name', 'password'].forEach(field => {
+        let element = document.getElementById(field);
+        element.addEventListener('blur', e => {
+            validateUniqueness(field, e.target.value)
+        });
+    })
+}
