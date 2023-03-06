@@ -72,10 +72,10 @@ async function validateUniqueness(name, value) {
 });
 
 
-async function validateNotBlank(name, value) {
+async function validateNotBlank(name, _value) {
     const element = document.getElementById(name);
     const invalidElement = element.parentElement.querySelector('.invalid-feedback');
-    const errorName = name.charAt(0).toUpperCase() + name.slice(1);
+    const errorName = element.parentElement.querySelector('label').innerText;
 
     element.classList.remove('is-invalid', 'is-valid');
 
@@ -86,10 +86,24 @@ async function validateNotBlank(name, value) {
         element.classList.add('is-invalid');
         return;
     }
-    ['f_name', 'l_name', 'password'].forEach(field => {
-        let element = document.getElementById(field);
-        element.addEventListener('blur', e => {
-            validateUniqueness(field, e.target.value)
-        });
-    })
+}
+
+['f_name', 'l_name', 'password'].forEach(field => {
+    let element = document.getElementById(field);
+    element.addEventListener('blur', e => {
+        validateNotBlank(field, e.target.value)
+    });
+});
+
+function validatePattern(element, name, errorField) {
+    const errorMsg = name + ' cannot be blank';
+    errorField.innerHTML = errorMsg;
+    element.classList.add('is-invalid');
+
+    const pattern = getAtribute('pattern');
+
+    if (!(pattern && pattern.length)) return false;
+
+    const regex = new RegExp(pattern)
+    if (regex.test(element.value));
 }
