@@ -41,7 +41,7 @@
                                 <div class="col">
                                     <div class="me-3 pe-5 float-end">
                                         <a href="<%=`/recipes/${recipe_info['id']}/edit`%>" class="btn btn-dark">Edit</a>
-                                        <a href="<%=`/recipes/${recipe_info['id']}/delete`%>" class="btn btn-dark">Delete</a>
+                                        <a href="<%=`/recipes/${recipe_info['id']}/delete`%>" onclick="return confirm('Are you sure you want to delete this recipe?');" class="btn btn-dark">Delete</a>
                                     </div>
                                 </div>
                             </div>
