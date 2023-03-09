@@ -27,7 +27,6 @@ router.get('/recipes/:id', (req, res, _next) => {
 });
 
 router.get('/recipes/:id/edit', (req, res, _next) => {
-    console.log(req.params.id)
     db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             throw err
@@ -42,7 +41,6 @@ router.post('/recipes/new', (req, res, _next) => {
         if (err) {
             throw err
         } else {
-            console.log('data inserted into database');
             res.redirect('/recipes');
         }
     });
