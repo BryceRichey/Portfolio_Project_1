@@ -16,13 +16,37 @@ router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
 
-router.get('/recipes/:id', (req, res, _next) => {
-    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
+// router.get('/recipes/:id', (req, res, _next) => {
+//     db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
+//         if (err) {
+//             throw err
+//         } else {
+//             db.query(`SELECT id, user_id, comment FROM comments WHERE id = ${req.params.id}`, (err, commentData) => {
+//                 if (err) {
+//                     throw err
+//                 } else {
+//                     res.render('recipes/show', { recipe: recipeData, comments: commentData });
+//                     console.log(recipeData);
+//                 }
+//             });
+//         }
+//     });
+// });
+
+router.get('/recipes/:id', (req, res, next) => {
+    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
         if (err) {
             throw err
         } else {
-            res.render('recipes/show', { recipe: data });
+            next
         }
+        db.query(`SELECT id, user_id, comment FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+            if (err) {
+                throw err
+            } else {
+                res.render('recipes/show', { recipe: recipeData, comments: commentData });
+            }
+        });
     });
 });
 

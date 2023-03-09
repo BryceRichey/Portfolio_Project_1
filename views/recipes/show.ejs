@@ -59,8 +59,20 @@
                         </div>
                     </div>
                 </div>
-                <br>
                 <% }); %>
+                    <% JSON.stringify(comments) %>
+                        <% comments.forEach((allComments)=> {%>
+                            <div class="container">
+                                <div class="col">
+                                    <h6>
+                                        <%=allComments['user_id']%>
+                                    </h6>
+                                    <p>
+                                        <%=allComments['comment']%>
+                                    </p>
+                                </div>
+                            </div>
+                            <% }); %>
 </body>
 
 <script src="/javascripts/comments.js" type="text/javascript"></script>
