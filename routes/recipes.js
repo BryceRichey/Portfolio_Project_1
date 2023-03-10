@@ -16,23 +16,6 @@ router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
 
-// router.get('/recipes/:id', (req, res, _next) => {
-//     db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
-//         if (err) {
-//             throw err
-//         } else {
-//             db.query(`SELECT id, user_id, comment FROM comments WHERE id = ${req.params.id}`, (err, commentData) => {
-//                 if (err) {
-//                     throw err
-//                 } else {
-//                     res.render('recipes/show', { recipe: recipeData, comments: commentData });
-//                     console.log(recipeData);
-//                 }
-//             });
-//         }
-//     });
-// });
-
 router.get('/recipes/:id', (req, res, next) => {
     db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
         if (err) {
@@ -40,11 +23,12 @@ router.get('/recipes/:id', (req, res, next) => {
         } else {
             next
         }
-        db.query(`SELECT id, user_id, comment FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        db.query(`SELECT recipe_id, comment_id, user_id, comment FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
                 res.render('recipes/show', { recipe: recipeData, comments: commentData });
+                console.log(commentData)
             }
         });
     });
@@ -76,6 +60,27 @@ router.post('/recipes/comment/:id', (req, res, _next) => {
             throw err
         } else {
             res.redirect(`/recipes/${req.params.id}`);
+        }
+    });
+});
+
+router.get('/recipes/comment/edit/:id', (req, res, next) => {
+    db.query(`UPDATE comments SET ? WHERE id = ${comment_id}`, { comment: req.body.comment },
+    (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            next
+        }
+    });
+});
+
+router.get('/recipes/:recipe_id/comment/delete/:comment_id', (req, res, _next) => {
+    db.query(`DELETE FROM comments WHERE comment_id = ${req.params.comment_id}`, (err, _data) => {
+        if (err) {
+            throw err
+        } else {
+            res.redirect(`/recipes/${req.params.recipe_id}`);
         }
     });
 });
