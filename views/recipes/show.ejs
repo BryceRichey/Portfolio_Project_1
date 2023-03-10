@@ -62,14 +62,29 @@
                 <% }); %>
                     <% JSON.stringify(comments) %>
                         <% comments.forEach((allComments)=> {%>
-                            <div class="container">
-                                <div class="col">
-                                    <h6>
-                                        <%=allComments['user_id']%>
-                                    </h6>
-                                    <p>
-                                        <%=allComments['comment']%>
-                                    </p>
+                            <div class="container" id="commentContainer">
+                                <div class="col" id="commentBackground">
+                                    <div class="row">
+                                        <h6 class="ms-4 pt-4">
+                                            <%=allComments['user_id']%>
+                                        </h6>
+                                    </div>
+                                    <div class="row">
+                                        <p class="ms-4">
+                                            <%=allComments['comment']%>
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col me-3 mb-3">
+                                            <div class="float-end">
+                                                <a href="<%=`/recipes/comment/edit/${allComments['comment_id']}`%>" class="btn btn-dark">Edit</a>
+                                                <a href="<%=`/recipes/${allComments['recipe_id']}/comment/delete/${allComments['comment_id']}`%>" onclick="return confirm('Are you sure you want to delete this comment?');" class="btn btn-dark">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <hr class="solid mt-3">
                                 </div>
                             </div>
                             <% }); %>
