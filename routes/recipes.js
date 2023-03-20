@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
@@ -17,25 +18,24 @@ router.get('/recipes/new', (_req, res, _next) => {
 });
 
 router.get('/recipes/:id', (req, res, next) => {
-    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
+    db.query(`SELECT * FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
         if (err) {
             throw err
         } else {
             next
         }
-        db.query(`SELECT recipe_id, comment_id, user_id, comment FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
-                res.render('recipes/show', { recipe: recipeData, comments: commentData });
-                console.log(commentData)
+                res.render('recipes/show', { recipe: recipeData, comments: commentData, dayjs:dayjs});
             }
         });
     });
 });
 
 router.get('/recipes/:id/edit', (req, res, _next) => {
-    db.query(`SELECT id, r_title, num_serv, ingredients, directions FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
+    db.query(`SELECT * FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             throw err
         } else {
@@ -54,27 +54,27 @@ router.post('/recipes/new', (req, res, _next) => {
     });
 });
 
+
+
 router.post('/recipes/comment/:id', (req, res, _next) => {
-    db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, comment: req.body.comment }, (err, _data) => {
+    db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, first_name:req.user.f_name, last_name:req.user.l_name, comment: req.body.comment }, (err, _data) => {
         if (err) {
             throw err
         } else {
+            console.log(req.user)
             res.redirect(`/recipes/${req.params.id}`);
         }
     });
 });
-
-router.get('/recipes/comment/edit/:id', (req, res, next) => {
-    db.query(`UPDATE comments SET ? WHERE id = ${comment_id}`, { comment: req.body.comment },
-    (err, data) => {
+router.post('/recipes/:recipe_id/comment/edit/:comment_id', (req, res, _next) => {
+    db.query(`UPDATE comments SET ? WHERE comment_id = ${req.params.comment_id}`, { comment: req.body.comment }, (err, _data) => {
         if (err) {
             throw err
         } else {
-            next
+            res.redirect(`/recipes/${req.params.recipe_id}`);
         }
     });
 });
-
 router.get('/recipes/:recipe_id/comment/delete/:comment_id', (req, res, _next) => {
     db.query(`DELETE FROM comments WHERE comment_id = ${req.params.comment_id}`, (err, _data) => {
         if (err) {
@@ -84,6 +84,8 @@ router.get('/recipes/:recipe_id/comment/delete/:comment_id', (req, res, _next) =
         }
     });
 });
+
+
 
 router.post('/recipes/:id/edit', (req, res, _next) => {
     db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _data) => {

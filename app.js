@@ -14,6 +14,11 @@ const usersRouter = require('./routes/users');
 const db = require('./config/database');
 const bodyParser = require('body-parser');
 const sessionStore = new MySQLStore({}, db.promise());
+const dayjs = require('dayjs');
+const relativeTime = require('dayjs/plugin/relativeTime');
+
+dayjs.extend(relativeTime);
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
