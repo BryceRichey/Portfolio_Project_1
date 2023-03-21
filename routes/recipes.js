@@ -1,7 +1,7 @@
-const dayjs = require('dayjs');
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
+const dayjs = require('dayjs');
 
 router.get('/recipes', (_req, res, _next) => {
     db.query('SELECT * FROM recipes ORDER BY id DESC', (err, data) => {
@@ -23,12 +23,11 @@ router.get('/recipes/:id', (req, res, next) => {
             throw err
         } else {
             next
-        }
-        db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        } db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
-                res.render('recipes/show', { recipe: recipeData, comments: commentData, dayjs:dayjs});
+                res.render('recipes/show', { recipe: recipeData, comments: commentData, user: req.user.id, dayjs: dayjs });
             }
         });
     });
@@ -57,15 +56,29 @@ router.post('/recipes/new', (req, res, _next) => {
 
 
 router.post('/recipes/comment/:id', (req, res, _next) => {
-    db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, first_name:req.user.f_name, last_name:req.user.l_name, comment: req.body.comment }, (err, _data) => {
+    db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, first_name: req.user.f_name, last_name: req.user.l_name, comment: req.body.comment }, (err, _data) => {
         if (err) {
             throw err
         } else {
-            console.log(req.user)
             res.redirect(`/recipes/${req.params.id}`);
         }
     });
 });
+
+// GET SAMS HELP
+
+router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
+    db.query(`SELECT * FROM comments WHERE user_id = ${req.user.user.id}`, (err, data) => {
+        if (err) {
+            throw err
+        } else if (data) {
+            alert('Sorry but you have already made a comment');
+        } else {
+
+        }
+    })
+});
+
 router.post('/recipes/:recipe_id/comment/edit/:comment_id', (req, res, _next) => {
     db.query(`UPDATE comments SET ? WHERE comment_id = ${req.params.comment_id}`, { comment: req.body.comment }, (err, _data) => {
         if (err) {
