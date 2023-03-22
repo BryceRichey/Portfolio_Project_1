@@ -16,8 +16,10 @@ const bodyParser = require('body-parser');
 const sessionStore = new MySQLStore({}, db.promise());
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
 
 dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
