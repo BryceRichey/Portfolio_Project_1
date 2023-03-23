@@ -18,12 +18,10 @@ router.get('/recipes/new', (_req, res, _next) => {
 });
 
 router.get('/recipes/:id', (req, res, next) => {
-    db.query(`SELECT r.*, COUNT(c.comment_id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
+    db.query(`SELECT r.*, COUNT(c.id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
         if (err) {
             throw err
-        }
-
-        db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        } db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
@@ -79,8 +77,8 @@ router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
     })
 });
 
-router.post('/recipes/:recipe_id/comment/edit/:comment_id', (req, res, _next) => {
-    db.query(`UPDATE comments SET ? WHERE comment_id = ${req.params.comment_id}`, { comment: req.body.comment }, (err, _data) => {
+router.post('/recipes/:recipe_id/comment/edit/:id', (req, res, _next) => {
+    db.query(`UPDATE comments SET ? WHERE id = ${req.params.id}`, { comment: req.body.comment }, (err, _data) => {
         if (err) {
             throw err
         } else {
@@ -88,8 +86,8 @@ router.post('/recipes/:recipe_id/comment/edit/:comment_id', (req, res, _next) =>
         }
     });
 });
-router.get('/recipes/:recipe_id/comment/delete/:comment_id', (req, res, _next) => {
-    db.query(`DELETE FROM comments WHERE comment_id = ${req.params.comment_id}`, (err, _data) => {
+router.get('/recipes/:recipe_id/comment/delete/:id', (req, res, _next) => {
+    db.query(`DELETE FROM comments WHERE id = ${req.params.id}`, (err, _data) => {
         if (err) {
             throw err
         } else {
