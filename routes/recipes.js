@@ -18,16 +18,16 @@ router.get('/recipes/new', (_req, res, _next) => {
 });
 
 router.get('/recipes/:id', (req, res, next) => {
-    db.query(`SELECT * FROM recipes WHERE id = ${req.params.id}`, (err, recipeData) => {
+    db.query(`SELECT r.*, COUNT(c.comment_id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
         if (err) {
             throw err
-        } else {
-            next
-        } db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        }
+
+        db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
-                res.render('recipes/show', { recipe: recipeData, comments: commentData, user: req.user.id, dayjs: dayjs });
+                res.render('recipes/show', { recipe: recipeData, comments: commentData, dayjs: dayjs });
             }
         });
     });
