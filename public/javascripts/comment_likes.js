@@ -7,6 +7,9 @@ likeCommentBtn.addEventListener('click', e => {
 function likeComment(likeBtn) {
     const commentId = likeBtn.dataset.commentId;
     const commentLikeCount = document.getElementById(`comment-${commentId}-like-count`);
+    console.log(commentId)
+    console.log(commentLikeCount)
+
     const likeCountString = commentLikeCount.innerText;
     const likeCountInt = parseInt(likeCountString);
 

@@ -12,6 +12,7 @@ const recipeRouter = require('./routes/recipes');
 const usersRouter = require('./routes/users');
 
 const db = require('./config/database');
+const authConfig = require('./config/passport');
 const bodyParser = require('body-parser');
 const sessionStore = new MySQLStore({}, db.promise());
 const dayjs = require('dayjs');
@@ -42,10 +43,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(authConfig.setCurrentUser);
 app.use(recipeRouter);
 app.use(usersRouter);
 
-app.get('/', (req, res, next) => {
+app.get('/', (_req, res, next) => {
     res.render('home')
 });
 

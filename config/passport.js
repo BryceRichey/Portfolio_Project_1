@@ -9,7 +9,7 @@ const verifyCallback = (username, password, done) => {
         if (err) {
             return done(err);
         }
-        if (data.lenght == 0) {
+        if (data.length == 0) {
             return done(null, false, { message: 'Incorrect email or password.' });
         }
 
@@ -25,7 +25,7 @@ const verifyCallback = (username, password, done) => {
     });
 }
 
-const strategy = new LocalStrategy({usernameField: 'email'}, verifyCallback);
+const strategy = new LocalStrategy({ usernameField: 'email' }, verifyCallback);
 
 passport.use(strategy);
 
@@ -75,6 +75,11 @@ isAdmin = (req, res, next) => {
     }
 }
 
+setCurrentUser = (req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+}
+
 userExists = (req, res, next) => {
     db.query('SELECT * FROM users WHERE username = ?', [req.body.username], (err, data, fields) => {
         if (err) {
@@ -87,4 +92,4 @@ userExists = (req, res, next) => {
     });
 }
 
-module.exports = { passport, isAuth, isAdmin, userExists };
+module.exports = { passport, isAuth, isAdmin, setCurrentUser, userExists };
