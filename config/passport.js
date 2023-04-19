@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const db = require('./database');
 
 const verifyCallback = (username, password, done) => {
-    db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, fields) => {
+    db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, _fields) => {
         if (err) {
             return done(err);
         }
@@ -34,7 +34,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    db.query('SELECT * FROM users WHERE id = ?', [id], (err, data) => {
+    db.query('SELECT * FROM users WHERE id = ?', [id], (_err, data) => {
         done(null, data[0])
     });
 });
@@ -81,7 +81,7 @@ setCurrentUser = (req, res, next) => {
 }
 
 userExists = (req, res, next) => {
-    db.query('SELECT * FROM users WHERE username = ?', [req.body.username], (err, data, fields) => {
+    db.query('SELECT * FROM users WHERE username = ?', [req.body.username], (err, data, _fields) => {
         if (err) {
             console.log(err);
         } else if (data.length > 0) {
