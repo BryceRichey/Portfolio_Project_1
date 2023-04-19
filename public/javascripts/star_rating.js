@@ -20,10 +20,10 @@ const starRatingContainer = document.querySelector('#star-rating-container');
 
 starRatingContainer.addEventListener('mouseleave', e => {
     console.log('working');
-    hideStarRating();
+    hideStarRating(starRating);
 })
 
-function hideStarRating(starRating) {
+function hideStarRating(stars) {
     stars.forEach((star) => {
         star.classList.remove('bi-star-fill');
         star.classList.add('bi-star');
