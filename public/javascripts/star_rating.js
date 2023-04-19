@@ -1,17 +1,4 @@
-const starIconOne = document.querySelector('#star-1');
-const starIconOneFill = document.querySelector('#star-1-fill');
-const starIconTwo = document.querySelector('#star-2');
-const starIconTwoFill = document.querySelector('#star-2-fill');
-const starIconThree = document.querySelector('#star-3');
-const starIconThreeFill = document.querySelector('#star-3-fill');
-const starIconFour = document.querySelector('#star-4');
-const starIconFourFill = document.querySelector('#star-4-fill');
-const starIconFive = document.querySelector('#star-5');
-const starIconFiveFill = document.querySelector('#star-5-fill');
-
-
-const starRating = document.querySelectorAll('.bi-star');
-
+const starRating = document.getElementById('star-rating-container').querySelectorAll('i');
 starRating.forEach((star) => {
     star.addEventListener('mouseover', e => {
         addStarRatingFill(e.target);
@@ -19,43 +6,12 @@ starRating.forEach((star) => {
 });
 
 function addStarRatingFill(starIcon) {
+    const stars = document.getElementById('star-rating-container').querySelectorAll('i');
     const rating = parseInt(starIcon.dataset.star);
 
-    if (rating === 1) {
-        starIconOne.classList.add('d-none');
-        starIconOneFill.classList.remove('d-none');
-    } else if (rating === 2) {
-        starIconOne.classList.add('d-none');
-        starIconOneFill.classList.remove('d-none');
-        starIconTwo.classList.add('d-none');
-        starIconTwoFill.classList.remove('d-none');
-    } else if (rating === 3) {
-        starIconOne.classList.add('d-none');
-        starIconOneFill.classList.remove('d-none');
-        starIconTwo.classList.add('d-none');
-        starIconTwoFill.classList.remove('d-none');
-        starIconThree.classList.add('d-none');
-        starIconThreeFill.classList.remove('d-none');
-    } else if (rating === 4) {
-        starIconOne.classList.add('d-none');
-        starIconOneFill.classList.remove('d-none');
-        starIconTwo.classList.add('d-none');
-        starIconTwoFill.classList.remove('d-none');
-        starIconThree.classList.add('d-none');
-        starIconThreeFill.classList.remove('d-none');
-        starIconFour.classList.add('d-none');
-        starIconFourFill.classList.remove('d-none');
-    } else if (rating === 5) {
-        starIconOne.classList.add('d-none');
-        starIconOneFill.classList.remove('d-none');
-        starIconTwo.classList.add('d-none');
-        starIconTwoFill.classList.remove('d-none');
-        starIconThree.classList.add('d-none');
-        starIconThreeFill.classList.remove('d-none');
-        starIconFour.classList.add('d-none');
-        starIconFourFill.classList.remove('d-none');
-        starIconFive.classList.add('d-none');
-        starIconFiveFill.classList.remove('d-none');
+    for (let i = 0; i < rating; i++) {
+        stars[i].classList.remove('bi-star');
+        stars[i].classList.add('bi-star-fill');
     }
 }
 
@@ -67,15 +23,9 @@ starRatingContainer.addEventListener('mouseleave', e => {
     hideStarRating();
 })
 
-function hideStarRating() {
-    starIconOne.classList.remove('d-none');
-    starIconTwo.classList.remove('d-none');
-    starIconThree.classList.remove('d-none');
-    starIconFour.classList.remove('d-none');
-    starIconFive.classList.remove('d-none');
-    starIconOneFill.classList.add('d-none');
-    starIconTwoFill.classList.add('d-none');
-    starIconThreeFill.classList.add('d-none');
-    starIconFourFill.classList.add('d-none');
-    starIconFiveFill.classList.add('d-none');
+function hideStarRating(starRating) {
+    stars.forEach((star) => {
+        star.classList.remove('bi-star-fill');
+        star.classList.add('bi-star');
+    });
 }
