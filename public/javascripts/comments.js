@@ -2,12 +2,7 @@ const createComment = document.querySelector('#createComment');
 
 createComment.addEventListener('click', e => {
     showTextArea();
-    checkIfUser();
 });
-
-function checkIfUser() {
-    console.log();
-}
 
 function showTextArea() {
     const commentForm = document.getElementById('commentForm');
