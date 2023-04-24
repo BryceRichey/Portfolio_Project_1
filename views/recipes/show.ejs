@@ -99,7 +99,6 @@
                             <div class="col">
                                 <div class="row">
                                     <div class="me-3 pe-5 float-end">
-                                        <button type="button" class="btn btn-dark" id="createComment">Comment</button>
                                         <%if(currentUser && currentUser.id ===recipe_info['submit_user_id']) {%>
                                             <a href="<%=`/recipes/${recipe_info['id']}/edit`%>"
                                                 class="btn btn-dark">Edit</a>
@@ -107,6 +106,8 @@
                                                 onclick="return confirm('Are you sure you want to delete this recipe?');"
                                                 class="btn btn-dark">Delete</a>
                                             <%} else {%>
+                                                <a href="/login" class="btn btn-dark">Login to comment</a>
+                                                <button type="button" class="btn btn-dark" id="createComment">REMOVE WHEN LOGIN TO COMMENT WORKS</button>
                                                 <p>Updated on
                                                     <%=dayjs(`${recipe_info['created_at']}`).format("MMMM DD, YYYY")%>
                                                 </p>
@@ -192,10 +193,8 @@
                         </div>
                     </div>
                     <% }); %>
-<div class="editorjs">
-    
 </div>
-
+ <div id="editorjs"></div>
 
 </body>
 

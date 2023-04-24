@@ -7,6 +7,7 @@ starRating.forEach((star) => {
 
 function addStarRatingFill(starIcon) {
     const stars = document.getElementById('star-rating-container').querySelectorAll('i');
+    hideStarRating(stars);
     const rating = parseInt(starIcon.dataset.star);
 
     for (let i = 0; i < rating; i++) {
@@ -19,7 +20,6 @@ function addStarRatingFill(starIcon) {
 const starRatingContainer = document.querySelector('#star-rating-container');
 
 starRatingContainer.addEventListener('mouseleave', e => {
-    console.log('working');
     hideStarRating(starRating);
 })
 
