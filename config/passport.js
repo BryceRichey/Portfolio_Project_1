@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
+const session = require('express-session');
 
 const db = require('./database');
 
@@ -63,7 +64,9 @@ isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         next()
     } else {
-        res.redirect('/');
+        const postLoginRedirect = req.originalUrl;
+        session.path = postLoginRedirect;
+        res.redirect('/login');
     }
 }
 

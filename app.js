@@ -48,7 +48,12 @@ app.use(recipeRouter);
 app.use(usersRouter);
 
 app.get('/', (_req, res, next) => {
-    res.render('home')
+    if (session.path) {
+        res.redirect(session.path);
+        session.path = null;
+    } else {
+        res.render('home')
+    }
 });
 
 const port = 3000;
