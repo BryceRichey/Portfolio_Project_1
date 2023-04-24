@@ -63,8 +63,6 @@ router.post('/recipes/comment/:id', (req, res, _next) => {
     });
 });
 
-// GET SAMS HELP
-
 router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
     db.query(`SELECT * FROM comments WHERE user_id = ${req.user.user.id}`, (err, data) => {
         if (err) {
@@ -86,6 +84,7 @@ router.post('/recipes/:recipe_id/comment/edit/:id', (req, res, _next) => {
         }
     });
 });
+
 router.get('/recipes/:recipe_id/comment/delete/:id', (req, res, _next) => {
     db.query(`DELETE FROM comments WHERE id = ${req.params.id}`, (err, _data) => {
         if (err) {
