@@ -63,14 +63,28 @@ router.post('/recipes/comment/:id', (req, res, _next) => {
     });
 });
 
+// router.get('/recipes/:id/comment/new', (req, res, _next) => {
+//     db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
+//         if (err) {
+//             throw err
+//         } else if (!data || []) {
+//             console.log(req.params.id);
+//             console.log('Working');
+//             res.sendFile(__dirname + './public/javacripts/comments.js', err => console.log(err));
+//         } else {
+//             alert('Sorry but you have already made a comment');
+//         }
+//     })
+// });
+
 router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
-    db.query(`SELECT * FROM comments WHERE user_id = ${req.user.user.id}`, (err, data) => {
+    db.query(`SELECT * FROM comments WHERE user_id = ${req.user.id}`, (err, data) => {
         if (err) {
             throw err
         } else if (data) {
             alert('Sorry but you have already made a comment');
         } else {
-
+            
         }
     })
 });
