@@ -108,28 +108,22 @@
                                                 id="deleteBtn">Delete</a>
 
                                             <script>
+                                                const queryString = '<%-`[id*="comment-user-${currentUser.id}"]`%>'
+                                                const userCommentElement = document.querySelectorAll(queryString);
                                                 const deleteButton = document.getElementById('deleteBtn');
                                                 const editCommentBtn = document.createElement('button')
                                                 const commentBtn = document.createElement('button')
 
-                                                console.log(document.querySelectorAll('<%-`[id*="comment-user-${currentUser.id}"]`%>'));
-                                                console.log('<%-`[id*="comment-user-${currentUser.id}"]`%>');
-
-
-                                                if (document.querySelectorAll('<%=`[id*="comment-user-${currentUser.id}"]`%>')) {
-                                                    console.log('Comment made by user');
-                                                    const tests = document.querySelectorAll(`[id*="comment-user-\${currentUser.id}"]`)
-                                                    console.log(tests);
+                                                if (userCommentElement) {
                                                     deleteButton.after(editCommentBtn);
                                                     editCommentBtn.innerText = 'Edit Comment';
                                                     editCommentBtn.setAttribute('type', 'button');
                                                     editCommentBtn.setAttribute('id', 'editBtn');
                                                     editCommentBtn.classList.add('btn', 'btn-dark', 'ms-1')
 
-                                                    const test = document.getElementById('editBtn')
-                                                    test.addEventListener('click', e => {
-                                                        const userComment = document.querySelectorAll(`[id*="comment-user-\${currentUser.id}"]`);
-                                                        userComment.scrollIntoView();
+                                                    const editBtn = document.getElementById('editBtn')
+                                                    editBtn.addEventListener('click', e => {
+                                                        userCommentElement.scrollIntoView();
                                                     })
 
                                                 } else {
