@@ -112,7 +112,11 @@
                                                 const editCommentBtn = document.createElement('button')
                                                 const commentBtn = document.createElement('button')
 
-                                                if (document.querySelectorAll(`[id*="comment-user-${currentUser.id}"]`)) {
+                                                console.log(document.querySelectorAll('<%-`[id*="comment-user-${currentUser.id}"]`%>'));
+                                                console.log('<%-`[id*="comment-user-${currentUser.id}"]`%>');
+
+
+                                                if (document.querySelectorAll('<%=`[id*="comment-user-${currentUser.id}"]`%>')) {
                                                     console.log('Comment made by user');
                                                     const tests = document.querySelectorAll(`[id*="comment-user-\${currentUser.id}"]`)
                                                     console.log(tests);
