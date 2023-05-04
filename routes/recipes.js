@@ -116,7 +116,6 @@ router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
             });
         }
     })
-
 });
 
 router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
