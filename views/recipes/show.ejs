@@ -165,12 +165,17 @@
                                         </h6>
                                     </div>
                                     <div class="col-2" id="<%=`comment-${comment['id']}-like-container`%>">
-                                        
                                         <button class="btn btn-dark mt-2 like-comment-btn" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/like/${comment['id']}`%>">
-                                            <i class="bi bi-hand-thumbs-up"></i>
-                                            <h6 id="<%=`comment-${comment['id']}-like-count`%>">
-                                                <%=comment['likes']%>
-                                            </h6>
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h6 id="<%=`comment-${comment['id']}-like-count`%>" class="mb-0">
+                                                            <%=comment['likes']%>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col">
+                                                        <i class="bi bi-hand-thumbs-up"></i>
+                                                    </div>
+                                                </div>
                                         </button>
                                     </div>
                                 </div>

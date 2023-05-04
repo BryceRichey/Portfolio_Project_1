@@ -2,7 +2,8 @@ const likeCommentBtns = document.querySelectorAll('.like-comment-btn');
 
 likeCommentBtns && likeCommentBtns.forEach((likeCommentBtn) => {
     likeCommentBtn.addEventListener('click', e => {
-        likeComment(e.target);
+        console.log(e.currentTarget);
+        likeComment(e.currentTarget);
     });
 })
 
@@ -16,6 +17,7 @@ function likeComment(likeBtn) {
         const icon = likeBtn.querySelector('i');
         const countElement = likeBtn.querySelector('h6');
         let likesCount = parseInt(countElement.innerText);
+
 
         if (data.liked) {
             icon.classList.remove('bi-hand-thumbs-up');
