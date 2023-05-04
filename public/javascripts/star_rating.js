@@ -1,5 +1,5 @@
 const starRating = document.getElementById('star-rating-container').querySelectorAll('i');
-starRating.forEach((star) => {
+starRating && starRating.forEach((star) => {
     star.addEventListener('mouseover', e => {
         addStarRatingFill(e.target);
     })
@@ -19,7 +19,7 @@ function addStarRatingFill(starIcon) {
 
 const starRatingContainer = document.querySelector('#star-rating-container');
 
-starRatingContainer.addEventListener('mouseleave', e => {
+starRatingContainer && starRatingContainer.addEventListener('mouseleave', e => {
     hideStarRating(starRating);
 })
 

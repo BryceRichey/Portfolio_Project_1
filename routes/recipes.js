@@ -21,11 +21,12 @@ router.get('/recipes/:id', (req, res, next) => {
     db.query(`SELECT r.*, COUNT(c.id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
         if (err) {
             throw err
-        } db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id}`, (err, commentData) => {
+        } db.query(`SELECT comments.*, COUNT(l.id) as likes FROM comments LEFT JOIN likes l ON comments.id = l.comment_id WHERE recipe_id = ${req.params.id} GROUP BY comments.id`, (err, commentData) => {
             if (err) {
                 throw err
             } else {
-                res.render('recipes/show', { recipe: recipeData, comments: commentData, dayjs: dayjs });
+                comments = commentData.sort((a, b) => a.likes < b.likes ? 1 : -1)
+                res.render('recipes/show', { recipe: recipeData, comments: comments, dayjs: dayjs });
             }
         });
     });
@@ -51,8 +52,6 @@ router.post('/recipes/new', (req, res, _next) => {
     });
 });
 
-
-
 router.post('/recipes/comment/:id', (req, res, _next) => {
     db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, first_name: req.user.f_name, last_name: req.user.l_name, comment: req.body.comment }, (err, _data) => {
         if (err) {
@@ -63,20 +62,6 @@ router.post('/recipes/comment/:id', (req, res, _next) => {
     });
 });
 
-// router.get('/recipes/:id/comment/new', (req, res, _next) => {
-//     db.query(`SELECT * FROM comments WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
-//         if (err) {
-//             throw err
-//         } else if (!data || []) {
-//             console.log(req.params.id);
-//             console.log('Working');
-//             res.sendFile(__dirname + './public/javacripts/comments.js', err => console.log(err));
-//         } else {
-//             alert('Sorry but you have already made a comment');
-//         }
-//     })
-// });
-
 router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
     db.query(`SELECT * FROM comments WHERE user_id = ${req.user.id}`, (err, data) => {
         if (err) {
@@ -84,7 +69,7 @@ router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
         } else if (data) {
             alert('Sorry but you have already made a comment');
         } else {
-            
+
         }
     })
 });
@@ -109,9 +94,18 @@ router.get('/recipes/:recipe_id/comment/delete/:id', (req, res, _next) => {
     });
 });
 
+router.post('/recipes/:recipe_id/comment/like/:id', (req, res, next) => {
 
+    db.query(`INSERT INTO likes SET ?`, { comment_id: req.params.id, user_id: req.user.id }, (err, data) => {
+        if (err) {
+            throw err
+        } else {
+            res.json({ liked: true })
+        }
+    });
+});
 
-router.post('/recipes/:id/edit', (req, res, _next) => {
+router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
     db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _data) => {
         if (err) {
             throw err
@@ -121,7 +115,7 @@ router.post('/recipes/:id/edit', (req, res, _next) => {
     });
 });
 
-router.get('/recipes/:id/delete', (req, res, _next) => {
+router.get('/recipes/:recipe_id/delete', (req, res, _next) => {
     db.query(`DELETE FROM recipes WHERE id = ${req.params.id}`, (err, _data) => {
         if (err) {
             throw err
