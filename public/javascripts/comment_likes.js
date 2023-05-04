@@ -17,8 +17,6 @@ function likeComment(likeBtn) {
         const countElement = likeBtn.querySelector('h6');
         let likesCount = parseInt(countElement.innerText);
 
-        console.log(data);
-
         if (data.liked) {
             icon.classList.remove('bi-hand-thumbs-up');
             icon.classList.add('bi-hand-thumbs-up-fill');
@@ -31,16 +29,4 @@ function likeComment(likeBtn) {
 
         countElement.innerText = likesCount;
     });
-
-    //     const commentLikeCount = document.getElementById(`comment-${commentId}-like-count`);
-    //     console.log(commentId)
-    //     console.log(commentLikeCount)
-
-    //     const likeCountString = commentLikeCount.innerText;
-    //     const likeCountInt = parseInt(likeCountString);
-
-    //     let newLikeCount = likeCountInt + 1
-    //     const newLikeCountInt = newLikeCount;
-
-    //     commentLikeCount.innerText = newLikeCountInt
 }
