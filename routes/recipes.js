@@ -94,15 +94,29 @@ router.get('/recipes/:recipe_id/comment/delete/:id', (req, res, _next) => {
     });
 });
 
-router.post('/recipes/:recipe_id/comment/like/:id', (req, res, next) => {
-
-    db.query(`INSERT INTO likes SET ?`, { comment_id: req.params.id, user_id: req.user.id }, (err, data) => {
+router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
+    db.query(`SELECT * FROM likes WHERE comment_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
         if (err) {
             throw err
+        } else if (data && data.length == 0) {
+            db.query(`INSERT INTO likes SET ?`, { comment_id: req.params.id, user_id: req.user.id }, (err, _data) => {
+                if (err) {
+                    throw err
+                } else {
+                    res.json({ liked: true })
+                }
+            });
         } else {
-            res.json({ liked: true })
+            db.query(`DELETE FROM likes WHERE comment_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, _data) => {
+                if (err) {
+                    throw err
+                } else {
+                    res.json({ liked: false })
+                }
+            });
         }
-    });
+    })
+
 });
 
 router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
