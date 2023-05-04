@@ -1,6 +1,6 @@
 const createComment = document.querySelector('#createComment');
 
-createComment.addEventListener('click', e => {
+createComment && createComment.addEventListener('click', e => {
     showTextArea();
 });
 
@@ -22,7 +22,7 @@ function showTextArea() {
 
 const editCommentBtns = document.querySelectorAll('.edit-comment-btn');
 
-editCommentBtns.forEach((button) => {
+editCommentBtns && editCommentBtns.forEach((button) => {
     button.addEventListener('click', e => {
         showEditInput(e.target);
     });
@@ -32,6 +32,8 @@ function showEditInput(editBtn) {
     const commentId = editBtn.dataset.commentId;
     const parentElement = document.getElementById(`comment-container-${commentId}`);
     const commentTextElement = document.getElementById(`comment-${commentId}`);
+
+    console.log(commentId);
 
     const editCommentForm = parentElement.querySelector('form');
     const input = document.createElement('input');
