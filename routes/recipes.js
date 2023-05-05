@@ -103,7 +103,7 @@ router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
                 if (err) {
                     throw err
                 } else {
-                    res.json({ liked: true })
+                    res.json({ liked: true });
                 }
             });
         } else {
@@ -111,12 +111,40 @@ router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
                 if (err) {
                     throw err
                 } else {
-                    res.json({ liked: false })
+                    res.json({ liked: false });
                 }
             });
         }
-    })
+    });
 });
+
+
+
+router.post('/recipes/:id/rating/ratingInt=*', (req, res, _next) => {
+    db.query(`SELECT * FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
+        if (err) {
+            throw err
+        } else if (data && data.length == 0) {
+            db.query(`INSERT INTO recipe_ratings SET ?`, { recipe_id: req.params.id, user_id: req.user.id, rating: req.params[0] }, (err, data) => {
+                if (err) {
+                    throw err
+                } else {
+                    res.json({ rated: true });
+                }
+            });
+        } else {
+            db.query(`DELETE FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
+                if (err) {
+                    throw err
+                } else {
+                    res.json({ rated: false });
+                }
+            });
+        }
+    });
+});
+
+
 
 router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
     db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _data) => {
