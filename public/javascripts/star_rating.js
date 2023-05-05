@@ -17,6 +17,33 @@ function addStarRatingFill(starIcon) {
 }
 
 
+
+const stars = document.getElementById('star-rating-container').querySelectorAll('i');
+stars && stars.forEach((star) => {
+    star.addEventListener('click', e => {
+        submitStarRating(e.target);
+    })
+})
+
+function submitStarRating(rating) {
+    const ratingInt = parseInt(rating.dataset.star);
+    const url = rating.dataset.url;
+
+    fetch(url + new URLSearchParams({
+        ratingInt
+    }), {
+        method: 'POST'
+    }).then((response) => response.json()).then((data) => {
+        if (data.rated) {
+            console.log('removed');
+        } else {
+            console.log('added');
+        }
+    });
+}
+
+
+
 const starRatingContainer = document.querySelector('#star-rating-container');
 
 starRatingContainer && starRatingContainer.addEventListener('mouseleave', e => {

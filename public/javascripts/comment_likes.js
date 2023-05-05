@@ -2,7 +2,6 @@ const likeCommentBtns = document.querySelectorAll('.like-comment-btn');
 
 likeCommentBtns && likeCommentBtns.forEach((likeCommentBtn) => {
     likeCommentBtn.addEventListener('click', e => {
-        console.log(e.currentTarget);
         likeComment(e.currentTarget);
     });
 })
