@@ -7,7 +7,6 @@ likeCommentBtns && likeCommentBtns.forEach((likeCommentBtn) => {
 })
 
 function likeComment(likeBtn) {
-    const commentId = likeBtn.dataset.commentId;
     const url = likeBtn.dataset.url;
 
     fetch(url, {

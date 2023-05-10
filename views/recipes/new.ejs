@@ -4,8 +4,27 @@
 <head>
     <%- include('../partials/head') %>
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({ selector: "#ingredients"});</script>
-    <script>tinymce.init({ selector: "#directions"});</script>
+    <script>tinymce.init({ 
+        selector: "#description", 
+        plugins: 'lists advlist', 
+        menubar: false, 
+        toolbar: 'bullist',
+        statusbar: false
+    });</script>
+    <script>tinymce.init({ 
+        selector: "#ingredients", 
+        plugins: 'lists advlist', 
+        menubar: false, 
+        toolbar: 'bullist',
+        statusbar: false
+    });</script>
+    <script>tinymce.init({
+        selector: "#directions", 
+        plugins: 'lists advlist', 
+        menubar: false, 
+        toolbar: 'bullist',
+        statusbar: false
+    });</script>
 </head>
 
 <body>
@@ -15,7 +34,7 @@
             <p>We're always looking for new and exciting recipies. Submit yours today!</p>
         </header>
         <br>
-        <form action="/recipes/new" class="container" method="POST">
+        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="r_title" class="form-label">Recipe Title</label>
                 <input type="text" name="r_title" id="r_title" class="form-control" placeholder="Apple Strudel" required>
@@ -23,6 +42,17 @@
             <div class="mt-4">
                 <label for="num_serv" class="form-label">Number of Servings</label>
                 <input type="number" name="num_serv" id="num_serv" class="form-control" placeholder="12" required>
+            </div>
+                <label for="prep_time" class="form-label">Prep Time</label>
+                <input type="number" name="prep_time" id="prep_time" class="form-control" placeholder="30 mins" required>
+            </div>
+                <label for="cook_time" class="form-label">Cook Time</label>
+                <input type="number" name="cook_time" id="cook_time" class="form-control" placeholder="15 mins" required>
+            </div>
+            <div class="mt-4">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" name="description" id="description" class="form-control"
+                    placeholder="1 cup whole wheat pastry flour" required>
             </div>
             <div class="mt-4">
                 <label for="ingredients" class="form-label">Ingredients</label>
@@ -37,7 +67,7 @@
             <div class="input-group mt-4">
                 <input type="file" name="photos" id="photos" class="form-control">
             </div>
-            <input type="submit" id="submit" value="Submit" class="btn btn-dark mt-4">
+            <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
             
         </form>
         <%- include('../partials/footer') %>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const dayjs = require('dayjs');
+const cloudinary = require('../config/cloudinary');
 
 router.get('/recipes', (_req, res, _next) => {
     db.query('SELECT * FROM recipes ORDER BY id DESC', (err, data) => {
@@ -17,7 +18,7 @@ router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
 
-router.get('/recipes/:id', (req, res, next) => {
+router.get('/recipes/:id', (req, res, _next) => {
     db.query(`SELECT r.*, COUNT(c.id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
         if (err) {
             throw err
@@ -26,6 +27,7 @@ router.get('/recipes/:id', (req, res, next) => {
                 throw err
             } else {
                 comments = commentData.sort((a, b) => a.likes < b.likes ? 1 : -1)
+
                 res.render('recipes/show', { recipe: recipeData, comments: comments, dayjs: dayjs });
             }
         });
@@ -42,8 +44,8 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
     });
 });
 
-router.post('/recipes/new', (req, res, _next) => {
-    db.query(`INSERT INTO recipes SET ?`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _result) => {
+router.post('/recipes/new', cloudinary.upload.single('photos'), (req, res, _next) => {
+    db.query(`INSERT INTO recipes SET ?`, { submit_user_id: req.user.id, submit_user_first_name: req.user.f_name, submit_user_last_name: req.user.l_name, r_title: req.body.r_title, servings: req.body.num_serv, prep_time: req.body.prep_time, cook_time: req.body.cook_time, description: req.body.description, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _result) => {
         if (err) {
             throw err
         } else {
@@ -62,7 +64,7 @@ router.post('/recipes/comment/:id', (req, res, _next) => {
     });
 });
 
-router.post('/recipes/:recipe_id/comment/new', (req, res, _next) => {
+router.post('/recipes/:recipe_id/comment/new', (req, _res, _next) => {
     db.query(`SELECT * FROM comments WHERE user_id = ${req.user.id}`, (err, data) => {
         if (err) {
             throw err
