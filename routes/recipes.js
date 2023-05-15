@@ -4,11 +4,13 @@ const db = require('../config/database');
 const dayjs = require('dayjs');
 const cloudinary = require('../config/cloudinary');
 
+
 router.get('/recipes', (_req, res, _next) => {
-    db.query('SELECT * FROM recipes ORDER BY id DESC', (err, data) => {
+    db.query(`SELECT * FROM recipes ORDER BY id DESC`, (err, data) => {
         if (err) {
             throw err
         } else {
+            console.log()
             res.render('recipes/index', { recipes: data });
         }
     });
@@ -18,20 +20,22 @@ router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
 
-router.get('/recipes/:id', (req, res, _next) => {
-    db.query(`SELECT r.*, COUNT(c.id) AS comments_count FROM recipes r LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`, (err, recipeData) => {
-        if (err) {
-            throw err
-        } db.query(`SELECT comments.*, COUNT(l.id) as likes FROM comments LEFT JOIN likes l ON comments.id = l.comment_id WHERE recipe_id = ${req.params.id} GROUP BY comments.id`, (err, commentData) => {
-            if (err) {
-                throw err
-            } else {
-                comments = commentData.sort((a, b) => a.likes < b.likes ? 1 : -1)
+router.get('/recipes/:id', async (req, res, _next) => {
+    const recipeIdShowPage = async () => {
+        const queryOne = `SELECT r.*, COUNT(DISTINCT rr.id) AS rating_count, COUNT(DISTINCT c.id) AS comments_count FROM recipes r LEFT JOIN recipe_ratings rr ON r.id = rr.recipe_id LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`
+        const queryTwo = `SELECT comments.*, COUNT(l.id) AS likes FROM comments LEFT JOIN likes l ON comments.id = l.comment_id WHERE recipe_id = ${req.params.id} GROUP BY comments.id`
+        const queryThree = `SELECT * FROM likes LEFT JOIN comments ON likes.user_id = comments.user_id WHERE recipe_id = ${req.params.id} and likes.user_id = ${req.user.id}`
 
-                res.render('recipes/show', { recipe: recipeData, comments: comments, dayjs: dayjs });
-            }
-        });
-    });
+        const [reponseOneRows, responseOnefields] = await db.promise().query(queryOne);
+        const [reponseTwoRows, responseTwofields] = await db.promise().query(queryTwo);
+        const [reponseThreeRows, responseThreefields] = await db.promise().query(queryThree);
+
+        return { recipe: reponseOneRows, comments: reponseTwoRows, commentLikes: reponseThreeRows }
+    }
+
+    const { recipe: recipe, comments: comments, commentLikes: commentLikes } = await recipeIdShowPage();
+
+    res.render('recipes/show', { recipe, comments, commentLikes, dayjs });
 });
 
 router.get('/recipes/:id/edit', (req, res, _next) => {
@@ -39,13 +43,29 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
         if (err) {
             throw err
         } else {
-            res.render('recipes/edit', { id: req.params.id, recipe: data });
+            res.render('recipes/edit', {
+                id: req.params.id,
+                recipe: data
+            });
         }
     });
 });
 
-router.post('/recipes/new', cloudinary.upload.single('photos'), (req, res, _next) => {
-    db.query(`INSERT INTO recipes SET ?`, { submit_user_id: req.user.id, submit_user_first_name: req.user.f_name, submit_user_last_name: req.user.l_name, r_title: req.body.r_title, servings: req.body.num_serv, prep_time: req.body.prep_time, cook_time: req.body.cook_time, description: req.body.description, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _result) => {
+router.post('/recipes/new', cloudinary.upload.single('photo'), (req, res, _next) => {
+    console.log(req.file.path);
+
+    db.query(`INSERT INTO recipes SET ?`, {
+        submit_user_id: req.user.id,
+        submit_user_first_name: req.user.f_name,
+        submit_user_last_name: req.user.l_name,
+        r_title: req.body.r_title,
+        servings: req.body.num_serv,
+        prep_time: req.body.prep_time,
+        cook_time: req.body.cook_time,
+        description: req.body.description,
+        ingredients: req.body.ingredients,
+        directions: req.body.directions
+    }, (err, _result) => {
         if (err) {
             throw err
         } else {
@@ -55,7 +75,13 @@ router.post('/recipes/new', cloudinary.upload.single('photos'), (req, res, _next
 });
 
 router.post('/recipes/comment/:id', (req, res, _next) => {
-    db.query(`INSERT INTO comments SET ?`, { recipe_id: req.params.id, user_id: req.user.id, first_name: req.user.f_name, last_name: req.user.l_name, comment: req.body.comment }, (err, _data) => {
+    db.query(`INSERT INTO comments SET ?`, {
+        recipe_id: req.params.id,
+        user_id: req.user.id,
+        first_name: req.user.f_name,
+        last_name: req.user.l_name,
+        comment: req.body.comment
+    }, (err, _data) => {
         if (err) {
             throw err
         } else {
@@ -77,7 +103,9 @@ router.post('/recipes/:recipe_id/comment/new', (req, _res, _next) => {
 });
 
 router.post('/recipes/:recipe_id/comment/edit/:id', (req, res, _next) => {
-    db.query(`UPDATE comments SET ? WHERE id = ${req.params.id}`, { comment: req.body.comment }, (err, _data) => {
+    db.query(`UPDATE comments SET ? WHERE id = ${req.params.id}`, {
+        comment: req.body.comment
+    }, (err, _data) => {
         if (err) {
             throw err
         } else {
@@ -101,7 +129,10 @@ router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
         if (err) {
             throw err
         } else if (data && data.length == 0) {
-            db.query(`INSERT INTO likes SET ?`, { comment_id: req.params.id, user_id: req.user.id }, (err, _data) => {
+            db.query(`INSERT INTO likes SET ?`, {
+                comment_id: req.params.id,
+                user_id: req.user.id
+            }, (err, _data) => {
                 if (err) {
                     throw err
                 } else {
@@ -120,14 +151,16 @@ router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
     });
 });
 
-
-
 router.post('/recipes/:id/rating/ratingInt=*', (req, res, _next) => {
     db.query(`SELECT * FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
         if (err) {
             throw err
         } else if (data && data.length == 0) {
-            db.query(`INSERT INTO recipe_ratings SET ?`, { recipe_id: req.params.id, user_id: req.user.id, rating: req.params[0] }, (err, data) => {
+            db.query(`INSERT INTO recipe_ratings SET ?`, {
+                recipe_id: req.params.id,
+                user_id: req.user.id,
+                rating: req.params[0]
+            }, (err, _data) => {
                 if (err) {
                     throw err
                 } else {
@@ -135,7 +168,7 @@ router.post('/recipes/:id/rating/ratingInt=*', (req, res, _next) => {
                 }
             });
         } else {
-            db.query(`DELETE FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
+            db.query(`DELETE FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, _data) => {
                 if (err) {
                     throw err
                 } else {
@@ -146,16 +179,20 @@ router.post('/recipes/:id/rating/ratingInt=*', (req, res, _next) => {
     });
 });
 
-
-
 router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
-    db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, { r_title: req.body.r_title, num_serv: req.body.num_serv, ingredients: req.body.ingredients, directions: req.body.directions }, (err, _data) => {
+    db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, {
+        r_title: req.body.r_title,
+        num_serv: req.body.num_serv,
+        ingredients: req.body.ingredients,
+        directions: req.body.directions
+    }, (err, _data) => {
         if (err) {
             throw err
         } else {
             res.redirect(`/recipes/${req.params.id}`);
         }
-    });
+    }
+    );
 });
 
 router.get('/recipes/:recipe_id/delete', (req, res, _next) => {

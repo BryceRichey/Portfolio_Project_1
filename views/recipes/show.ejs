@@ -26,7 +26,7 @@
                                     <i class="bi bi-star" data-star="4" data-url="<%=`/recipes/${recipe_info['id']}/rating/`%>"></i> 
                                     <i class="bi bi-star" data-star="5" data-url="<%=`/recipes/${recipe_info['id']}/rating/`%>"></i> 
                                 </span>
-                                Rating # | <%= recipe_info['comments_count'] %> comments | Number of photos</p>
+                                <%= recipe_info['rating_count'] %> Ratings | <%= recipe_info['comments_count'] %> comments | Number of photos</p>
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
@@ -92,7 +92,8 @@
                     <div class="col-6">
                         <div class="row mt-5 me-3 pe-5">
                             <div class="bg-secondary-subtle py-5" id="imageFrame">
-                                <p class="text-center">IMAGE GOES HERE</p>
+                                <!-- <p class="text-center">IMAGE GOES HERE</p> -->
+                                <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1683766372/recipe_images/b2xctohibsi50g5pt9r1.png" />
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -173,7 +174,11 @@
                                                         </h6>
                                                     </div>
                                                     <div class="col">
-                                                        <i class="bi bi-hand-thumbs-up"></i>
+                                                        <% if (commentLikes) { %>
+                                                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                                                            <% } else { %>
+                                                                <i class="bi bi-hand-thumbs-up"></i>
+                                                        <% } %>
                                                     </div>
                                                 </div>
                                         </button>
