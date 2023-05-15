@@ -16,7 +16,6 @@ function likeComment(likeBtn) {
         const countElement = likeBtn.querySelector('h6');
         let likesCount = parseInt(countElement.innerText);
 
-
         if (data.liked) {
             icon.classList.remove('bi-hand-thumbs-up');
             icon.classList.add('bi-hand-thumbs-up-fill');

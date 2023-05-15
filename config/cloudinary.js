@@ -18,9 +18,10 @@ const storage = new CloudinaryStorage({
     }
 });
 
-function fileFilter(_req, file, cb) {
-    const allowedExtensions = new RegExp(/.(jpg|jpeg|png)$/gi)
-    if (file.allowedExtensions = true) {
+function fileFilter(req, file, cb) {
+    const validTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+
+    if (validTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
         cb(null, false);

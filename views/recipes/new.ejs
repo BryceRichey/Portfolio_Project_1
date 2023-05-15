@@ -23,7 +23,22 @@
         plugins: 'lists advlist', 
         menubar: false, 
         toolbar: 'bullist',
-        statusbar: false
+        valid_elements: '-ul, -li',
+        statusbar: false,
+        setup : function(editor) { 
+            editor.on('focus', () => {
+                if (tinyMCE.activeEditor.selection.getNode().nodeName.toLowerCase() != 'li'){
+                        editor.execCommand('InsertUnorderedList');
+                    }
+            });
+            editor.on('keyup', (e) => {
+                if (e.keyCode == 13 || e.keyCode == 8){
+                    if (tinyMCE.activeEditor.selection.getNode().nodeName.toLowerCase() != 'li'){
+                        editor.execCommand('InsertUnorderedList');
+                    }
+                }
+            });
+        }
     });</script>
 </head>
 
@@ -65,7 +80,7 @@
                     placeholder="Mix sugars together" required>
             </div>
             <div class="input-group mt-4">
-                <input type="file" name="photos" id="photos" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
             </div>
             <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
             
