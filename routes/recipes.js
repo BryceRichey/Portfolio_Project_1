@@ -21,21 +21,23 @@ router.get('/recipes/new', (_req, res, _next) => {
 });
 
 router.get('/recipes/:id', async (req, res, _next) => {
-    const recipeIdShowPage = async () => {
-        const queryOne = `SELECT r.*, COUNT(DISTINCT rr.id) AS rating_count, COUNT(DISTINCT c.id) AS comments_count FROM recipes r LEFT JOIN recipe_ratings rr ON r.id = rr.recipe_id LEFT JOIN comments c ON r.id = c.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`
+    const recipeShowPage = async () => {
+        const queryOne = `SELECT r.*, COUNT(DISTINCT rr.id) AS rating_count, COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT rp.id) AS photos_count FROM recipes r LEFT JOIN recipe_ratings rr ON r.id = rr.recipe_id LEFT JOIN comments c ON r.id = c.recipe_id LEFT JOIN recipe_photos rp ON r.id = rp.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`
         const queryTwo = `SELECT comments.*, COUNT(l.id) AS likes FROM comments LEFT JOIN likes l ON comments.id = l.comment_id WHERE recipe_id = ${req.params.id} GROUP BY comments.id`
         const queryThree = `SELECT * FROM likes LEFT JOIN comments ON likes.user_id = comments.user_id WHERE recipe_id = ${req.params.id} and likes.user_id = ${req.user.id}`
+        const queryFour = `SELECT * FROM recipe_photos rp WHERE rp.recipe_id = ${req.params.id}`
 
         const [reponseOneRows, responseOnefields] = await db.promise().query(queryOne);
         const [reponseTwoRows, responseTwofields] = await db.promise().query(queryTwo);
         const [reponseThreeRows, responseThreefields] = await db.promise().query(queryThree);
+        const [responseFourRows, responseFourFields] = await db.promise().query(queryFour);
 
-        return { recipe: reponseOneRows, comments: reponseTwoRows, commentLikes: reponseThreeRows }
+        return { recipe: reponseOneRows, comments: reponseTwoRows, commentLikes: reponseThreeRows, photos: responseFourRows }
     }
 
-    const { recipe: recipe, comments: comments, commentLikes: commentLikes } = await recipeIdShowPage();
+    const { recipe: recipe, comments: comments, commentLikes: commentLikes, photos: photos } = await recipeShowPage();
 
-    res.render('recipes/show', { recipe, comments, commentLikes, dayjs });
+    res.render('recipes/show', { recipe, comments, commentLikes, photos, dayjs });
 });
 
 router.get('/recipes/:id/edit', (req, res, _next) => {
@@ -51,27 +53,36 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
     });
 });
 
-router.post('/recipes/new', cloudinary.upload.single('photo'), (req, res, _next) => {
-    console.log(req.file.path);
+router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
+    const postNewRecipe = async () => {
+        const queryOne = `INSERT INTO recipes SET ?`
+        const queryTwo = `SELECT LAST_INSERT_ID()`
+        const queryThree = `INSERT INTO recipe_photos SET ?`
 
-    db.query(`INSERT INTO recipes SET ?`, {
-        submit_user_id: req.user.id,
-        submit_user_first_name: req.user.f_name,
-        submit_user_last_name: req.user.l_name,
-        r_title: req.body.r_title,
-        servings: req.body.num_serv,
-        prep_time: req.body.prep_time,
-        cook_time: req.body.cook_time,
-        description: req.body.description,
-        ingredients: req.body.ingredients,
-        directions: req.body.directions
-    }, (err, _result) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect('/recipes');
-        }
-    });
+        const [_reponseOneRows, _responseOnefields] = await db.promise().query(queryOne, {
+            submit_user_id: req.user.id,
+            submit_user_first_name: req.user.f_name,
+            submit_user_last_name: req.user.l_name,
+            r_title: req.body.r_title,
+            servings: req.body.num_serv,
+            prep_time: req.body.prep_time,
+            cook_time: req.body.cook_time,
+            description: req.body.description,
+            ingredients: req.body.ingredients,
+            directions: req.body.directions
+        });
+        const [reponseTwoRows, _responseTwofields] = await db.promise().query(queryTwo);
+        const newRecipeId = (Object.values(reponseTwoRows[0]));
+        const [_reponseThreeRows, _responseThreefields] = await db.promise().query(queryThree, {
+            recipe_id: newRecipeId,
+            user_id: req.user.id,
+            photo_url: req.file.path
+        });
+    }
+
+    await postNewRecipe();
+
+    res.redirect('/recipes');
 });
 
 router.post('/recipes/comment/:id', (req, res, _next) => {

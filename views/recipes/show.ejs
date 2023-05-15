@@ -26,7 +26,27 @@
                                     <i class="bi bi-star" data-star="4" data-url="<%=`/recipes/${recipe_info['id']}/rating/`%>"></i> 
                                     <i class="bi bi-star" data-star="5" data-url="<%=`/recipes/${recipe_info['id']}/rating/`%>"></i> 
                                 </span>
-                                <%= recipe_info['rating_count'] %> Ratings | <%= recipe_info['comments_count'] %> comments | Number of photos</p>
+                                <% if (recipe_info['rating_count'] == 0) { %>
+                                    No ratings
+                                <% } else if (recipe_info['rating_count'] == 1) { %>
+                                    <% recipe_info['rating_count'] %> Rating
+                                <% } else {%>
+                                    <%= recipe_info['rating_count'] %> Ratings
+                                <% } %> | 
+                                <% if (recipe_info['comments_count'] == 0) { %>
+                                    No comments
+                                <% } else if (recipe_info['comments_count'] == 1) { %>
+                                    <%= recipe_info['comments_count'] %> Comment
+                                <% } else { %>
+                                    <%= recipe_info['comments_count'] %> Comments
+                                <% } %> | 
+                                <% if (recipe_info['photos_count'] == 0) { %>
+                                    No photos
+                                <% } else if (recipe_info['photos_count'] == 1) { %>
+                                    <%= recipe_info['photos_count'] %> Photo
+                                <% } else { %>
+                                    <%= recipe_info['photos_count'] %> Photos
+                                <% } %>
                             <div class="col">
                                 <div class="row">
                                     <div class="col">
@@ -91,10 +111,31 @@
                     </div>
                     <div class="col-6">
                         <div class="row mt-5 me-3 pe-5">
-                            <div class="bg-secondary-subtle py-5" id="imageFrame">
-                                <!-- <p class="text-center">IMAGE GOES HERE</p> -->
-                                <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1683766372/recipe_images/b2xctohibsi50g5pt9r1.png" />
+
+
+                            <div id="imageCarousel" class="carousel slide">
+                                <div id="carouselPhotos" class="carousel-inner">
+                                    <% photos.forEach((photo) => { %>
+                                        <div class="carousel-item">
+                                            <img src="<%=photo['photo_url']%>" class="d-block w-50">
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                  <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
+
+                            <script>
+                                const carouselPhotosContainer = document.getElementById('carouselPhotos');
+                                carouselPhotosContainer.firstElementChild.classList.add('active');
+                            </script>
+
                         </div>
                         <div class="row mt-4">
                             <div class="col">
@@ -174,10 +215,10 @@
                                                         </h6>
                                                     </div>
                                                     <div class="col">
-                                                        <% if (commentLikes) { %>
+                                                        <% if (commentLikes && commentLikes['id'] == comment['id']) { %>
                                                             <i class="bi bi-hand-thumbs-up-fill"></i>
-                                                            <% } else { %>
-                                                                <i class="bi bi-hand-thumbs-up"></i>
+                                                        <% } else { %>
+                                                            <i class="bi bi-hand-thumbs-up"></i>
                                                         <% } %>
                                                     </div>
                                                 </div>
