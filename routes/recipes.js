@@ -22,7 +22,7 @@ router.get('/recipes/new', (_req, res, _next) => {
 
 router.get('/recipes/:id', async (req, res, _next) => {
     const recipeShowPage = async () => {
-        const queryOne = `SELECT r.*, COUNT(DISTINCT rr.id) AS rating_count, AVG(rr.rating) AS recipe_rating_avg, COUNT(DISTINCT c.id) AS comments_count, COUNT(DISTINCT rp.id) AS photos_count FROM recipes r LEFT JOIN recipe_ratings rr ON r.id = rr.recipe_id LEFT JOIN comments c ON r.id = c.recipe_id LEFT JOIN recipe_photos rp ON r.id = rp.recipe_id WHERE r.id = ${req.params.id} GROUP BY r.id`
+        
         const queryTwo = `SELECT comments.*, COUNT(l.id) AS likes FROM comments LEFT JOIN likes l ON comments.id = l.comment_id WHERE recipe_id = ${req.params.id} GROUP BY comments.id`
 
         const queryFour = `SELECT * FROM recipe_photos rp WHERE rp.recipe_id = ${req.params.id}`
@@ -35,7 +35,7 @@ router.get('/recipes/:id', async (req, res, _next) => {
             commentLikes = commentLikes.map((row) => Object.values(row)[0]);
         }
 
-        const [recipe, _responseOnefields] = await db.promise().query(queryOne);
+        
         const [comments, _responseTwofields] = await db.promise().query(queryTwo);
         const [photos, _responseFourFields] = await db.promise().query(queryFour);
 
@@ -62,46 +62,42 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
 });
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
-    const postNewRecipe = async (ingredientsString) => {
+    const postNewRecipe = async (ingredientArray) => {
         const queryOne = `INSERT INTO recipes SET ?`
         const queryTwo = `SELECT LAST_INSERT_ID()`
         const queryThree = `INSERT INTO ingredients (ingredient) VALUES ?`
         const queryFour = `INSERT INTO recipe_photos SET ?`
 
-        const [_responseThreeRows, _responseThreeFieleds] = await db.promise().query(queryThree, {
-            ingredientsString
+
+        const [_reponseOneRows, _responseOnefields] = await db.promise().query(queryOne, {
+            submit_user_id: req.user.id,
+            submit_user_first_name: req.user.f_name,
+            submit_user_last_name: req.user.l_name,
+            r_title: req.body.r_title,
+            servings: req.body.num_serv,
+            prep_time: req.body.prep_time,
+            cook_time: req.body.cook_time,
+            description: req.body.description,
+            directions: req.body.directions
         });
-
-        // const [_reponseOneRows, _responseOnefields] = await db.promise().query(queryOne, {
-        //     submit_user_id: req.user.id,
-        //     submit_user_first_name: req.user.f_name,
-        //     submit_user_last_name: req.user.l_name,
-        //     r_title: req.body.r_title,
-        //     servings: req.body.num_serv,
-        //     prep_time: req.body.prep_time,
-        //     cook_time: req.body.cook_time,
-        //     description: req.body.description,
-        //     directions: req.body.directions
-        // });
-        // const [reponseTwoRows, _responseTwofields] = await db.promise().query(queryTwo);
-        // const newRecipeId = (Object.values(reponseTwoRows[0]));
-
-        
-        // const [_reponseThreeRows, _responseThreefields] = await db.promise().query(queryFour, {
-        //     recipe_id: newRecipeId,
-        //     user_id: req.user.id,
-        //     photo_url: req.file.path
-        // });
+        const [reponseTwoRows, _responseTwofields] = await db.promise().query(queryTwo);
+        const newRecipeId = (Object.values(reponseTwoRows[0]));
+        const [_responseThreeRows, _responseThreeFieleds] = await db.promise().query(queryThree, [ingredientArray]);
+        const [_reponseThreeRows, _responseThreefields] = await db.promise().query(queryFour, {
+            recipe_id: newRecipeId,
+            user_id: req.user.id,
+            photo_url: req.file.path
+        });
     }
-    
+
     let ingredients = req.body.ingredients;
     let ingredientArray = Array();
     ingredients.forEach(ingredient => {
-        ingredientArray.push(ingredient.ingredient);
+        ingredientArray.push([ingredient.ingredient]);
     });
-    const ingredientsString = ingredientArray.toString();
+    //const ingredientsString = ingredientArray;
 
-    postNewRecipe();
+    postNewRecipe(ingredientArray);
 
     res.redirect('/recipes');
 });
