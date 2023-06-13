@@ -53,9 +53,10 @@ router.get('/recipes/:id/edit', (req, res, _next) => {
 
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
-    await recipeQueries.createRecipe();
-    await recipeQueries.createRecipeIngredient(recipe_id);
-
+    await recipeQueries.createRecipe(req.user, req.body, req.file);
+    await recipeQueries.insertRecipePhoto(req.user, req.file);
+    await recipeQueries.createRecipeIngredient(req.body);
+    
     res.redirect('/recipes');
 });
 
