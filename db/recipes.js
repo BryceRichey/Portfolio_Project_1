@@ -106,17 +106,20 @@ async function insertRecipePhoto(user, file) {
 
     let newRecipeId = (Object.values(insertIdRows[0]));
 
-    const insertRecipePhotoQuery = `
-    INSERT INTO 
-        recipe_photos 
-    SET 
-        ?`
+    if (!file) {
+    } else {
+        const insertRecipePhotoQuery = `
+        INSERT INTO 
+            recipe_photos 
+        SET 
+            ?`
 
-    const [_insertRecipePhotoRows, _insertRecipePhotoFields] = await db.promise().query(insertRecipePhotoQuery, {
-        recipe_id: newRecipeId,
-        user_id: user.id,
-        photo_url: file.path
-    });
+        const [_insertRecipePhotoRows, _insertRecipePhotoFields] = await db.promise().query(insertRecipePhotoQuery, {
+            recipe_id: newRecipeId,
+            user_id: user.id,
+            photo_url: file.path
+        });
+    }
 }
 
 async function createRecipeIngredient(body) {
