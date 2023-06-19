@@ -57,7 +57,7 @@
                     </div>
                 </template>
                 <div id="ingredientInputRows"></div>
-                <button class="btn btn-dark mt-2" id="addIngredientBtn"> Add ingredient</button>
+                <button class="btn btn-dark mt-2" id="addIngredientBtn">Add ingredient</button>
                 <script>
                     const addIngredientBtn = document.getElementById('addIngredientBtn');
                     addIngredientBtn.addEventListener('click', e => {
@@ -73,13 +73,11 @@
                         const inputRows = document.getElementsByClassName('ingredient-input-row') || [];
                         const templateElement = document.getElementById('ingredient-input-template').content;
                         let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
-                        console.log(ingredientInputRow);
 
                         Array.from(ingredientInputRow.children).forEach(input => {
                             const name = input.name;
                             input.name = nameString(inputRows.length, name);
-                            console.log(input)
-                        })
+                        });
 
                         document.getElementById('ingredientInputRows').append(ingredientInputRow);
                     }
@@ -91,9 +89,55 @@
             </div>
 
             <div class="mt-4">
-                <label for="directions" class="form-label">Directions</label>
+                <template id="direction-step-template">
+                    <label for="direction-input" id="direction-step-row"></label>
+                </template>
+                <template id="direction-input-template" name="direction-input">
+                    <div class="input-group mb-3 direction-input-row">
+                        <input type="text" name="directions" class="form-control">
+                    </div>
+                </template>
+                <div id="directionInputRows"></div>
+                <button class="btn btn-dark mt2" id="addDirectionBtn">Add step</button>
+                <script>
+                    const addDirectionBtn = document.getElementById('addDirectionBtn');
+                    addDirectionBtn.addEventListener('click', e => {
+                        addDirectionField();
+                        e.preventDefault();
+                    });
+
+                    document.addEventListener('DOMContentLoaded', e => {
+                        addDirectionField();
+                    }, false);
+
+                    let stepNumber = 1;
+                    function addDirectionField() {
+                        const inputRows = document.getElementsByClassName('direction-input-row') || [];
+                        const directionInutTemplateElement = document.getElementById('direction-input-template').content;
+                        let directionInputRow = directionInutTemplateElement.cloneNode(true).querySelector('div');
+
+                        Array.from(directionInputRow.children).forEach(input => {
+                            const name = input.name;
+                            input.name = nameString(inputRows.length, name);
+                        });
+
+                        const stepRow = document.getElementById('direction-step-row') || [];
+                        const directionStepTemplateElement = document.getElementById('direction-step-template').content;
+                        let directionStepRow = directionStepTemplateElement.cloneNode(true).querySelector('label');
+                        directionStepRow.innerText = `Step ${stepNumber++}`
+
+                        document.getElementById('directionInputRows').append(directionStepRow, directionInputRow);
+                    }
+
+                    function nameString(index, fieldName) {
+                        return `directions[${index}][${fieldName}]`;
+                    }
+                </script>
+
+
+                <!-- <label for="directions" class="form-label">Directions</label>
                 <input type="text" name="directions" id="directions" class="form-control"
-                    placeholder="Mix sugars together" required>
+                    placeholder="Mix sugars together" required> -->
             </div>
             <div class="input-group mt-4">
                 <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
