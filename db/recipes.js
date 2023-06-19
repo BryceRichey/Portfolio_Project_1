@@ -93,8 +93,7 @@ async function createRecipe(user, body) {
         servings: body.num_serv,
         prep_time: body.prep_time,
         cook_time: body.cook_time,
-        description: body.description,
-        directions: body.directions
+        description: body.description
     });
 }
 
@@ -161,7 +160,7 @@ async function createRecipeIngredient(body) {
                                 WHERE 
                                     i.ingredient = ?`
                             const [checkIngredientRows, _checkIngredientFields] = await db.promise().query(checkIngredientQuery, [ingredient.toLowerCase()]);
-    
+
                             if (checkIngredientRows.length > 0) {
                                 ingredientId = checkIngredientRows[0].id;
                             } else {
@@ -171,7 +170,7 @@ async function createRecipeIngredient(body) {
                                     VALUES 
                                         (?)`
                                 await db.promise().query(insertIngredientQuery, [ingredient.toLowerCase()]);
-    
+
                                 const insertIngredientIdQuery = `
                                     SELECT 
                                         MAX(id)
@@ -190,7 +189,7 @@ async function createRecipeIngredient(body) {
                     recipe_ingredients (recipe_id, amount, unit_id, ingredient_id) 
                     VALUES 
                     (?, ?, ?, ?)`
-                    
+
                     await db.promise().query(insertIngredientData, [newRecipeId, amountId, unitId, ingredientId]);
                 }
                 insertIngredientData(newRecipeId, amountId, unitId, ingredientId);
@@ -198,7 +197,7 @@ async function createRecipeIngredient(body) {
             queryIngredientData();
         });
     }
-    
+
     async function insertedRecipeIngredientData() {
         await getInsertedRecipeId();
         await ingredientData();
@@ -206,4 +205,43 @@ async function createRecipeIngredient(body) {
     insertedRecipeIngredientData();
 }
 
-module.exports = { getRecipe, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient };
+async function insertRecipeDirections(body) {
+    let directionsData = body.directions;
+    let newRecipeId;
+    let directionStep = 1;
+
+    async function getInsertedRecipeId() {
+        const insertRecipeIdQuery = `
+            SELECT 
+                MAX(id) 
+            FROM 
+                recipes`
+        const [insertRecipeIdRows, _insertRecipeIdFields] = await db.promise().query(insertRecipeIdQuery);
+        return newRecipeId = (Object.values(insertRecipeIdRows[0]));
+    }
+
+    async function directionData() {
+        directionsData.forEach(directionData => {
+            let direction = directionData.directions;
+            let step = directionStep++;
+
+            async function insertDirectionData() {
+                const insertQuery = `
+                INSERT INTO 
+                    recipe_directions (recipe_id, direction_step, direction)
+                VALUES 
+                    (?, ?, ?)`
+
+                await db.promise().query(insertQuery, [newRecipeId, step, direction]);
+            }
+            insertDirectionData(newRecipeId, step, direction);
+        });
+    }
+    async function insertRecipeDirectionData() {
+        await getInsertedRecipeId();
+        await directionData();
+    }
+    insertRecipeDirectionData();
+}
+
+module.exports = { getRecipe, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections };
