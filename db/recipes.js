@@ -121,101 +121,89 @@ async function insertRecipePhoto(user, file) {
 }
 
 async function createRecipeIngredient(body) {
-    let ingredients = body.ingredients;
-    let ingredientArray = Array();
+    let ingredientsData = body.ingredients;
+    let newRecipeId;
+    let amountId;
+    let unitId;
+    let ingredientId;
 
-    ingredients.forEach(ingredient => {
-        ingredientArray.push([ingredient.ingredient]);
-    });
-
-    ingredientArray.forEach(async (ingredient) => {
+    async function getInsertedRecipeId() {
         const insertRecipeIdQuery = `
-        SELECT 
-            MAX(id) 
-        FROM 
-            recipes`
-        const [insertRecipeIdRows, _insertRecipeIdFields] = await db.promise().query(insertRecipeIdQuery);
-        let newRecipeId = (Object.values(insertRecipeIdRows[0]));
-        
-        let ingredientId;
-        const checkIngredientQuery = `
-        SELECT 
-            i.id
-        FROM 
-            ingredients i
-        WHERE 
-            i.ingredient = ?`
-        const [checkIngredientRows, _checkIngredientFields] = await db.promise().query(checkIngredientQuery, [ingredient[0].toLowerCase()]);
-
-        if (checkIngredientRows.length > 0) {
-            ingredientId = checkIngredientRows[0][0];
-        } else {
-            const insertIngredientQuery = `
-            INSERT INTO 
-                ingredients (ingredient)
-            VALUES 
-                (?)`
-            const [_insertIngredeientRows, _insertIngredientFields] = await db.promise().query(insertIngredientQuery, [ingredient[0].toLowerCase()]);
-            
-            const insertIngredientId = `
             SELECT 
-                MAX(id)
+                MAX(id) 
             FROM 
-                ingredients`        
-            const [insertIngredientIdRows, _insertIngredientIdFields] = await db.promise().query(insertIngredientId);
-            ingredientId = (Object.values(insertIngredientIdRows[0]));
-        }
-        const insertIngredientIntoRecipeIngredients = `
-        INSERT INTO 
-            recipe_ingredients (recipe_id, ingredient_id)
-        VALUES 
-            (?, ?)`
+                recipes`
+        const [insertRecipeIdRows, _insertRecipeIdFields] = await db.promise().query(insertRecipeIdQuery);
+        return newRecipeId = (Object.values(insertRecipeIdRows[0]));
+    }
 
-        await db.promise().query(insertIngredientIntoRecipeIngredients, [newRecipeId, ingredientId]);
-    });
+    async function ingredientData() {
+        ingredientsData.forEach(ingredientData => {
+            async function queryIngredientData() {
+                for (const key in ingredientData) {
+                    if (key == 'amount') {
+                        async function insertRecipeIngredientAmount(amount) {
+                            amountId = amount;
+                        }
+                        await insertRecipeIngredientAmount(ingredientData.amount);
+                    } else if (key == 'unit') {
+                        async function insertRecipeIngredientUnit(unit) {
+                            unitId = unit;
+                        }
+                        await insertRecipeIngredientUnit(ingredientData.unit);
+                    } else if (key == 'ingredient') {
+                        async function insertRecipeIngredient(ingredient) {
+                            const checkIngredientQuery = `
+                                SELECT 
+                                    i.id
+                                FROM 
+                                    ingredients i
+                                WHERE 
+                                    i.ingredient = ?`
+                            const [checkIngredientRows, _checkIngredientFields] = await db.promise().query(checkIngredientQuery, [ingredient.toLowerCase()]);
+    
+                            if (checkIngredientRows.length > 0) {
+                                ingredientId = checkIngredientRows[0].id;
+                            } else {
+                                const insertIngredientQuery = `
+                                    INSERT INTO 
+                                        ingredients (ingredient)
+                                    VALUES 
+                                        (?)`
+                                await db.promise().query(insertIngredientQuery, [ingredient.toLowerCase()]);
+    
+                                const insertIngredientIdQuery = `
+                                    SELECT 
+                                        MAX(id)
+                                    FROM 
+                                        ingredients`
+                                const [insertIngredientIdRows, _insertIngredientIdFields] = await db.promise().query(insertIngredientIdQuery);
+                                ingredientId = insertIngredientIdRows[0].id;
+                            }
+                        }
+                        await insertRecipeIngredient(ingredientData.ingredient);
+                    }
+                }
+                async function insertIngredientData() {
+                    const insertIngredientData = `
+                    INSERT INTO 
+                    recipe_ingredients (recipe_id, amount, unit_id, ingredient_id) 
+                    VALUES 
+                    (?, ?, ?, ?)`
+                    
+                    await db.promise().query(insertIngredientData, [newRecipeId, amountId, unitId, ingredientId]);
+                }
+                insertIngredientData(newRecipeId, amountId, unitId, ingredientId);
+            }
+            queryIngredientData();
+        });
+    }
+    
+    async function insertedRecipeIngredientData() {
+        await getInsertedRecipeId();
+        await ingredientData();
+    }
+    insertedRecipeIngredientData();
 }
-
-
-
-// ingredients.forEach(async (ingredient) => {
-//     let ingredient_id;
-//     const [ing_ids] = await db.promise().query("SELECT id FROM ingredients WHERE ingredient = ?", [ingredient.toLowerCase()]);
-//     if (ing_ids.length > 0) {
-//         ingredient_id = ing_ids[0][0];
-//     } else {
-//         const res = await db.promise().query("INSERT INTO ingredients (ingredient) VALUES (?)", [ingredient]);
-//         ingredient_id = res.insertId;
-//     }
-//     await db.promise().query("INSERT INTO recipeIngredients (recipe_id, ingredient_id) VALUES (?, ?)", [recipe_id, ingredient_id]);
-// });
-
-
-
-
-// async function createRecipeIngredient(recipeId, _ingredientName, _unitId, _amount) {
-//     let ingredients = req.body.ingredients;
-//     let ingredientArray = Array();
-
-//     ingredients.forEach(ingredient => {
-//         ingredientArray.push([ingredient.ingredient]);
-//     });
-
-//     const query = `
-//     SELECT 
-//             i.ingredient
-//         CASE
-//             WHEN 
-//                 LOWER(?) = LOWER(ingredient) 
-//                 THEN INSERT IGNORE INTO 
-//                     i (ingredient) VALUES ?
-//             ELSE LOWER(ingredient) != LOWER(?)
-//                 THEN INSERT INTO
-//                     i VALUES ?
-//         END
-//     FROM
-//         ingredients i`
-
-//     const [_queryRows, _queryFields] = await db.promise().query(query, [newRecipeId,]);
-//}
 
 module.exports = { getRecipe, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient };
