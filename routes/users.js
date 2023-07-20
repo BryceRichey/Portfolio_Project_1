@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const passport = require('../config/passport');
+const session = require('express-session');
 
 router.get('/sign_up', (req, res, next) => {
     res.render('users/sign_up.ejs')
@@ -58,10 +59,14 @@ router.post('/sign_up', [passport.userExists, (req, res, next) => {
     res.redirect('/login')
 }]);
 
+
 router.get('/login', (req, res, next) => {
     res.render('users/login.ejs')
-    console.log(req.session);
-    console.log(req.user);
+});
+
+router.get('/login/*', (req, res, next) => {
+    res.render('users/login.ejs')
+    session.path = req.params[0];
 });
 
 router.post('/login', passport.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureMessage: true }));

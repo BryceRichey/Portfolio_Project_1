@@ -1,15 +1,16 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
+const session = require('express-session');
 
 const db = require('./database');
 
 const verifyCallback = (username, password, done) => {
-    db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, fields) => {
+    db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, _fields) => {
         if (err) {
             return done(err);
         }
-        if (data.lenght == 0) {
+        if (data.length == 0) {
             return done(null, false, { message: 'Incorrect email or password.' });
         }
 
@@ -25,7 +26,7 @@ const verifyCallback = (username, password, done) => {
     });
 }
 
-const strategy = new LocalStrategy({usernameField: 'email'}, verifyCallback);
+const strategy = new LocalStrategy({ usernameField: 'email' }, verifyCallback);
 
 passport.use(strategy);
 
@@ -34,7 +35,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    db.query('SELECT * FROM users WHERE id = ?', [id], (err, data) => {
+    db.query('SELECT * FROM users WHERE id = ?', [id], (_err, data) => {
         done(null, data[0])
     });
 });
@@ -63,7 +64,9 @@ isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         next()
     } else {
-        res.redirect('/');
+        const postLoginRedirect = req.originalUrl;
+        session.path = postLoginRedirect;
+        res.redirect('/login');
     }
 }
 
@@ -75,8 +78,13 @@ isAdmin = (req, res, next) => {
     }
 }
 
+setCurrentUser = (req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+}
+
 userExists = (req, res, next) => {
-    db.query('SELECT * FROM users WHERE username = ?', [req.body.username], (err, data, fields) => {
+    db.query('SELECT * FROM users WHERE username = ?', [req.body.username], (err, data, _fields) => {
         if (err) {
             console.log(err);
         } else if (data.length > 0) {
@@ -87,4 +95,4 @@ userExists = (req, res, next) => {
     });
 }
 
-module.exports = { passport, isAuth, isAdmin, userExists };
+module.exports = { passport, isAuth, isAdmin, setCurrentUser, userExists };
