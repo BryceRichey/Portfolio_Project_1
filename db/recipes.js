@@ -25,6 +25,39 @@ async function getRecipe(recipe_id) {
     return recipe;
 }
 
+async function getRecipeIngredients(recipe_id) {
+    const query = `
+    SELECT 
+        ri.amount,
+        ru.unit AS unit,
+        i.ingredient AS ingredient
+    FROM 
+        recipe_ingredients ri 
+    LEFT JOIN 
+        recipe_units ru ON ri.unit_id = ru.id 
+    LEFT JOIN 
+        ingredients i ON ingredient_id = i.id 
+    WHERE 
+        ri.recipe_id = ?`
+    
+    const [ingredients, _getRecipeIngredientsFields] = await db.promise().query(query, [recipe_id]);
+
+    return ingredients;
+}
+
+async function getRecipeDirections(recipe_id) {
+    const query =`
+    SELECT 
+        rd.* 
+    FROM 
+        recipe_directions rd
+    WHERE 
+        rd.recipe_id = ?`
+    
+    const [directions,_getRecipeDirections] = await db.promise().query(query, [recipe_id]);
+
+    return directions;
+}
 async function getRecipeComments(recipe_id) {
     const query = `
     SELECT 
@@ -247,4 +280,4 @@ async function insertRecipeDirections(body) {
     insertRecipeDirectionData();
 }
 
-module.exports = { getRecipe, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections };
+module.exports = { getRecipe, getRecipeIngredients, getRecipeDirections, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections };
