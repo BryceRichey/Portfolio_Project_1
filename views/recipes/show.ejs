@@ -7,6 +7,38 @@
 
 <body>
     <%- include('../partials/header') %>
+    <% const recipeData = recipe[0] %>
+    <div class="container-fluid">
+        <div class="row py-3">
+            <div class="col-5">
+                <div id="recipeheaderTile" class="container text-center py-4">
+                    <h1>
+                        <%=recipeData['r_title']%>
+                    </h1>
+                </div>
+            </div>
+            <div class="col-2">
+                <div id="recipeHeaderRating" class="container text-center py-4">
+                    <% const AVG = parseFloat(recipeData['recipe_rating_avg']) %>
+                        <%= Math.round(AVG) == AVG ? AVG : AVG.toFixed(1) %>
+                        <% for (let index = 0; index < 5; index++) { %>
+                            <i class="bi bi-star<%= index < Math.round(AVG) ? '-fill' : '' %>"></i> 
+                        <% } %>
+
+                        
+
+                        <% if (recipeData['rating_count'] == 0) { %>
+                            No ratings
+                        <% } else if (recipeData['rating_count'] == 1) { %>
+                            <% recipeData['rating_count'] %> Rating
+                        <% } else {%>
+                            <%= recipeData['rating_count'] %> Ratings
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <% const recipe_info = recipe[0] %>
             <div class="container-fluid">
                 <div class="row">
@@ -99,15 +131,16 @@
                         </header>
                         <div class="mx-3 px-5 mb-4">
                             <p class="fw-semibold fs-5 mb-1">Ingredients</p>
-                            <p>
-                                <%= recipe_info['ingredients'] %>
-                            </p>
+                                <% ingredients.forEach(ingredient => { %> 
+                                <p class="mb-1"><%=ingredient.amount%> <%= ingredient.unit%> <%= ingredient.ingredient%></p>
+                                <% }) %>
                         </div>
                         <div class="mx-3 px-5">
                             <p class="fw-semibold fs-5 mb-1">Directions</p>
-                            <p>
-                                <%= recipe_info['directions'] %>
-                            </p>
+                            <% directions.forEach(direction => { %>
+                            <p class="mb-1">Step <%=direction.direction_step%></p>
+                            <p class="ms-3 mb-3"><%=direction.direction%></p>
+                            <% }) %>
                         </div>
                     </div>
                     <div class="col-6">

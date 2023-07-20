@@ -21,20 +21,16 @@ router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
 
-
-
-
 router.get('/recipes/:id', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.id);
+    const ingredients = await recipeQueries.getRecipeIngredients(req.params.id);
+    const directions = await recipeQueries.getRecipeDirections(req.params.id);
     const comments = await recipeQueries.getRecipeComments(req.params.id);
     const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.id, req.user);
     const photos = await recipeQueries.getRecipePhotos(req.params.id);
 
-    res.render('recipes/show', { recipe, comments, commentLikes, photos, dayjs });
-});
-
-
-
+    res.render('recipes/show', { recipe, ingredients, directions, comments, commentLikes, photos, dayjs });
+}); 
 
 router.get('/recipes/:id/edit', (req, res, _next) => {
     db.query(`SELECT * FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
