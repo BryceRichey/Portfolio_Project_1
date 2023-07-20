@@ -12,8 +12,15 @@ const recipeRouter = require('./routes/recipes');
 const usersRouter = require('./routes/users');
 
 const db = require('./config/database');
+const authConfig = require('./config/passport');
 const bodyParser = require('body-parser');
 const sessionStore = new MySQLStore({}, db.promise());
+const dayjs = require('dayjs');
+const relativeTime = require('dayjs/plugin/relativeTime');
+const customParseFormat = require('dayjs/plugin/customParseFormat');
+
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -36,11 +43,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(authConfig.setCurrentUser);
 app.use(recipeRouter);
 app.use(usersRouter);
 
-app.get('/', (req, res, next) => {
-    res.render('home')
+app.get('/', (_req, res, next) => {
+    if (session.path) {
+        res.redirect(session.path);
+        session.path = null;
+    } else {
+        res.render('home')
+    }
 });
 
 const port = 3000;

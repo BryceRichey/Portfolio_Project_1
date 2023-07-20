@@ -3,6 +3,14 @@
 
 <head>
     <%- include('../partials/head') %>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <script>
+        tinymce.init({ 
+            selector: "#description"
+        });
+    </script>
+    
 </head>
 
 <body>
@@ -12,7 +20,7 @@
             <p>We're always looking for new and exciting recipies. Submit yours today!</p>
         </header>
         <br>
-        <form action="/recipes/new" class="container" method="POST">
+        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="r_title" class="form-label">Recipe Title</label>
                 <input type="text" name="r_title" id="r_title" class="form-control" placeholder="Apple Strudel" required>
@@ -21,21 +29,115 @@
                 <label for="num_serv" class="form-label">Number of Servings</label>
                 <input type="number" name="num_serv" id="num_serv" class="form-control" placeholder="12" required>
             </div>
+                <label for="prep_time" class="form-label">Prep Time</label>
+                <input type="number" name="prep_time" id="prep_time" class="form-control" placeholder="30 mins" required>
+            </div>
+                <label for="cook_time" class="form-label">Cook Time</label>
+                <input type="number" name="cook_time" id="cook_time" class="form-control" placeholder="15 mins" required>
+            </div>
             <div class="mt-4">
-                <label for="ingredients" class="form-label">Ingredients</label>
-                <input type="text" name="ingredients" id="ingredients" class="form-control"
+                <label for="description" class="form-label">Description</label>
+                <input type="text" name="description" id="description" class="form-control"
                     placeholder="1 cup whole wheat pastry flour" required>
             </div>
+
             <div class="mt-4">
-                <label for="directions" class="form-label">Directions</label>
-                <input type="text" name="directions" id="directions" class="form-control"
-                    placeholder="Mix sugars together" required>
+                <template id="ingredient-input-template">
+                    <div class="input-group mb-3 ingredient-input-row">
+                        <input type="text" name="amount" placeholder="Amount" class="form-control">
+                        <select class="form-select" name="unit">
+                            <option selected>Select unit</option>
+                            <option value="1">tbsp</option>
+                            <option value="2">tsp</option>
+                            <option value="3">oz</option>
+                            <option value="4">fl. oz</option>
+                            <option value="5">cup</option>
+                        </select>
+                        <input type="text" class="form-control" placeholder="Ingredient" name="ingredient">
+                    </div>
+                </template>
+                <div id="ingredientInputRows"></div>
+                <button class="btn btn-dark mt-2" id="addIngredientBtn">Add ingredient</button>
+                <script>
+                    const addIngredientBtn = document.getElementById('addIngredientBtn');
+                    addIngredientBtn.addEventListener('click', e => {
+                        addIngredientField();
+                        e.preventDefault();
+                    });
+
+                    document.addEventListener('DOMContentLoaded', e => {
+                        addIngredientField();
+                    }, false);
+
+                    function addIngredientField() {
+                        const inputRows = document.getElementsByClassName('ingredient-input-row') || [];
+                        const templateElement = document.getElementById('ingredient-input-template').content;
+                        let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
+
+                        Array.from(ingredientInputRow.children).forEach(input => {
+                            const name = input.name;
+                            input.name = nameString(inputRows.length, name);
+                        });
+
+                        document.getElementById('ingredientInputRows').append(ingredientInputRow);
+                    }
+
+                    function nameString(index, fieldName) {
+                        return `ingredients[${index}][${fieldName}]`;
+                    }
+                </script>
+            </div>
+
+            <div class="mt-4">
+                <template id="direction-step-template">
+                    <label for="direction-input" id="direction-step-row"></label>
+                </template>
+                <template id="direction-input-template" name="direction-input">
+                    <div class="input-group mb-3 direction-input-row">
+                        <input type="text" name="directions" class="form-control">
+                    </div>
+                </template>
+                <div id="directionInputRows"></div>
+                <button class="btn btn-dark mt2" id="addDirectionBtn">Add step</button>
+                <script>
+                    const addDirectionBtn = document.getElementById('addDirectionBtn');
+                    addDirectionBtn.addEventListener('click', e => {
+                        addDirectionField();
+                        e.preventDefault();
+                    });
+
+                    document.addEventListener('DOMContentLoaded', e => {
+                        addDirectionField();
+                    }, false);
+
+                    let stepNumber = 1;
+                    function addDirectionField() {
+                        const inputRows = document.getElementsByClassName('direction-input-row') || [];
+                        const directionInutTemplateElement = document.getElementById('direction-input-template').content;
+                        let directionInputRow = directionInutTemplateElement.cloneNode(true).querySelector('div');
+
+                        Array.from(directionInputRow.children).forEach(input => {
+                            const name = input.name;
+                            input.name = nameString(inputRows.length, name);
+                        });
+
+                        const stepRow = document.getElementById('direction-step-row') || [];
+                        const directionStepTemplateElement = document.getElementById('direction-step-template').content;
+                        let directionStepRow = directionStepTemplateElement.cloneNode(true).querySelector('label');
+                        directionStepRow.innerText = `Step ${stepNumber++}`
+
+                        document.getElementById('directionInputRows').append(directionStepRow, directionInputRow);
+                    }
+
+                    function nameString(index, fieldName) {
+                        return `directions[${index}][${fieldName}]`;
+                    }
+                </script>
             </div>
             <div class="input-group mt-4">
-                <input type="file" name="photos" id="photos" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
             </div>
-            <input type="submit" id="submit" value="Submit" class="btn btn-dark mt-4">
-            
+            <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
         </form>
         <%- include('../partials/footer') %>
 </body>
