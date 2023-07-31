@@ -1,5 +1,5 @@
+/* || CSS RESET */
 html,
-body,
 div,
 span,
 applet,
@@ -126,6 +126,253 @@ table {
 }
 
 
+/* || GENERAL STYLES */
+body {
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+h1 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 4.25rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 4.5rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem 3rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+h2 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 2.625rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 3rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+h3 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1.625rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 3rem;
+    display: inline-flex;
+    padding-top: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+h4 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 1.5rem;
+    display: inline-flex;
+    padding-top: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-1 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1.625rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 3rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-2 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 1.5rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-bold-1 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1.625rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 3rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-bold-2 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 1.5rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-exta-bold-1 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1.625rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 3rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.body-exta-bold-2 {
+    color: var(--blacks-900);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 1.5rem;
+    display: inline-flex;
+    padding: 1.5rem 0rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.button-1-solid {
+    display: inline-flex;
+    height: 3.5rem;
+    min-height: 3.5rem;
+    padding: 1rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    background: var(--neutrals-900);
+    color: var(--neutrals-000, #FFF);
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 3rem;
+    text-decoration: none;
+}
+
+.button-2-solid {
+    display: inline-flex;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    background: var(--neutrals-900);
+    color: var(--neutrals-000, #FFF);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 1.5rem;
+    text-decoration: none;
+}
+
+.button-1-solid-grey {
+    display: inline-flex;
+    height: 3.5rem;
+    min-height: 3.5rem;
+    padding: 1rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    background: var(--greys-000);
+    color: #636366;
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 3rem;
+    text-decoration: none;
+}
+
+.button-2-solid-grey {
+    display: inline-flex;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    background: var(--greys-000);
+    color: #636366;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 1.5rem;
+    text-decoration: none;
+}
+
+.button-1-outline {
+    display: inline-flex;
+    min-height: 3.5rem;
+    padding: 1rem 1.5rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border: 2px solid var(--neutrals-900);
+    color: var(--neutrals-900);
+    font-family: var(--font-family);
+    font-size: 1.5rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 3rem;
+    text-decoration: none;
+}
+
+.button-2-outline {
+    display: flex;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border: 2px solid var(--neutrals-900);
+    color: var(--neutrals-900);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 900;
+    line-height: 1.5rem;
+    text-decoration: none;
+}
+
+
+/* || UTILITIES */
+
+
+/* || VARIABLES */
 :root {
     --neutrals-100: #F4F1ED;
     --neutrals-300: #E9D8C3;
@@ -148,341 +395,815 @@ table {
     --font-style: normal;
 }
 
-@media (min-width: 1200px) {
-    h1 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 4.25rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 4.5rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem 3rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
 
-    h2 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 2.625rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 3rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+/* || SITEDWIDE */
+.main-header {
+    display: flex;
+    height: 3rem;
+    align-items: flex-start;
+    gap: 1rem;
+    border-radius: 1rem;
+    margin: 1.5rem 1.5rem 1rem 1.5rem;
+}
 
-    h3 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1.625rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 3rem;
-        display: inline-flex;
-        padding-top: 24px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.logo-wrapper {
+    display: flex;
+    padding: 0rem 2.5rem 0rem 2.5rem;
+    height: inherit;
+    gap: inherit;
+    border-radius: inherit;
+    background-color: var(--greys-000);
+}
 
-    h4 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 1.5rem;
-        display: inline-flex;
-        padding-top: 24px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.logo-wrapper img {
+    padding: 0.5rem 0.25rem 0.5rem 0rem;
+    height: inherit;
+}
 
-    .body-1 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1.625rem;
-        font-style: var(--font-style);
-        font-weight: 500;
-        line-height: 3rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.logo-wrapper span {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 600;
+    font-size: 2.5rem;
+    padding: 0rem 0rem 0.2rem 0.25rem;
+    height: inherit;
+}
 
-    .body-2 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 500;
-        line-height: 1.5rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.main-nav {
+    display: flex;
+    align-items: flex-start;
+    border-radius: inherit;
+    background: var(--greys-000);
+}
 
-    .body-bold-1 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1.625rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 3rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.nav-list {
+    display: flex;
+    gap: 1rem;
+    height: inherit;
+    align-items: center;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
 
-    .body-bold-2 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 1.5rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.nav-list li {
+    display: inline;
+}
 
-    .body-exta-bold-1 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1.625rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 3rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.nav-list li:nth-child(4) {
+    min-width: 133.75px;
+}
 
-    .body-exta-bold-2 {
-        color: var(--blacks-900);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 1.5rem;
-        display: inline-flex;
-        padding: 1.5rem 0rem;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.nav-list a {
+    display: flex;
+    height: 3rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 700;
+    line-height: 1.5rem;
+    border-radius: 1rem;
+}
 
-    .button-1-solid {
-        display: inline-flex;
-        height: 3.5rem;
-        min-height: 3.5rem;
-        padding: 1rem 1.5rem;
-        justify-content: center;
-        align-items: center;
-        flex-shrink: 0;
-        border-radius: 1rem;
-        background: var(--neutrals-900);
-        color: var(--neutrals-000, #FFF);
-        font-family: var(--font-family);
-        font-size: 1.5rem;
-        font-style: var(--font-style);
-        font-weight: 900;
-        line-height: 3rem;
-        text-decoration: none;
-    }
+.active-link {
+    color: #FFF;
+    background-color: var(--neutrals-900);
+}
 
-    .button-2-solid {
-        display: inline-flex;
-        min-height: 3rem;
-        padding: 0.5rem 1rem;
-        justify-content: center;
-        align-items: center;
-        border-radius: 1rem;
-        background: var(--neutrals-900);
-        color: var(--neutrals-000, #FFF);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 900;
-        line-height: 1.5rem;
-        text-decoration: none;
-    }
+.inactive-link {
+    color: var(--blacks-900);
+}
 
-    .button-1-outline {
-        display: inline-flex;
-        min-height: 3.5rem;
-        padding: 1rem 1.5rem;
-        justify-content: center;
-        align-items: center;
-        border-radius: 1rem;
-        border: 2px solid var(--neutrals-900);
-        color: var(--neutrals-900);
-        font-family: var(--font-family);
-        font-size: 1.5rem;
-        font-style: var(--font-style);
-        font-weight: 900;
-        line-height: 3rem;
-        text-decoration: none;
-    }
+.main-search {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 150px;
+}
 
-    .button-2-outline {
-        display: inline-flex;
-        min-height: 3rem;
-        padding: 0.5rem 1rem;
-        justify-content: center;
-        align-items: center;
-        border-radius: 1rem;
-        border: 2px solid var(--neutrals-900);
-        color: var(--neutrals-900);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 900;
-        line-height: 1.5rem;
-        text-decoration: none;
-    }
+.main-search-icon {
+    color: var(--greys-900);
+}
 
-    .main-head {
-        display: flex;
-        height: 3rem;
-        align-items: flex-start;
-        gap: 1rem;
-        margin: 1.5rem;
+.main-search input {
+    background: var(--greys-000) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238E8E93' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 1rem 50%;
+    border-radius: 1rem;
+    height: 3rem;
+    min-width: inherit;
+    padding-left: 2.5rem;
+    border: 2px solid var(--greys-300);
+    color: var(--blacks-900);
+    text-decoration: none;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5rem;
+}
 
-    }
+.search-form {
+    display: flex;
+    flex: 1 1 0;
+    min-width: inherit;
+}
 
-    .logo-wrapper {
-        display: flex;
-        padding: 0rem 2.5rem 0rem 2.5rem;
-        max-height: 3rem;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        border-radius: 1rem;
-        background-color: var(--greys-000);
-    }
+.search-form input {
+    display: flex;
+    flex: 1 1 0;
+}
 
-    .logo-wrapper img {
-        padding: 0.5rem 0.25rem 0.5rem 0rem;
-        max-height: 48px;
-    }
+.login-out-btn {
+    min-width: 79.2667px;
+}
 
-    .logo-wrapper h2 {
-        padding: 0.1rem 0rem 0rem 0rem;
-        max-height: 48px;
-    }
+.signup-btn {
+    min-width: 87.1167px;
+}
 
-    .main-nav {
-        display: flex;
-        align-items: flex-start;
-        border-radius: 1rem;
-        background: var(--greys-000);
-    }
-
+@media (max-width: 1199px) {
     .nav-list {
-        display: flex;
-        gap: 1rem;
-        height: 3rem;
-        align-items: center;
-    }
-
-    .nav-list li {
-        display: inline;
-    }
-
-    .nav-list a {
-        display: flex;
-        height: 3rem;
-        padding: 0.5rem 1rem;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 700;
-        line-height: 1.5rem;
-        border-radius: 1rem;
-    }
-
-    .active-link {
-        color: #FFF;
-        background-color: var(--neutrals-900);
-    }
-
-    .inactive-link {
-        color: var(--blacks-900);
-    }
-
-    .main-search {
-        display: flex;
-        flex: 1 1 0;
-    }
-
-    .main-search-icon {
-        color: var(--greys-900);
-    }
-
-    .main-search input {
-        background: var(--greys-000) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238E8E93' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 1rem 50%;
-        border-radius: 1rem;
-        height: 3rem;
-        padding-left: 2.5rem;
-        border: 2px solid var(--greys-300);
-        color: var(--blacks-900);
-        text-decoration: none;
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5rem;
-    }
-
-    .search-form {
-        display: flex;
-        flex: 1 1 0;
-    }
-
-    .search-form input {
-        display: flex;
-        flex: 1 1 0;
+        display: none;
     }
 
     .login-out-btn {
-        color: var(--neutrals-900);
-        background-color: #FFF;
-        border-radius: 1rem;
-        height: 3rem;
-        border: 2px solid var(--neutrals-900);
-        text-decoration: none;
-        font-family: 'Lato', sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-        padding: 1rem 1rem;
+        display: none;
     }
 
-    .signup-account-btn {
-        color: #FFF;
-        background-color: #F1A24C;
-        border-radius: 1rem;
-        border: none;
-        height: 3rem;
-        text-decoration: none;
-        font-family: 'Lato', sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-        padding: 1rem 1rem;
+    .signup-btn {
+        display: none;
     }
+}
 
+/* || HOME PAGE STYLES  */
+@media (min-width: 1200px) {
     .wrapper {
         display: grid;
         grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(16, 1fr);
         column-gap: 16px;
+        row-gap: 16px;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        height: 675px;
+    }
+
+    .home-box-1 {
+        grid-area: 1 / 1 / 17 / 7;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220629/BYTE%20branding/food_box_1b_fjhxdd.png") no-repeat left 475px/ 200px, url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220549/BYTE%20branding/food_box_1a_lfldc5.png") no-repeat top -75px right -175px / 500px, linear-gradient(225deg, rgba(255, 255, 255, 0.20) 0%, rgba(241, 162, 76, 0.20) 39.58%, rgba(241, 162, 76, 0.20) 65.63%, rgba(255, 255, 255, 0.20) 100%), var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .home-box-1 p:nth-child(1) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 8rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 5rem 0% 10% 7%;
+    }
+
+    .home-box-1 p:nth-child(2) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 8rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 5rem 0% 10% 14%;
+
+    }
+
+    .home-box-1 p:nth-child(3) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 8rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 5rem 0% 10% 21%;
+    }
+
+    .home-box-1 div {
+        display: flex;
+        justify-content: end;
+        margin: 8rem 3rem 0rem 0rem;
+    }
+
+    .home-box-1 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23636366' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-2 {
+        grid-area: 1 / 7 / 8 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/e_brightness:10,q_97:444/v1690218808/BYTE%20branding/food_box_2_j3dzkb.png") no-repeat right / 150px, var(--greys-000);
+
+    }
+
+    .home-box-2 p {
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 405px;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 4rem;
+    }
+
+    .home-box-2 div {
+        margin: 2.5rem 0rem 0rem 3rem;
+        display: block;
+    }
+
+    .home-box-2 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23fff' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-3 {
+        grid-area: 8 / 7 / 17 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_2000,q_100:420/a_300/v1690219314/BYTE%20branding/Food_fidprz.png") no-repeat 125% -75% / 450px, url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_250,o_73,q_100:444/v1689972153/BYTE%20branding/brush_stroke_box_3_nvg0k5.svg") no-repeat 65% 100px/ 350px, var(--neutrals-100);
+    }
+
+    .home-box-3 p:nth-child(1) {
+        margin: 2rem 2.5rem 0rem 3rem;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 4rem;
+    }
+
+    .home-box-3 p:nth-child(2) {
+        color: var(--blacks-900);
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 405px;
+        font-family: var(--font-family);
+        font-size: 1.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 2rem;
+    }
+
+    .main-footer {
+        display: flex;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        color: var(--blacks-900, #1C1C1E);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(16, 1fr);
+        column-gap: 16px;
+        row-gap: 16px;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        height: 675px;
+    }
+
+    .home-box-1 {
+        grid-area: 1 / 1 / 11 / 13;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220629/BYTE%20branding/food_box_1b_fjhxdd.png") no-repeat bottom -500px left / 500px, url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220549/BYTE%20branding/food_box_1a_lfldc5.png") no-repeat top -350px right -275px / 900px, linear-gradient(225deg, rgba(255, 255, 255, 0.20) 0%, rgba(241, 162, 76, 0.20) 39.58%, rgba(241, 162, 76, 0.20) 65.63%, rgba(255, 255, 255, 0.20) 100%), var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .home-box-1 p:nth-child(1) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 6rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 3rem 0 0.5rem 5%;
+    }
+
+    .home-box-1 p:nth-child(2) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 6rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0.5rem 30%;
+    }
+
+    .home-box-1 p:nth-child(3) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 6rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0 57%;
+    }
+
+    .home-box-1 div {
+        display: flex;
+        justify-content: end;
+        margin: 3rem 3rem 0rem 0rem;
+    }
+
+    .home-box-1 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23636366' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-2 {
+        grid-area: 11 / 1 / 17 / 7;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/e_brightness:10,q_97:444/v1690218808/BYTE%20branding/food_box_2_j3dzkb.png") no-repeat right / 125px, var(--greys-000);
+
+    }
+
+    .home-box-2 p {
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 300px;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-2 div {
+        margin: 2.5rem 0rem 0rem 3rem;
+        display: block;
+    }
+
+    .home-box-2 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23fff' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-3 {
+        grid-area: 11 / 7 / 17 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_2000,q_100:420/a_300/v1690219314/BYTE%20branding/Food_fidprz.png") no-repeat 125% -20% / 450px, url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_250,o_73,q_100:444/v1689972153/BYTE%20branding/brush_stroke_box_3_nvg0k5.svg") no-repeat 65% 75px/ 350px, var(--neutrals-100);
+    }
+
+    .home-box-3 p:nth-child(1) {
+        margin: 2rem 2.5rem 0rem 3rem;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-3 p:nth-child(2) {
+        color: var(--blacks-900);
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 405px;
+        font-family: var(--font-family);
+        font-size: 1.25rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 1.5rem;
+    }
+
+    .main-footer {
+        display: flex;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        color: var(--blacks-900, #1C1C1E);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(19, 1fr);
+        column-gap: 16px;
+        row-gap: 16px;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        height: 825px;
+    }
+
+    .home-box-1 {
+        grid-area: 1 / 1 / 8 / 13;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220629/BYTE%20branding/food_box_1b_fjhxdd.png") no-repeat bottom -300px left / 300px, url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220549/BYTE%20branding/food_box_1a_lfldc5.png") no-repeat top -350px right -275px / 900px, linear-gradient(225deg, rgba(255, 255, 255, 0.20) 0%, rgba(241, 162, 76, 0.20) 39.58%, rgba(241, 162, 76, 0.20) 65.63%, rgba(255, 255, 255, 0.20) 100%), var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .home-box-1 p:nth-child(1) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 2rem 0 0.5rem 5%;
+    }
+
+    .home-box-1 p:nth-child(2) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0.5rem 25%;
+    }
+
+    .home-box-1 p:nth-child(3) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0 48%;
+    }
+
+    .home-box-1 div {
+        display: flex;
+        justify-content: end;
+        margin: -3rem 3rem 0rem 0rem;
+    }
+
+    .home-box-1 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23636366' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-2 {
+        grid-area: 8 / 1 / 14 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/e_brightness:10,q_97:444/v1690218808/BYTE%20branding/food_box_2_j3dzkb.png") no-repeat right / 175px, var(--greys-000);
+
+    }
+
+    .home-box-2 p {
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 300px;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-2 div {
+        margin: 2.5rem 0rem 0rem 3rem;
+        display: block;
+    }
+
+    .home-box-2 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23fff' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-3 {
+        grid-area: 14 / 1 / 20 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_2000,q_100:420/a_300/v1690219314/BYTE%20branding/Food_fidprz.png") no-repeat -10% 30% / 450px, url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_250,o_73,q_100:444/v1689972153/BYTE%20branding/brush_stroke_box_3_nvg0k5.svg") no-repeat 0% 5px/ 350px, var(--neutrals-100);
+    }
+
+    .home-box-3 p:nth-child(1) {
+        direction: rtl;
+        margin: 2rem 2.5rem 0rem 3rem;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-3 p:nth-child(2) {
+        direction: rtl;
+        color: var(--blacks-900);
+        margin: 2rem 3rem 0rem auto;
+        max-width: 325px;
+        font-family: var(--font-family);
+        font-size: 1.25rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 1.5rem;
+    }
+
+    .main-footer {
+        display: flex;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        color: var(--blacks-900, #1C1C1E);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
+    }
+}
+
+@media (min-width: 567px) and (max-width: 767px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(19, 1fr);
+        column-gap: 16px;
+        row-gap: 16px;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        height: 825px;
+    }
+
+    .home-box-1 {
+        grid-area: 1 / 1 / 8 / 13;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220629/BYTE%20branding/food_box_1b_fjhxdd.png") no-repeat bottom -140px left / 200px, url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220549/BYTE%20branding/food_box_1a_lfldc5.png") no-repeat top -75px right -200px / 425px, linear-gradient(225deg, rgba(255, 255, 255, 0.20) 0%, rgba(241, 162, 76, 0.20) 39.58%, rgba(241, 162, 76, 0.20) 65.63%, rgba(255, 255, 255, 0.20) 100%), var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .home-box-1 p:nth-child(1) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 1rem 0 -0.5rem 5%;
+    }
+
+    .home-box-1 p:nth-child(2) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 -0.5rem 25%;
+    }
+
+    .home-box-1 p:nth-child(3) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0 48%;
+    }
+
+    .home-box-1 div {
+        display: flex;
+        justify-content: end;
+        margin: 0.5rem 1.5rem 0rem 0rem;
+    }
+
+    .home-box-1 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23636366' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-2 {
+        grid-area: 8 / 1 / 14 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/e_brightness:10,q_97:444/v1690218808/BYTE%20branding/food_box_2_j3dzkb.png") no-repeat right / 175px, var(--greys-000);
+
+    }
+
+    .home-box-2 p {
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 300px;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-2 div {
+        margin: 2.5rem 0rem 0rem 3rem;
+        display: block;
+    }
+
+    .home-box-2 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23fff' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-3 {
+        grid-area: 14 / 1 / 20 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_2000,q_100:420/a_300/v1690219314/BYTE%20branding/Food_fidprz.png") no-repeat 60% -175% / 300px, url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_250,o_73,q_100:444/v1689972153/BYTE%20branding/brush_stroke_box_3_nvg0k5.svg") no-repeat 40% -60%/ 350px, var(--neutrals-100);
+    }
+
+    .home-box-3 p:nth-child(1) {
+        text-align: center;
+        margin: 2rem 2.5rem 0rem 3rem;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2.5rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-3 p:nth-child(2) {
+        text-align: center;
+        color: var(--blacks-900);
+        margin: 2rem 3rem 0rem 3rem;
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 1.5rem;
+    }
+
+    .main-footer {
+        display: flex;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        color: var(--blacks-900, #1C1C1E);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
+    }
+}
+
+@media (max-width: 566px) {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(19, 1fr);
+        column-gap: 16px;
+        row-gap: 16px;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        height: 825px;
+    }
+
+    .home-box-1 {
+        grid-area: 1 / 1 / 8 / 13;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220629/BYTE%20branding/food_box_1b_fjhxdd.png") no-repeat bottom -140px left / 200px, url("https://res.cloudinary.com/djq3aojia/image/upload/q_100:444/v1690220549/BYTE%20branding/food_box_1a_lfldc5.png") no-repeat top -75px right -200px / 425px, linear-gradient(225deg, rgba(255, 255, 255, 0.20) 0%, rgba(241, 162, 76, 0.20) 39.58%, rgba(241, 162, 76, 0.20) 65.63%, rgba(255, 255, 255, 0.20) 100%), var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .home-box-1 p:nth-child(1) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 1rem 0 -0.5rem 5%;
+    }
+
+    .home-box-1 p:nth-child(2) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 -0.5rem 25%;
+    }
+
+    .home-box-1 p:nth-child(3) {
+        color: var(--neutrals-000, #FFF);
+        font-family: var(--font-family);
+        font-size: 3.5rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 4.5rem;
+        margin: 0 0 0 48%;
+    }
+
+    .home-box-1 div {
+        display: flex;
+        justify-content: end;
+        margin: 0.5rem 1.5rem 0rem 0rem;
+    }
+
+    .home-box-1 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23636366' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-2 {
+        grid-area: 8 / 1 / 14 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/e_brightness:10,q_97:444/v1690218808/BYTE%20branding/food_box_2_j3dzkb.png") no-repeat right / 125px, var(--greys-000);
+
+    }
+
+    .home-box-2 p {
+        margin: 2rem 0rem 0rem 3rem;
+        max-width: 250px;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-2 div {
+        margin: 2.5rem 0rem 0rem 3rem;
+        display: block;
+    }
+
+    .home-box-2 div>a::after {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23fff' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+        margin-left: 0.5rem;
+        align-self: end;
+    }
+
+    .home-box-3 {
+        grid-area: 14 / 1 / 20 / 13;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_2000,q_100:420/a_300/v1690219314/BYTE%20branding/Food_fidprz.png") no-repeat 60% -175% / 300px, url("https://res.cloudinary.com/djq3aojia/image/upload/c_scale,h_250,o_73,q_100:444/v1689972153/BYTE%20branding/brush_stroke_box_3_nvg0k5.svg") no-repeat 40% -60%/ 350px, var(--neutrals-100);
+    }
+
+    .home-box-3 p:nth-child(1) {
+        text-align: center;
+        margin: 2rem 2.5rem 0rem 3rem;
+        color: var(--blacks-900);
+        font-family: var(--font-family);
+        font-size: 2rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+    }
+
+    .home-box-3 p:nth-child(2) {
+        text-align: center;
+        color: var(--blacks-900);
+        margin: 1rem 3rem 0rem 3rem;
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 900;
+        line-height: 1.5rem;
+    }
+
+    .main-footer {
+        display: flex;
+        height: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 1.5rem 1.5rem 1.5rem;
+        color: var(--blacks-900, #1C1C1E);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-style: var(--font-style);
+        font-weight: 500;
+        line-height: 1.5rem;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
     }
 }
