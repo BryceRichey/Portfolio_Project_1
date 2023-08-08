@@ -35,6 +35,63 @@ function validateNotBlank(name, _value) {
         element.classList.remove('normal-border');
         element.classList.add('invalid-border');
         return;
+    } else {
+        element.classList.remove('normal-border');
+        element.classList.add('valid-border');
+    }
+}
+
+
+const email = document.getElementById('email');
+email.addEventListener('blur', e => {
+    validateUniqueness(email, e.target.value)
+});
+
+async function validateUniqueness(email, value) {
+    const validElement = email.parentElement.querySelector('.valid-message');
+    const invalidElement = email.parentElement.querySelector('.invalid-message');
+    if (email.value.length < 1) {
+        const errorMsg = 'Email cannot be blank';
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = errorMsg;
+        email.classList.remove('normal-border');
+        email.classList.add('invalid-border');
+    } else {
+        const regex = /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/gm;
+        const regexMatch = value.match(regex);
+        const validElement = email.parentElement.querySelector('.valid-message');
+        const invalidElement = email.parentElement.querySelector('.invalid-message');
+
+        if (regexMatch === null) {
+            email.classList.remove('normal-border');
+            email.classList.add('invalid-border');
+            invalidElement.innerHTML = "Email not valid"
+        } else {
+            let data = {}
+            data[email] = value;
+
+            const urlParams = new URLSearchParams(Object.entries(data));
+
+            validElement.innerHTML = '';
+            invalidElement.innerHTML = '';
+
+            await fetch(`/sign_up/user/validations?${urlParams}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    let isEmailTaken = Object.values(data)[0]
+                    if (isEmailTaken === 'false') {
+                        const errorMsg = 'Email is already in use';
+                        validElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.add('invalid-border');
+                        invalidElement.innerHTML = errorMsg;
+                    } else {
+                        invalidElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.add('valid-border');
+                    }
+                });
+        }
     }
 }
 
@@ -64,55 +121,11 @@ function validatePasswordPattern(password, value) {
         if (regexText === false) {
             password.classList.remove('normal-border');
             password.classList.add('invalid-border');
-            invalidElement.innerHTML = "Password must contains:<br><br>• 8-20 characters <br>• A captialized character <br>• A number <br>• A symbol"
+            invalidElement.innerHTML = "Password must contains:<br><br>• 8-20 characters <br>• An uppercase letter <br>• An lowercase letter <br> • A number <br>• A symbol"
         } else {
             password.classList.remove('normal-border');
             password.classList.add('valid-border');
             validElement.innerHTML = "Password looks good";
         }
-    }
-}
-
-
-const email = document.getElementById('email');
-email.addEventListener('blur', e => {
-    validateUniqueness(email, e.target.value)
-});
-
-async function validateUniqueness(email, value) {
-    const validElement = email.parentElement.querySelector('.valid-message');
-    const invalidElement = email.parentElement.querySelector('.invalid-message');
-    if (email.value.length < 1) {
-        const errorMsg = 'Email cannot be blank';
-        validElement.innerHTML = '';
-        invalidElement.innerHTML = errorMsg;
-        email.classList.remove('normal-border');
-        email.classList.add('invalid-border');
-    } else {
-        let data = {}
-        data[email] = value;
-
-        const urlParams = new URLSearchParams(Object.entries(data));
-
-        validElement.innerHTML = '';
-        invalidElement.innerHTML = '';
-
-        await fetch(`/sign_up/user/validations?${urlParams}`)
-            .then((response) => response.json())
-            .then((data) => {
-                let isEmailTaken = Object.values(data)[0]
-                if (isEmailTaken === 'false') {
-                    const errorMsg = 'Email is already in use';
-                    validElement.innerHTML = '';
-                    email.classList.remove('normal-border');
-                    email.classList.add('invalid-border');
-                    invalidElement.innerHTML = errorMsg;
-                } else {
-                    invalidElement.innerHTML = '';
-                    email.classList.remove('normal-border');
-                    email.classList.add('valid-border');
-                    validElement.innerHTML = 'Available';
-                }
-            });
     }
 }
