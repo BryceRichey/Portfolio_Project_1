@@ -6,16 +6,55 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-5">
-                <header class="container text-centered mt-5 mx-3 px-5">
-                    <h2 class="mb-4">BYTE</h2>
-                    <p class="fs-2 fw-semibold mb-0">Create an account</p>
-                    <p>Let's get cooking today!</p>
-                </header>
-                <div class="mt-5 mx-3 px-5">
-                    <form action="sign_up" id="createAccount" method="POST">
+    <div class="login-wrapper">
+        <section class="auth-content-sidebar">
+            <main>
+                <a class="login-back-button" href="/">Back</a>
+                <div class="auth-content">
+                    <h2>Create an <span>account</span></h2>
+                    <form action="sign_up" id="create-account" method="POST">
+                        <div class="auth-input-two-fields">
+                            <div class="auth-input-field">
+                                <label for="first-name">First name</label>
+                                <input type="text" class="normal-border" id="first-name" name="firstName">
+                                <div class="invalid-message"></div>
+                            </div>
+                            <div class="auth-input-field">
+                                <label for="last-name">Last name</label>
+                                <input type="text" class="normal-border" id="last-name" name="lastName">
+                                <div class="invalid-message"></div>
+                            </div>
+                        </div>
+                        <div class="auth-input-field">
+                            <label for="email">Email</label>
+                            <input type="email" class="normal-border" id="email" name="email">
+                            <div class="valid-message"></div>
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-input-field">
+                            <label for="password">Password</label>
+                            <input type="password" class="normal-border" id="password" name="password">
+                            <div class="valid-message"></div>
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-button">
+                            <button type="submit" class="button-2-solid">Create account</button>
+                        </div>
+                    </form>
+                    <p>Already have an account?
+                        <a href="/login">Log In</a>
+                    </p>
+                </div>
+            </main>
+        </section>
+        <section class="auth-sidebar"></section>
+    </div>
+    <script src="/javascripts/signup_validations.js" type="text/javascript"></script>
+</body>
+
+</html>
+
+                    <!-- <form action="sign_up" id="createAccount" method="POST">
                         <div class="d-flex gap-3">
                             <div class="form-floating flex-grow-1">
                                 <input type="text" class="form-control" id="f_name" name="f_name" placeholder="John">
@@ -28,7 +67,6 @@
                                 <div class="invalid-feedback"></div>
                             </div>
                         </div>
-
                         <div class="form-floating mt-3">
                             <input type="text" class="form-control" id="username" name="username"
                                 placeholder="John_Doe">
@@ -68,8 +106,4 @@
             </div>
             <div class="col-7 vh-100 bg-secondary-subtle rounded-start-5"></div>
         </div>
-    </div>
-    <script src="/javascripts/signup_validations.js" type="text/javascript"></script>
-</body>
-
-</html>
+    </div> -->

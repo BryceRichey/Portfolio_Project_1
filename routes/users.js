@@ -4,59 +4,43 @@ const db = require('../config/database');
 const passport = require('../config/passport');
 const session = require('express-session');
 
-router.get('/sign_up', (req, res, next) => {
+router.get('/sign_up', (_req, res, _next) => {
     res.render('users/sign_up.ejs')
 });
 
 router.get('/sign_up/user/validations', (req, res, _next) => {
-    const username = req.query.username
-    const email = req.query.email
-
-    if (username) {
-        db.query(`SELECT username FROM users WHERE username = '${username}'`, (err, data) => {
-            if (!(data && data.length) || err) {
-                res.json({
-                    username: true
-                }).end();
-            } else {
-                res.json({
-                    username: false
-                }).end();
-            }
-        });
-    } else if (email) {
-        db.query(`SELECT email FROM users WHERE email = '${email}'`, (err, data) => {
-            if (!(data && data.length) || err) {
-                res.json({
-                    email: true
-                }).end();
-            } else {
-                res.json({
-                    email: false
-                }).end();
-            }
-        });
-    }
+    const email = Object.values(req.query)[0]
+    db.query(`SELECT email FROM users WHERE email = "${email}"`, (err, data) => {
+        if (!(data && data.length) || err) {
+            res.json({
+                email: 'true'
+            }).end();
+        } else {
+            res.json({
+                email: 'false'
+            }).end();
+        }
+    });
 });
 
-router.post('/sign_up', [passport.userExists, (req, res, next) => {
+router.post('/sign_up', [passport.userExists, (req, res, _next) => {
     sign_up = {
-        f_name: req.body.f_name,
-        l_name: req.body.l_name,
+        f_name: req.body.firstName,
+        l_name: req.body.lastName,
         username: req.body.username,
         email: req.body.email
     }
     const saltHash = genPassword(req.body.password);
     const salt = saltHash.salt;
     const hash = saltHash.hash;
-    db.query('INSERT INTO users(f_name, l_name, username, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(sign_up), hash, salt], (err, data, fields) => {
+    db.query('INSERT INTO users(f_name, l_name, username, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(sign_up), hash, salt], (err, _data, _fields) => {
         if (err) {
             console.log(err);
         } else {
-            console.log('Successfully created an account')
+            res.redirect('/');
         }
     });
-    res.redirect('/login')
+    res.redirect('/')
 }]);
 
 

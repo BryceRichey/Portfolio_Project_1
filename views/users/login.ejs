@@ -6,36 +6,33 @@
 </head>
 
 <body>
-    <%- include('../partials/header') %>
-        <header class="container text-centered mt-5">
-            <h1>Login</h1>
-            <p>Thanks for joining us today</p>
-        </header>
-        <br>
-        <div class="container">
-            <div class="row justify-content-evenly">
-                <div class="col-4">
+    <div class="login-wrapper">
+        <section class="auth-content-sidebar">
+            <main>
+                <a class="login-back-button" href="/">Back</a>
+                <div class="auth-content">
+                    <h2>Welcome <span>Back</span></h2>
                     <form action="/login" method="POST">
-                        <div>
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="auth-input-field">
+                            <label for="email" class="">Email</label>
+                            <input type="email" id="email" name="email" required>
                         </div>
-                        <div class="mt-4">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="auth-input-field">
+                            <label for="password" class="">Password</label>
+                            <input type="password" id="password" name="password" required>
                         </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-dark mt-4">Login</button>
+                        <div class="auth-button">
+                            <button type="submit" class="button-2-solid">Log In</button>
                         </div>
                     </form>
+                    <p>Don't have an account?
+                        <a href="/sign_up">Sign Up</a>
+                    </p>
                 </div>
-                <div class="col-4 text-center my-auto">
-                    <p>Don't have an account?</p>
-                    <a class="btn btn-dark" href="/sign_up" role="button">Sign Up</a>
-                </div>
-            </div>
-        </div>
-        <%- include('../partials/footer') %>
+            </main>
+        </section>
+        <section class="auth-sidebar"></section>
+    </div>
 </body>
 
 </html>
