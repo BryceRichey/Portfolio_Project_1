@@ -75,7 +75,7 @@ async function validateUniqueness(email, value) {
             validElement.innerHTML = '';
             invalidElement.innerHTML = '';
 
-            await fetch(`/sign_up/user/validations?${urlParams}`)
+            await fetch(`/signup/user/validations?${urlParams}`)
                 .then((response) => response.json())
                 .then((data) => {
                     let isEmailTaken = Object.values(data)[0]
