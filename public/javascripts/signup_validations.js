@@ -3,6 +3,7 @@ const createAccount = document.querySelector('#create-account');
 createAccount.addEventListener('submit', e => {
     e.preventDefault();
     validateAccount();
+    createAccount.submit();
 });
 
 function validateAccount() {

@@ -1220,27 +1220,130 @@ h4 {
 @media (max-width: 566px) {}
 
 /* || LOGIN & SIGNUP PAGE STYLES  */
-@media (min-width: 567px) {
-    .login-wrapper {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(16, 1fr);
-        column-gap: 16px;
-        row-gap: 16px;
-        margin: 1.5rem 1.5rem 1rem 1.5rem;
-        height: 745px;
-    }
+.login-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 1.5rem 1.5rem 1rem 1.5rem;
+    height: 745px;
+}
 
-    .login-back-button {
-        color: #AEAEB2;
-        text-decoration: none;
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 400;
-        line-height: 1.5rem;
-    }
+.login-back-button {
+    color: #AEAEB2;
+    text-decoration: none;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 400;
+    line-height: 1.5rem;
+}
 
+.auth-content {
+    margin-top: 1.5rem;
+}
+
+.auth-content h2>span {
+    color: #F1A24C;
+}
+
+.auth-input-two-fields {
+    display: inline-flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.auth-input-two-fields .auth-input-field {
+    flex: 1 1 0;
+}
+
+.auth-input-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.auth-input-field label {
+    margin-bottom: 0.25rem;
+    color: var(--blacks-500, #636366);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.auth-input-field input {
+    height: 3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+}
+
+.normal-border {
+    border: 2px solid var(--greys-300, #D1D1D6);
+}
+
+.valid-border {
+    border: 2px solid green;
+}
+
+.invalid-border {
+    border: 2px solid red;
+}
+
+.invalid-message {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 1rem;
+    color: red;
+}
+
+.valid-message {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 1rem;
+    color: green;
+}
+
+.auth-button {
+    display: flex;
+    margin-top: 2rem;
+}
+
+.auth-button button {
+    border: none;
+    flex: 1 1 auto;
+}
+
+.auth-content p {
+    text-align: center;
+    margin-top: 5rem;
+    color: #000;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.auth-content p>a {
+    color: #000;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 1.5rem;
+    text-decoration-line: underline;
+}
+
+.auth-sidebar {
+    grid-area: 1 / 2 / 17 / 4;
+    border-radius: 1rem;
+    background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat center center / 200px, url("https://res.cloudinary.com/djq3aojia/image/upload/v1691013217/BYTE%20branding/auth-img_q854aw.jpg") no-repeat center center;
+}
+
+@media (min-width: 992px) {
     .auth-content-sidebar {
         grid-area: 1 / 1 / 17 / 2;
         border: 4px solid #F8F8F8;
@@ -1249,110 +1352,6 @@ h4 {
         background-color: #F8F8F8;
     }
 
-    .auth-content {
-        margin-top: 1.5rem;
-    }
-
-    .auth-content h2>span {
-        color: #F1A24C;
-    }
-
-    .auth-input-two-fields {
-        display: inline-flex;
-        gap: 1rem;
-    }
-
-    .auth-input-two-fields .auth-input-field {
-        max-width: 175px;
-    }
-
-    .auth-input-field {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1rem;
-    }
-
-    .auth-input-field label {
-        margin-bottom: 0.25rem;
-        color: var(--blacks-500, #636366);
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 500;
-        line-height: 1.5rem;
-    }
-
-    .auth-input-field input {
-        height: 3rem;
-        padding: 0.5rem 1rem;
-        border-radius: 1rem;
-    }
-
-    .normal-border {
-        border: 2px solid var(--greys-300, #D1D1D6);
-    }
-
-    .valid-border {
-        border: 2px solid green;
-    }
-
-    .invalid-border {
-        border: 2px solid red;
-    }
-
-    .invalid-message {
-        width: 100%;
-        margin-top: .25rem;
-        font-size: 1rem;
-        color: red;
-    }
-
-    .valid-message {
-        width: 100%;
-        margin-top: .25rem;
-        font-size: 1rem;
-        color: green;
-    }
-
-    .auth-button {
-        display: flex;
-        margin-top: 2rem;
-    }
-
-    .auth-button button {
-        border: none;
-        flex: 1 1 auto;
-    }
-
-    .auth-content p {
-        text-align: center;
-        margin-top: 5rem;
-        color: #000;
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 500;
-        line-height: 1.5rem;
-    }
-
-    .auth-content p>a {
-        color: #000;
-        font-family: var(--font-family);
-        font-size: 1rem;
-        font-style: var(--font-style);
-        font-weight: 500;
-        line-height: 1.5rem;
-        text-decoration-line: underline;
-    }
-
-    .auth-sidebar {
-        grid-area: 1 / 2 / 17 / 4;
-        border-radius: 1rem;
-        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat center center / 200px, url("https://res.cloudinary.com/djq3aojia/image/upload/v1691013217/BYTE%20branding/auth-img_q854aw.jpg") no-repeat center center;
-    }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
     .auth-sidebar {
         grid-area: 1 / 2 / 17 / 4;
         border-radius: 1rem;
@@ -1361,22 +1360,68 @@ h4 {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+    .auth-content-sidebar {
+        grid-area: 1 / 1 / 17 / 2;
+        border: 4px solid #F8F8F8;
+        border-radius: 1rem;
+        padding: 2rem 3rem 3rem 3rem;
+        background-color: #F8F8F8;
+    }
+
     .auth-sidebar {
         grid-area: 1 / 2 / 17 / 4;
         border-radius: 1rem;
         background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat center center / 150px, url("https://res.cloudinary.com/djq3aojia/image/upload/v1691013217/BYTE%20branding/auth-img_q854aw.jpg") no-repeat center center;
     }
+
 }
 
-@media (min-width: 567px) and (max-width: 767px) {
-    .auth-sidebar {
-        grid-area: 1 / 2 / 17 / 4;
-        border-radius: 1rem;
-        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat center center / 100px, url("https://res.cloudinary.com/djq3aojia/image/upload/v1691013217/BYTE%20branding/auth-img_q854aw.jpg") no-repeat center center;
+@media (min-width: 768px) {
+    .auth-content-sidebar {
+        max-width: 440px;
+    }
+
+    .auth-input-two-fields .auth-input-field {
+        max-width: 160px;
     }
 }
 
+@media (min-width: 567px) and (max-width: 767px) {
+    .auth-content-sidebar {
+        grid-area: 1 / 1 / 17 / 4;
+        border: 4px solid #F8F8F8;
+        border-radius: 1rem;
+        padding: 2rem 3rem 3rem 3rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat top 2rem right 3rem / 75px, #F8F8F8;
+    }
+
+    .auth-input-two-fields .auth-input-field {
+        min-width: 200px;
+    }
+
+    .auth-sidebar {
+        display: none;
+    }
+
+}
+
 @media (max-width: 566px) {
+    .auth-content-sidebar {
+        grid-area: 1 / 1 / 17 / 4;
+        border: 4px solid #F8F8F8;
+        border-radius: 1rem;
+        padding: 2rem 3rem 3rem 3rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg") no-repeat top 2rem right 3rem / 50px, #F8F8F8;
+    }
+
+    .auth-input-two-fields {
+        display: inline-flex;
+        gap: 1rem;
+    }
+
+    .auth-input-two-fields .auth-input-field {
+        min-width: 131px;
+    }
 
     .auth-sidebar {
         display: none;

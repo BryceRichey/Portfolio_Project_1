@@ -8,7 +8,7 @@ router.get('/signup', (_req, res, _next) => {
     res.render('users/signup.ejs')
 });
 
-router.get('/signup/user/validations', (req, res, _next) => {
+router.get('/signup/user/validations', (req, res, next) => {
     const email = Object.values(req.query)[0]
     db.query(`SELECT email FROM users WHERE email = "${email}"`, (err, data) => {
         if (!(data && data.length) || err) {
@@ -23,25 +23,25 @@ router.get('/signup/user/validations', (req, res, _next) => {
     });
 });
 
-router.post('/signup', [passport.userExists, (req, res, _next) => {
+//router.post('/signup', [passport.userExists, (req, res, _next) => {
+router.post('/signup', (req, res, next) => {
     signup = {
         f_name: req.body.firstName,
         l_name: req.body.lastName,
-        username: req.body.username,
         email: req.body.email
     }
     const saltHash = genPassword(req.body.password);
     const salt = saltHash.salt;
     const hash = saltHash.hash;
-    db.query('INSERT INTO users(f_name, l_name, username, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(signup), hash, salt], (err, _data, _fields) => {
+    db.query('INSERT INTO users(f_name, l_name, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, 0)', [...Object.values(signup), hash, salt], (err, _data, _fields) => {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('/');
+            next();
         }
     });
-    res.redirect('/')
-}]);
+    res.redirect('/login')
+});
 
 
 router.get('/login', (_req, res, _next) => {
@@ -57,7 +57,7 @@ router.post('/login', passport.passport.authenticate('local', { successRedirect:
 
 
 router.get('/account', passport.isAuth, (req, res, _next) => {
-    db.query(`SELECT id, f_name, l_name, username, email FROM users WHERE id = ${req.user.id}`, (err, data) => {
+    db.query(`SELECT id, f_name, l_name, email FROM users WHERE id = ${req.user.id}`, (err, data) => {
         if (err) {
             throw err
         } else {
@@ -68,7 +68,7 @@ router.get('/account', passport.isAuth, (req, res, _next) => {
 
 router.post('/account/new_names', (req, res, _next) => {
     if (req.body.f_name != "" && req.body.l_name != "" && req.body.username != "") {
-        db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { f_name: req.body.f_name, l_name: req.body.l_name, username: req.body.username }, (err, data) => {
+        db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { f_name: req.body.f_name, l_name: req.body.l_name }, (err, data) => {
             if (err) {
                 throw err
             } else {
