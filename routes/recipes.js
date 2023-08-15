@@ -11,7 +11,6 @@ router.get('/recipes', (_req, res, _next) => {
         if (err) {
             throw err
         } else {
-            console.log()
             res.render('recipes/index', { recipes: data });
         }
     });

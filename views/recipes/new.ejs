@@ -3,44 +3,135 @@
 
 <head>
     <%- include('../partials/head') %>
+
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    
     <script>
         tinymce.init({ 
             selector: "#description"
         });
     </script>
-    
 </head>
 
 <body>
     <%- include('../partials/header') %>
-        <header class="container text-centered mt-5">
-            <h1>Submit your recipe to us</h1>
-            <p>We're always looking for new and exciting recipies. Submit yours today!</p>
-        </header>
-        <br>
-        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
-            <div>
-                <label for="r_title" class="form-label">Recipe Title</label>
-                <input type="text" name="r_title" id="r_title" class="form-control" placeholder="Apple Strudel" required>
-            </div>
-            <div class="mt-4">
-                <label for="num_serv" class="form-label">Number of Servings</label>
-                <input type="number" name="num_serv" id="num_serv" class="form-control" placeholder="12" required>
-            </div>
-                <label for="prep_time" class="form-label">Prep Time</label>
-                <input type="number" name="prep_time" id="prep_time" class="form-control" placeholder="30 mins" required>
-            </div>
-                <label for="cook_time" class="form-label">Cook Time</label>
-                <input type="number" name="cook_time" id="cook_time" class="form-control" placeholder="15 mins" required>
-            </div>
-            <div class="mt-4">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" name="description" id="description" class="form-control"
-                    placeholder="1 cup whole wheat pastry flour" required>
-            </div>
+    <div class="main-bread-crumbs-wrapper">
+        <ol class="bread-crumb-list">
+            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/new" class="bread-crumb">Sumbit Recipe</a></li>
+        </ol>
+    </div>
+    <main>
+        <div class="new-recipe-wrapper">
+            <header class="header-wrapper">
+                <H2>Submit Your Recipe</H2>
+                <p>Share with us some of your greatest creations</p>
+            </header>
+            <section class="recipe-wrapper">
+                <form action="/recipes/new" method="post" class="create-recipe" enctype="multipart/form-data">
+                    <section class="recipe-details-wrapper">
+                        <h3>Recipe Details</h3>
+                        <div class="input-field">
+                            <label for="recipe-title">Title</label>
+                            <input type="text" name="recipeTitle" class="normal-border" id="recipe-title">
+                        </div>
+                        <div class="input-field">
+                            <label for="recipe-description">Description</label>
+                            <input type="text" name="recipeDescription" class="normal-border" id="recipe-description">
+                        </div>
+                        <div class="input-three-fields">
+                            <div class="input-field">
+                                <label for="recipe-servings">Servings</label>
+                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings">
+                            </div>
+                            <div class="input-field-two-fields">
+                                <div class="input-field">
+                                    <label for="recipe-prep-time">Prep Time</label>
+                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time">
+                                </div>
+                                <div class="input-field">
+                                    <label for="recipe-cook-time">Cook Time</label>
+                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recipe-ingredients-wrapper">
+                        <h3>Ingredients</h3>
+                        <template id="recipe-ingredients-input-template">
+                            <div class="input-field-three-fields" id="ingredient-input">
+                                <div class="input-field">
+                                    <label for="ingredient-amount">Amount</label>
+                                    <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount">
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient-unit">Unit</label>
+                                    <select name="ingredientUnit_" id="ingredient-unit" class="normal-border">
+                                        <option value="" default selected hidden>Select unit</option>
+                                        <option value="1">tablespoon</option>
+                                        <option value="2">teaspoon</option>
+                                        <option value="3">ounce</option>
+                                        <option value="4">fluid ounce</option>
+                                        <option value="5">cup</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient">Ingredient</label>
+                                    <input type="text" name="ingredient_" class="normal-border" id="ingredient">
+                                </div>
+                            </div>
+                        </template>
+                        <div id="ingredient-input-row"></div>
+                        <div class="ingredient-buttons">
+                            <button class="button-2-solid-grey" id="delete-ingredient-button">Delete Ingredient</button>
+                            <button class="button-2-solid" id="add-ingredient-button">Add Ingredient</button>
+                        </div>
+                    </section>
+                    <section class="recipe-directions-wrapper">
+                        <h3>Directions</h3>
+                        <template id="recipe-directions-input-template">
+                            <div class="directions-input-field-two-fields" id="direction-input">
+                                <div class="input-step" id="input-step">
+                                    <p></p>
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" name="recipeDirection_" class="normal-border" id="recipeDirection">
+                                </div>
+                            </div>
+                        </template>
+                        <div id="direction-input-row"></div>
+                        <div class="direction-buttons">
+                            <button class="button-2-solid-grey" id="delete-step-button">Delete Step</button>
+                            <button class="button-2-solid" id="add-direction-button">Add Step</button>
+                        </div>
+                    </section>
+                    <section class="recipe-photos-wrapper">
+                        <h3>Photos</h3>
+                        <div class="file-selector-wrapper">
+                            <div class="photo-input-row">
+                                <span id="filesSelected"></span>
+                            </div>
+                            <div class="photo-buttons">
+                                <button class="button-2-solid-grey" id="delete-photos-button">Delete Photo</button>
+                                <label for="fileInput" class="button-2-solid">Select Photo</label>
+                                <input type="file" hidden id="fileInput">
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recipe-disclaimer-wrapper">
+                        <p class="body-2">By submitting your recipe to us you understand that we are released of any and all liability. We retain the ability to modify or change the recipe, photos, etc. as we see fit.</p>
+                    </section>
+                    <div class="recipe-submit-button">
+                        <button type="reset" class="button-2-solid-grey">Clear Form</button>
+                        <button type="submit" class="button-2-solid">Submit Recipe</button>
+                    </div>
+                </form>
+                
+            </section>
+        </div>
+    </main>
 
+        <!-- <br>
+        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
             <div class="mt-4">
                 <template id="ingredient-input-template">
                     <div class="input-group mb-3 ingredient-input-row">
@@ -86,9 +177,9 @@
                         return `ingredients[${index}][${fieldName}]`;
                     }
                 </script>
-            </div>
+            </div> -->
 
-            <div class="mt-4">
+            <!-- <div class="mt-4">
                 <template id="direction-step-template">
                     <label for="direction-input" id="direction-step-row"></label>
                 </template>
@@ -138,8 +229,11 @@
                 <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
             </div>
             <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
-        </form>
+        </form> -->
         <%- include('../partials/footer') %>
+
+        <script src="/javascripts/new_recipe_input_fields.js"></script>
+        <script src="/javascripts/new_recipe_photos.js"></script>
 </body>
 
 </html>

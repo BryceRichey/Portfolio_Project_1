@@ -25,7 +25,6 @@ function validateNotBlank(name) {
         invalidElement.innerHTML = errorMsg;
         element.classList.remove('normal-border');
         element.classList.add('invalid-border');
-        return;
     } else {
         element.classList.remove('normal-border');
         element.classList.add('valid-border');
@@ -53,6 +52,10 @@ function validateUniqueness(email, value) {
             email.classList.remove('normal-border');
             email.classList.add('invalid-border');
             invalidElement.innerHTML = "Email not valid"
+        } else {
+            invalidElement.innerHTML = '';
+            email.classList.remove('normal-border');
+            email.classList.add('valid-border');
         }
     }
 }
