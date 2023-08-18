@@ -95,4 +95,11 @@ userExists = (req, res, next) => {
     });
 }
 
-module.exports = { passport, isAuth, isAdmin, setCurrentUser, userExists };
+module.exports = {
+    passport,
+    isAuth,
+    isAdmin,
+    setCurrentUser,
+    userExists,
+    genPassword
+};

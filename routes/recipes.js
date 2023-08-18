@@ -180,14 +180,9 @@ router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
     );
 });
 
-router.get('/recipes/:recipe_id/delete', (req, res, _next) => {
-    db.query(`DELETE FROM recipes WHERE id = ${req.params.id}`, (err, _data) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect(`/recipes`);
-        }
-    });
+router.get('/recipes/:recipe_id/delete', async (req, res, _next) => {
+    await recipeQueries.deleteRecipe(req.params.recipe_id);
+    res.redirect('/recipes');
 });
 
 module.exports = router;

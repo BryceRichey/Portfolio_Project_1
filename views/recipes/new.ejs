@@ -3,13 +3,6 @@
 
 <head>
     <%- include('../partials/head') %>
-
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-        tinymce.init({ 
-            selector: "#description"
-        });
-    </script>
 </head>
 
 <body>
@@ -125,115 +118,13 @@
                         <button type="submit" class="button-2-solid">Submit Recipe</button>
                     </div>
                 </form>
-                
             </section>
         </div>
     </main>
+    <%- include('../partials/footer') %>
 
-        <!-- <br>
-        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
-            <div class="mt-4">
-                <template id="ingredient-input-template">
-                    <div class="input-group mb-3 ingredient-input-row">
-                        <input type="text" name="amount" placeholder="Amount" class="form-control">
-                        <select class="form-select" name="unit">
-                            <option selected>Select unit</option>
-                            <option value="1">tbsp</option>
-                            <option value="2">tsp</option>
-                            <option value="3">oz</option>
-                            <option value="4">fl. oz</option>
-                            <option value="5">cup</option>
-                        </select>
-                        <input type="text" class="form-control" placeholder="Ingredient" name="ingredient">
-                    </div>
-                </template>
-                <div id="ingredientInputRows"></div>
-                <button class="btn btn-dark mt-2" id="addIngredientBtn">Add ingredient</button>
-                <script>
-                    const addIngredientBtn = document.getElementById('addIngredientBtn');
-                    addIngredientBtn.addEventListener('click', e => {
-                        addIngredientField();
-                        e.preventDefault();
-                    });
-
-                    document.addEventListener('DOMContentLoaded', e => {
-                        addIngredientField();
-                    }, false);
-
-                    function addIngredientField() {
-                        const inputRows = document.getElementsByClassName('ingredient-input-row') || [];
-                        const templateElement = document.getElementById('ingredient-input-template').content;
-                        let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
-
-                        Array.from(ingredientInputRow.children).forEach(input => {
-                            const name = input.name;
-                            input.name = nameString(inputRows.length, name);
-                        });
-
-                        document.getElementById('ingredientInputRows').append(ingredientInputRow);
-                    }
-
-                    function nameString(index, fieldName) {
-                        return `ingredients[${index}][${fieldName}]`;
-                    }
-                </script>
-            </div> -->
-
-            <!-- <div class="mt-4">
-                <template id="direction-step-template">
-                    <label for="direction-input" id="direction-step-row"></label>
-                </template>
-                <template id="direction-input-template" name="direction-input">
-                    <div class="input-group mb-3 direction-input-row">
-                        <input type="text" name="directions" class="form-control">
-                    </div>
-                </template>
-                <div id="directionInputRows"></div>
-                <button class="btn btn-dark mt2" id="addDirectionBtn">Add step</button>
-                <script>
-                    const addDirectionBtn = document.getElementById('addDirectionBtn');
-                    addDirectionBtn.addEventListener('click', e => {
-                        addDirectionField();
-                        e.preventDefault();
-                    });
-
-                    document.addEventListener('DOMContentLoaded', e => {
-                        addDirectionField();
-                    }, false);
-
-                    let stepNumber = 1;
-                    function addDirectionField() {
-                        const inputRows = document.getElementsByClassName('direction-input-row') || [];
-                        const directionInutTemplateElement = document.getElementById('direction-input-template').content;
-                        let directionInputRow = directionInutTemplateElement.cloneNode(true).querySelector('div');
-
-                        Array.from(directionInputRow.children).forEach(input => {
-                            const name = input.name;
-                            input.name = nameString(inputRows.length, name);
-                        });
-
-                        const stepRow = document.getElementById('direction-step-row') || [];
-                        const directionStepTemplateElement = document.getElementById('direction-step-template').content;
-                        let directionStepRow = directionStepTemplateElement.cloneNode(true).querySelector('label');
-                        directionStepRow.innerText = `Step ${stepNumber++}`
-
-                        document.getElementById('directionInputRows').append(directionStepRow, directionInputRow);
-                    }
-
-                    function nameString(index, fieldName) {
-                        return `directions[${index}][${fieldName}]`;
-                    }
-                </script>
-            </div>
-            <div class="input-group mt-4">
-                <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
-            </div>
-            <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
-        </form> -->
-        <%- include('../partials/footer') %>
-
-        <script src="/javascripts/new_recipe_input_fields.js"></script>
-        <script src="/javascripts/new_recipe_photos.js"></script>
+    <script src="/javascripts/new_recipe_input_fields.js"></script>
+    <script src="/javascripts/new_recipe_photos.js"></script>
 </body>
 
 </html>

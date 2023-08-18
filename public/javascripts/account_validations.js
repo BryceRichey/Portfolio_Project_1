@@ -1,8 +1,8 @@
-const updateNames = document.querySelector('#newNames');
+const updateContactInformation = document.querySelector('#contact-information');
 
-updateNames.addEventListener('submit', e => {
-    validateNames();
-});
+// updateContactInformation.addEventListener('submit', e => {
+    
+// });
 
 function validateNames() {
     const newFirstName = document.getElementById('f_name').value.trim();

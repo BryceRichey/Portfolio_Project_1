@@ -253,11 +253,10 @@ async function createRecipeIngredient(body) {
                 }
                 async function insertIngredientData() {
                     const insertIngredientData = `
-                    INSERT INTO 
-                    recipe_ingredients (recipe_id, amount, unit_id, ingredient_id) 
-                    VALUES 
-                    (?, ?, ?, ?)`
-
+                        INSERT INTO 
+                            recipe_ingredients (recipe_id, amount, unit_id, ingredient_id) 
+                        VALUES 
+                        (?, ?, ?, ?)`
                     await db.promise().query(insertIngredientData, [newRecipeId, amountId, unitId, ingredientId]);
                 }
                 insertIngredientData(newRecipeId, amountId, unitId, ingredientId);
@@ -305,11 +304,10 @@ async function insertRecipeDirections(body) {
 
                 async function insertDirectionData() {
                     const insertQuery = `
-                    INSERT INTO 
-                        recipe_directions (recipe_id, direction_step, direction)
-                    VALUES 
-                        (?, ?, ?)`
-
+                        INSERT INTO 
+                            recipe_directions (recipe_id, direction_step, direction)
+                        VALUES 
+                            (?, ?, ?)`
                     await db.promise().query(insertQuery, [newRecipeId, step, value]);
                 }
                 insertDirectionData(newRecipeId, step, value);
@@ -323,4 +321,55 @@ async function insertRecipeDirections(body) {
     insertRecipeDirectionData();
 }
 
-module.exports = { getRecipe, getRecipeIngredients, getRecipeDirections, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections }
+async function deleteRecipe(recipeId) {
+    const deleteRecipeQuery = `
+        DELETE 
+        FROM 
+            recipes 
+        WHERE 
+            id = ${recipeId}`
+    await db.promise().query(deleteRecipeQuery);
+
+    const deleteRecipeRatings = `
+        DELETE
+        FROM 
+            recipe_ratings 
+        WHERE 
+            recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipeRatings);
+
+    const deleteRecipePhotos = `
+        DELETE
+        FROM 
+            recipe_photos 
+        WHERE 
+            recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipePhotos);
+
+    const deleteRecipeDirections = `
+        DELETE
+        FROM 
+            recipe_directions 
+        WHERE 
+            recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipeDirections);
+
+    const deleteRecipeComments = `
+        DELETE
+        FROM 
+            comments 
+        WHERE 
+            recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipeComments);
+
+    // ADD RECIPE ID TO LIKE SO CODE CAN DELETE LIKES
+    // const deleteRecipeLikes = `
+        // DELETE
+        // FROM 
+        //     recipe_likes 
+        // WHERE 
+        //     recipe_id = ${recipeId}`
+    // await db.promise().query(deleteRecipeLikes);
+}
+
+module.exports = { getRecipe, getRecipeIngredients, getRecipeDirections, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections, deleteRecipe }
