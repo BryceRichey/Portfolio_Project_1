@@ -1,51 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
 const dayjs = require('dayjs');
+const passport = require('../config/passport');
 const cloudinary = require('../config/cloudinary');
 const recipeQueries = require('../db/recipes');
+const recipeCommentQuries = require('../db/recipe_comments');
+const recipeCommentInteractionQueries = require('../db/recipe_comment_interactions');
+const recipeRatingQueries = require('../db/recipe_ratings');
 
 
-router.get('/recipes', (_req, res, _next) => {
-    db.query(`SELECT * FROM recipes ORDER BY id DESC`, (err, data) => {
-        if (err) {
-            throw err
-        } else {
-            res.render('recipes/index', { recipes: data });
-        }
-    });
-});
-
+// RECIPE CRUD
+// CREATE
 router.get('/recipes/new', (_req, res, _next) => {
     res.render('recipes/new');
 });
-
-router.get('/recipes/:id', async (req, res, _next) => {
-    const recipe = await recipeQueries.getRecipe(req.params.id);
-    const ingredients = await recipeQueries.getRecipeIngredients(req.params.id);
-    const directions = await recipeQueries.getRecipeDirections(req.params.id);
-    const comments = await recipeQueries.getRecipeComments(req.params.id);
-    const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.id, req.user);
-    const photos = await recipeQueries.getRecipePhotos(req.params.id);
-
-    res.render('recipes/show', { recipe, ingredients, directions, comments, commentLikes, photos, dayjs });
-}); 
-
-router.get('/recipes/:id/edit', (req, res, _next) => {
-    db.query(`SELECT * FROM recipes WHERE id = ${req.params.id}`, (err, data) => {
-        if (err) {
-            throw err
-        } else {
-            res.render('recipes/edit', {
-                id: req.params.id,
-                recipe: data
-            });
-        }
-    });
-});
-
-
-
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
     await recipeQueries.createRecipe(req.user, req.body, req.file);
@@ -56,133 +24,110 @@ router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, 
     res.redirect('/recipes');
 });
 
+// READ
+router.get('/recipes', async (_req, res, _next) => {
+    const recipes = await recipeQueries.getAllRecipes();
+
+    res.render('recipes/index', { recipes })
+});
+
+router.get('/recipes/:recipeId', async (req, res, _next) => {
+    const recipe = await recipeQueries.getRecipe(req.params.recipeId);
+    const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
+    const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
+    const comments = await recipeQueries.getRecipeComments(req.params.recipeId);
+    const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.recipeId, req.user);
+    const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
+    const recipeRating = await recipeQueries.getRecipeRatings(req.params.recipeId, req.user);
 
 
-
-router.post('/recipes/comment/:id', (req, res, _next) => {
-    db.query(`INSERT INTO comments SET ?`, {
-        recipe_id: req.params.id,
-        user_id: req.user.id,
-        first_name: req.user.f_name,
-        last_name: req.user.l_name,
-        comment: req.body.comment
-    }, (err, _data) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect(`/recipes/${req.params.id}`);
-        }
+    res.render('recipes/show', {
+        recipe,
+        ingredients,
+        directions,
+        comments,
+        commentLikes,
+        photos,
+        recipeRating,
+        dayjs
     });
 });
 
-router.post('/recipes/:recipe_id/comment/new', (req, _res, _next) => {
-    db.query(`SELECT * FROM comments WHERE user_id = ${req.user.id}`, (err, data) => {
-        if (err) {
-            throw err
-        } else if (data) {
-            alert('Sorry but you have already made a comment');
-        } else {
+// UPDATE
+router.get('/recipes/:recipeId/edit', async (req, res, _next) => {
+    const data = await recipeQueries.readEditRecipe(req.params.recipeId);
 
-        }
-    })
-});
-
-router.post('/recipes/:recipe_id/comment/edit/:id', (req, res, _next) => {
-    db.query(`UPDATE comments SET ? WHERE id = ${req.params.id}`, {
-        comment: req.body.comment
-    }, (err, _data) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect(`/recipes/${req.params.recipe_id}`);
-        }
+    res.render('recipes/edit', {
+        id: req.params.recipeId,
+        recipe: data
     });
 });
 
-router.get('/recipes/:recipe_id/comment/delete/:id', (req, res, _next) => {
-    db.query(`DELETE FROM comments WHERE id = ${req.params.id}`, (err, _data) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect(`/recipes/${req.params.recipe_id}`);
-        }
-    });
+router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
+    await recipeQueries.updateRecipe(req.params.recipeId, req.body.r_title, req.body.num_serv, req.body.ingredients, req.body.directions);
+
+    res.redirect(`/recipes/${req.params.recipeId}`);
 });
 
-router.post('/recipes/:recipe_id/comment/like/:id', (req, res, _next) => {
-    db.query(`SELECT * FROM likes WHERE comment_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
-        if (err) {
-            throw err
-        } else if (data && data.length == 0) {
-            db.query(`INSERT INTO likes SET ?`, {
-                comment_id: req.params.id,
-                user_id: req.user.id
-            }, (err, _data) => {
-                if (err) {
-                    throw err
-                } else {
-                    res.json({ liked: true });
-                }
-            });
-        } else {
-            db.query(`DELETE FROM likes WHERE comment_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, _data) => {
-                if (err) {
-                    throw err
-                } else {
-                    res.json({ liked: false });
-                }
-            });
-        }
-    });
-});
+// DELETE
+router.get('/recipes/:recipeId/delete', async (req, res, _next) => {
+    await recipeQueries.deleteRecipe(req.params.recipeId);
 
-router.post('/recipes/:id/rating/ratingInt=*', (req, res, _next) => {
-    db.query(`SELECT * FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, data) => {
-        if (err) {
-            throw err
-        } else if (data && data.length == 0) {
-            db.query(`INSERT INTO recipe_ratings SET ?`, {
-                recipe_id: req.params.id,
-                user_id: req.user.id,
-                rating: req.params[0]
-            }, (err, _data) => {
-                if (err) {
-                    throw err
-                } else {
-                    res.json({ rated: true });
-                }
-            });
-        } else {
-            db.query(`DELETE FROM recipe_ratings WHERE recipe_id = ${req.params.id} AND user_id = ${req.user.id}`, (err, _data) => {
-                if (err) {
-                    throw err
-                } else {
-                    res.json({ rated: false });
-                }
-            });
-        }
-    });
-});
-
-router.post('/recipes/:recipe_id/edit', (req, res, _next) => {
-    db.query(`UPDATE recipes SET ? WHERE id = ${req.params.id}`, {
-        r_title: req.body.r_title,
-        num_serv: req.body.num_serv,
-        ingredients: req.body.ingredients,
-        directions: req.body.directions
-    }, (err, _data) => {
-        if (err) {
-            throw err
-        } else {
-            res.redirect(`/recipes/${req.params.id}`);
-        }
-    }
-    );
-});
-
-router.get('/recipes/:recipe_id/delete', async (req, res, _next) => {
-    await recipeQueries.deleteRecipe(req.params.recipe_id);
     res.redirect('/recipes');
+});
+
+
+// RECIPE COMMENTS
+router.post('/recipes/:recipeId/comment/new', async (req, res, _next) => {
+    await recipeCommentQuries.createComment(req.params.recipeId, req.user.id, req.user.f_name, req.user.l_name, req.body.comment);
+
+    res.redirect(`/recipes/${req.params.recipeId}`);
+});
+
+router.post('/recipes/:recipeId/comment/:commentId/edit', async (req, res, _next) => {
+    await recipeCommentQuries.updateComment(req.body.comment, req.params.commentId, req.user.id);
+
+    res.redirect(`/recipes/${req.params.recipeId}`);
+});
+
+router.get('/recipes/:recipeId/comment/:commentId/delete', async (req, res, _next) => {
+    await recipeCommentQuries.deleteComment(req.params.commentId, req.user.id);
+
+    res.redirect(`/recipes/${req.params.recipeId}`);
+});
+
+
+// COMMENT INTERACTIONS
+router.post('/recipes/:recipeId/comment/:commentId/like', async (req, res, _next) => {
+    const readLike = await recipeCommentInteractionQueries.readLike(req.params.commentId, req.user.id);
+
+    if (readLike && readLike.length == 0) {
+        await recipeCommentInteractionQueries.createLike(req.params.commentId, req.user.id);
+
+        res.json({ liked: true });
+    } else {
+        await recipeCommentInteractionQueries.deleteLike(req.params.commentId, req.user.id);
+
+        res.json({ liked: false });
+    }
+});
+
+
+// RECIPE RATINGS
+router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => {
+    const readRating = await recipeRatingQueries.readRating(req.params.recipeId, req.user.id);
+
+    console.log(readRating)
+
+    if (readRating && readRating.length == 0) {
+        await recipeRatingQueries.createRating(req.params.recipeId, req.user.id, req.params[0]);
+
+        res.json({ rated: true });
+    } else {
+        await recipeRatingQueries.deleteRating(req.params.recipeId, req.user.id);
+
+        res.json({ rated: false });
+    }
 });
 
 module.exports = router;

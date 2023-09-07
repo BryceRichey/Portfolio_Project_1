@@ -51,10 +51,23 @@
                     <section class="recipe-ingredients-wrapper">
                         <h3>Ingredients</h3>
                         <template id="recipe-ingredients-input-template">
-                            <div class="input-field-three-fields" id="ingredient-input">
+                            <div class="input-field-four-fields" id="ingredient-input">
                                 <div class="input-field">
                                     <label for="ingredient-amount">Amount</label>
                                     <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount">
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient-fraction">Fraction</label>
+                                    <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border">
+                                        <option value="" default selected hidden>Select Fraction</option>
+                                        <option value="1">¾</option>
+                                        <option value="2">⅔</option>
+                                        <option value="3">½</option>
+                                        <option value="4">⅓</option>
+                                        <option value="5">¼</option>
+                                        <option value="6">⅛</option>
+                                        <option value="7">¹⁄₁₆</option>
+                                    </select>
                                 </div>
                                 <div class="input-field">
                                     <label for="ingredient-unit">Unit</label>
@@ -65,6 +78,10 @@
                                         <option value="3">ounce</option>
                                         <option value="4">fluid ounce</option>
                                         <option value="5">cup</option>
+                                        <option value="6">pint</option>
+                                        <option value="7">quart</option>
+                                        <option value="8">gallon</option>
+                                        <option value="9">grams</option>
                                     </select>
                                 </div>
                                 <div class="input-field">

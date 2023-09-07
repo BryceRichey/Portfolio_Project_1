@@ -64,8 +64,7 @@ isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         next()
     } else {
-        const postLoginRedirect = req.originalUrl;
-        session.path = postLoginRedirect;
+        req.session.path = req.originalUrl;
         res.redirect('/login');
     }
 }

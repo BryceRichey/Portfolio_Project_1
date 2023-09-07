@@ -1,5 +1,20 @@
 const db = require('../config/database');
 
+async function getAllRecipes() {
+    const getAllRecipesQuery = `
+    SELECT 
+        * 
+    FROM 
+        recipes 
+    ORDER BY 
+        id 
+    DESC`
+
+    const [allRecipes, _fields] = await db.promise().query(getAllRecipesQuery);
+
+    return allRecipes;
+}
+
 async function getRecipe(recipe_id) {
     const query = `
     SELECT 
@@ -29,12 +44,18 @@ async function getRecipeIngredients(recipe_id) {
     const query = `
     SELECT 
         ri.amount,
+        rf.fraction AS fraction,
+        rfd.fraction_decimal AS fraction_decimal,
         ru.unit AS unit,
         i.ingredient AS ingredient
     FROM 
         recipe_ingredients ri 
     LEFT JOIN 
-        recipe_units ru ON ri.unit_id = ru.id 
+        recipe_fractions rf ON ri.fraction_id = rf.id
+    LEFT JOIN 
+		recipe_fractions rfd ON ri.fraction_id = rfd.id
+    LEFT JOIN 
+        recipe_units ru ON unit_id = ru.id 
     LEFT JOIN 
         ingredients i ON ingredient_id = i.id 
     WHERE 
@@ -90,6 +111,26 @@ async function getRecipePhotos(recipe_id) {
     const [photos, _fields] = await db.promise().query(query, [recipe_id]);
 
     return photos;
+}
+
+async function getRecipeRatings(recipeId, user) {
+    if (!user || !user.id) {
+        return undefined;
+    } else {
+        const query = `
+        SELECT 
+            * 
+        FROM 
+            recipe_ratings 
+        WHERE 
+            recipe_id = ? 
+        AND 
+            user_id = ?`
+
+        const [ratingRows, _ratingFields] = await db.promise().query(query, [recipeId, user.id]);
+
+        return ratingRows;
+    }
 }
 
 async function getUserRecipeCommentLikes(recipe_id, user) {
@@ -179,7 +220,7 @@ async function createRecipeIngredient(body) {
     }
 
     function check() {
-        if (counter >= 3) {
+        if (counter >= 4) {
             let newIngredientObject = ingredientObject
             ingredientsArray.push(newIngredientObject);
             counter = 0
@@ -191,6 +232,7 @@ async function createRecipeIngredient(body) {
     let ingredientsData = ingredientsArray;
     let newRecipeId;
     let amountId;
+    let fractionId;
     let unitId;
     let ingredientId;
 
@@ -213,6 +255,11 @@ async function createRecipeIngredient(body) {
                             amountId = amount;
                         }
                         await insertRecipeIngredientAmount(value);
+                    } else if (key.includes('ingredientFraction_')) {
+                        async function insertRecipeIngredientFrction(fraction) {
+                            fractionId = fraction;
+                        }
+                        await insertRecipeIngredientFrction(value);
                     } else if (key.includes('ingredientUnit_')) {
                         async function insertRecipeIngredientUnit(unit) {
                             unitId = unit;
@@ -254,12 +301,12 @@ async function createRecipeIngredient(body) {
                 async function insertIngredientData() {
                     const insertIngredientData = `
                         INSERT INTO 
-                            recipe_ingredients (recipe_id, amount, unit_id, ingredient_id) 
+                            recipe_ingredients (recipe_id, amount, fraction_id, unit_id, ingredient_id) 
                         VALUES 
-                        (?, ?, ?, ?)`
-                    await db.promise().query(insertIngredientData, [newRecipeId, amountId, unitId, ingredientId]);
+                        (?, ?, ?, ?, ?)`
+                    await db.promise().query(insertIngredientData, [newRecipeId, amountId, fractionId, unitId, ingredientId]);
                 }
-                insertIngredientData(newRecipeId, amountId, unitId, ingredientId);
+                insertIngredientData(newRecipeId, amountId, fractionId, unitId, ingredientId);
             }
             queryIngredientData();
         });
@@ -364,12 +411,59 @@ async function deleteRecipe(recipeId) {
 
     // ADD RECIPE ID TO LIKE SO CODE CAN DELETE LIKES
     // const deleteRecipeLikes = `
-        // DELETE
-        // FROM 
-        //     recipe_likes 
-        // WHERE 
-        //     recipe_id = ${recipeId}`
+    // DELETE
+    // FROM 
+    //     recipe_likes 
+    // WHERE 
+    //     recipe_id = ${recipeId}`
     // await db.promise().query(deleteRecipeLikes);
 }
 
-module.exports = { getRecipe, getRecipeIngredients, getRecipeDirections, getRecipeComments, getRecipePhotos, getUserRecipeCommentLikes, createRecipe, insertRecipePhoto, createRecipeIngredient, insertRecipeDirections, deleteRecipe }
+async function readEditRecipe(recipeId) {
+    const readQuery = `
+    SELECT 
+        * 
+    FROM 
+        recipes 
+    WHERE 
+        id = ?`
+
+    const [readRows, _readFields] = await db.promise().query(readQuery, [recipeId]);
+
+    return readRows;
+}
+
+async function updateRecipe(recipeId, recipeTitle, recipeServings, recipeIngredients, recipeDirections) {
+    const updateQuery = `
+    UPDATE 
+        recipes 
+    SET 
+        ? 
+    WHERE 
+        id = ?`
+
+    const [_updateRows, _updateFields] = await db.promise().query(updateQuery, [recipeId], {
+        r_title: recipeTitle,
+        num_serv: recipeServings,
+        ingredients: recipeIngredients,
+        directions: recipeDirections
+    });
+}
+
+module.exports = {
+    getAllRecipes,
+    getRecipe,
+    getRecipeIngredients,
+    getRecipeDirections,
+    getRecipeComments,
+    getRecipePhotos,
+    getRecipeRatings,
+    getUserRecipeCommentLikes,
+    createRecipe,
+    insertRecipePhoto,
+    createRecipeIngredient,
+    insertRecipeDirections,
+    readEditRecipe,
+    updateRecipe,
+    deleteRecipe
+}

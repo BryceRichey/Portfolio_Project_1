@@ -1,40 +1,73 @@
 const db = require('../config/database');
 const passport = require('../config/passport');
 
-async function accountDetails(userId) {
-    const accountDetailsQuery = `
+async function createUser(firstName, lastName, email, salt, hash) {
+    const createQuery = `
+    INSERT 
+    INTO 
+        users
+    SET
+        ?`
+
+    const [_creatRows, _creatFields] = await db.promise().query(createQuery, {
+        f_name: firstName,
+        l_name: lastName,
+        email: email,
+        hash,
+        salt,
+        isAdmin: 0
+    });
+}
+
+
+async function readDetails(userId) {
+    const userDetailsQuery = `
     SELECT 
         id, f_name, l_name, email
     FROM
         users 
     WHERE 
         id = ${userId}`
-    const [accountData, _fields] = await db.promise().query(accountDetailsQuery);
-    return accountData;
+    const [userData, _fields] = await db.promise().query(userDetailsQuery);
+    return userData;
 }
 
-async function accountComments(userId) {
-    const accountCommentsQuery = `
-    SELECT 
-        * 
-    FROM 
-        comments 
-    WHERE 
-        user_id = ${userId}`
-    const [accountComments, _fields] = await db.promise().query(accountCommentsQuery);
-    return accountComments;
-}
-
-async function accountRecipes(userId) {
-    const accountRecipeQuery = `
+async function readRecipes(userId) {
+    const userRecipeQuery = `
     SELECT 
         id, r_title
     FROM 
         recipes
     WHERE
         submit_user_id = ${userId}`
-    const [accountRecipe, _fields] = await db.promise().query(accountRecipeQuery);
-    return accountRecipe;
+    const [userRecipe, _fields] = await db.promise().query(userRecipeQuery);
+    return userRecipe;
+}
+
+async function readComments(userId) {
+    const userCommentsQuery = `
+    SELECT 
+        * 
+    FROM 
+        comments 
+    WHERE 
+        user_id = ${userId}`
+    const [userComments, _fields] = await db.promise().query(userCommentsQuery);
+    return userComments;
+}
+
+async function readEmail(email) {
+    const readQuery = `
+    SELECT 
+        email 
+    FROM 
+        users 
+    WHERE 
+        email = ?`
+
+    const [readRows, _readFields] = await db.promise().query(readQuery, [email]);
+
+    return readRows;
 }
 
 async function updateFirstName(user, body) {
@@ -94,22 +127,14 @@ async function updatePassword(user, confirmPassword) {
     });
 }
 
-async function logout(req) {
-    req.logout((err) => {
-        if (err) {
-            console.log(err);
-        }
-        res.redirect('/');
-    });
-}
-
 module.exports = {
-    accountDetails,
-    accountComments,
-    accountRecipes,
+    createUser,
+    readDetails,
+    readComments,
+    readRecipes,
+    readEmail,
     updateFirstName,
     updateLastName,
     updateEmail,
-    updatePassword,
-    logout
+    updatePassword
 }
