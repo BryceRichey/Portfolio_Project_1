@@ -308,7 +308,8 @@
                     <div id="comment-buttons">
                         <% if (!currentUser) { %>
                             <a href="/login">Login To Comment</a>
-                        <% } else { %>
+                        <% } else if (previousComment == 'user commented'){ %>
+                        <% } else { %>        
                             <button type="button" id="create-comment">Comment</button>
                         <% } %>
                     </div>

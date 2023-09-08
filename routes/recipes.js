@@ -35,6 +35,7 @@ router.get('/recipes/:recipeId', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
+    const previousComment = await recipeCommentQuries.readComment(req.params.recipeId, req.user)
     const comments = await recipeQueries.getRecipeComments(req.params.recipeId);
     const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.recipeId, req.user);
     const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
@@ -45,6 +46,7 @@ router.get('/recipes/:recipeId', async (req, res, _next) => {
         recipe,
         ingredients,
         directions,
+        previousComment,
         comments,
         commentLikes,
         photos,

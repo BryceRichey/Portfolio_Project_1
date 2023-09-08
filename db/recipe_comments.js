@@ -16,21 +16,23 @@ async function createComment(recipeId, userId, firstName, lastName, comment) {
     });
 }
 
-async function readComment(recipeId) {
+async function readComment(recipeId, user) {
     const readQuery = `
     SELECT 
         * 
     FROM 
         comments 
     WHERE 
-        user_id = ?`
+        user_id = ?
+    AND 
+        recipe_id = ?`
     
-    const [rows, _fields] = await db.promise().query(readQuery, [recipeId]);
+    const [rows, _fields] = await db.promise().query(readQuery, [user.id, recipeId]);
 
-    if (rows && rows.lenght == 0) {
-        return false
+    if (rows.lenght = 1) {
+        return 'user commented'
     } else {
-        return true
+        return 'not commented'
     }
 }
 
