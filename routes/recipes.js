@@ -57,16 +57,44 @@ router.get('/recipes/:recipeId', async (req, res, _next) => {
 
 // UPDATE
 router.get('/recipes/:recipeId/edit', async (req, res, _next) => {
-    const data = await recipeQueries.readEditRecipe(req.params.recipeId);
+    const recipe = await recipeQueries.getRecipe(req.params.recipeId);
+    const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
+    const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
+    // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
+
+    const ingredientsArray = new Array()
+    let ingredientArray = new Array()
+    ingredients.forEach(ingredient => {
+        ingredientArray.push(ingredient.amount)
+        ingredientArray.push(ingredient.fraction_value_id)
+        ingredientArray.push(ingredient.unit_value_id)
+        ingredientArray.push(ingredient.ingredient)
+        ingredientsArray.push(ingredientArray)
+        ingredientArray = []
+    })
+
+    const directionsArray = new Array()
+    let directionArray = new Array()
+    directions.forEach(direction => {
+        directionArray.push(direction.id)
+        directionArray.push(direction.direction_step)
+        directionArray.push(direction.direction)
+        directionsArray.push(directionArray)
+        directionArray = []
+    })
 
     res.render('recipes/edit', {
         id: req.params.recipeId,
-        recipe: data
+        recipe: recipe,
+        ingredients: ingredientsArray,
+        directions: directions
     });
 });
 
 router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
-    await recipeQueries.updateRecipe(req.params.recipeId, req.body.r_title, req.body.num_serv, req.body.ingredients, req.body.directions);
+    await recipeQueries.updateRecipe(req.params.recipeId, req.body);
+    // await recipeQueries.createRecipeIngredient(req.body);
+    await recipeQueries.updateRecipeDirections(req.params.recipeId, req.body);
 
     res.redirect(`/recipes/${req.params.recipeId}`);
 });
@@ -118,8 +146,6 @@ router.post('/recipes/:recipeId/comment/:commentId/like', async (req, res, _next
 // RECIPE RATINGS
 router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => {
     const readRating = await recipeRatingQueries.readRating(req.params.recipeId, req.user.id);
-
-    console.log(readRating)
 
     if (readRating && readRating.length == 0) {
         await recipeRatingQueries.createRating(req.params.recipeId, req.user.id, req.params[0]);

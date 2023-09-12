@@ -66,6 +66,29 @@ async function getRecipeIngredients(recipe_id) {
     return ingredients;
 }
 
+async function getRecipeIngredientsAndValueNumbers(recipeId) {
+    const query = `
+    SELECT 
+        ri.amount,
+        rfv.id AS fraction_value_id,
+        ru.id AS unit_value_id,
+        i.ingredient AS ingredient
+    FROM 
+        recipe_ingredients ri 
+    LEFT JOIN 
+        recipe_fractions rfv ON ri.fraction_id = rfv.id
+    LEFT JOIN 
+        recipe_units ru ON unit_id = ru.id 
+    LEFT JOIN 
+        ingredients i ON ingredient_id = i.id 
+    WHERE 
+        ri.recipe_id = ?`
+
+    const [ingredientRows, _ingredientFields] = await db.promise().query(query, [recipeId])
+
+    return ingredientRows;
+}
+
 async function getRecipeDirections(recipe_id) {
     const query = `
     SELECT 
@@ -419,41 +442,74 @@ async function deleteRecipe(recipeId) {
     // await db.promise().query(deleteRecipeLikes);
 }
 
-async function readEditRecipe(recipeId) {
-    const readQuery = `
-    SELECT 
-        * 
-    FROM 
-        recipes 
-    WHERE 
-        id = ?`
-
-    const [readRows, _readFields] = await db.promise().query(readQuery, [recipeId]);
-
-    return readRows;
-}
-
-async function updateRecipe(recipeId, recipeTitle, recipeServings, recipeIngredients, recipeDirections) {
+async function updateRecipe(recipeId, body) {
     const updateQuery = `
     UPDATE 
         recipes 
     SET 
         ? 
     WHERE 
-        id = ?`
+        id = ${recipeId}`
 
-    const [_updateRows, _updateFields] = await db.promise().query(updateQuery, [recipeId], {
-        r_title: recipeTitle,
-        num_serv: recipeServings,
-        ingredients: recipeIngredients,
-        directions: recipeDirections
+    const [_updateRows, _updateFields] = await db.promise().query(updateQuery, {
+        r_title: body.recipeTitle,
+        description: body.recipeDescription,
+        servings: body.recipeServings,
+        prep_time: body.recipePrepTime,
+        cook_time: body.recipeCookTime
     });
+}
+
+async function updateRecipeDirections(recipeId, body) {
+    const deleteQuer = `
+    DELETE 
+    FROM 
+        recipe_directions 
+    WHERE 
+        recipe_id = ?`
+
+    await db.promise().query(deleteQuer, [recipeId]);
+
+    let allDirectionsObject = Object.create(null);
+    let directionsArray = []
+
+    for (const [key, value] of Object.entries(body)) {
+        if (key.includes('recipeDirection')) {
+            allDirectionsObject[`${key}`] = `${value}`;
+            directionsArray.push(allDirectionsObject);
+            allDirectionsObject = Object.create(null)
+        }
+    }
+
+    let directionsData = directionsArray;
+    let directionStep = 1;
+
+    async function directionData() {
+        directionsData.forEach(direction => {
+            for (const [_key, value] of Object.entries(direction)) {
+                let step = directionStep++;
+
+                async function insertDirectionData() {
+                    const insertQuery = `
+                    INSERT INTO 
+                        recipe_directions (recipe_id, direction_step, direction)
+                    VALUES
+                        (?, ?, ?)`
+                
+                    await db.promise().query(insertQuery, [recipeId, step, value])
+                }
+                insertDirectionData(recipeId, step, value);
+            }
+        });
+    }
+    directionData();
 }
 
 module.exports = {
     getAllRecipes,
     getRecipe,
     getRecipeIngredients,
+    getRecipeIngredientsAndValueNumbers,
     getRecipeDirections,
     getRecipeComments,
     getRecipePhotos,
@@ -463,7 +519,7 @@ module.exports = {
     insertRecipePhoto,
     createRecipeIngredient,
     insertRecipeDirections,
-    readEditRecipe,
     updateRecipe,
+    updateRecipeDirections,
     deleteRecipe
 }
