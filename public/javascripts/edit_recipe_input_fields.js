@@ -45,9 +45,10 @@ function deleteInput(element) {
         lastIngredient.remove();
 
     } else if ((elementId === 'delete-step-button') && stepRowLength > 1) {
-        const stepInputRows = document.getElementById('direction-input-row');
-        let lastStep = stepInputRows.lastChild;
-        lastStep.remove();
+        let directionInputRows = document.getElementById('directions-container');
+        let directionChildren = directionInputRows.children;
+        let lastDirection = directionChildren[stepRowLength - 1];
+        lastDirection.remove();
     }
 }
 

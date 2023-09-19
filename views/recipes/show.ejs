@@ -12,8 +12,9 @@
         <ol class="bread-crumb-list">
             <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
             <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/baking" class="bread-crumb">Baking</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
         </ol>
     </div>
     <section class="recipe-show-wrapper">
@@ -85,7 +86,7 @@
                             onclick="return confirm('Are you sure you want to delete this recipe?');"
                             class="delete-comment"
                             id="<%=`recipe-delete-button-id-${recipeData['id']}`%>">Delete Recipe</a>
-                            <a href="<%=`/recipes/${recipeData['id']}/edit`%>" class="edit-recipe" id="<%=`recipe-edit-button-id-${recipeData['id']}`%>" data-recipe-id="<%= recipeData['id']%>">Edit Recipe</a>
+                            <a href="<%=`/recipes/categories/${recipeData['category']}/${recipeData['id']}/edit`%>" class="edit-recipe" id="<%=`recipe-edit-button-id-${recipeData['id']}`%>" data-recipe-id="<%= recipeData['id']%>">Edit Recipe</a>
                     </div>
                 </div>
             </section>
@@ -112,11 +113,12 @@
                                     <%= ingredientFraction %> 
                                     <% let pluralIngredientUnit = ingredientUnit + 's' %>
                                     <% const regex = /s$/g %>
-                                    <% let unitRegexMatch = ingredientUnit.match(regex)%>
-                                    <% if (ingredientAmount > 1) { %>
-                                        <%= pluralIngredientUnit %>
-                                    <% } else { %>
+                                    <% if (ingredientAmount = 0 ) { %>
+                                    <% } else if (ingredientAmount = 1) { %>
                                         <%= ingredientUnit %>
+                                    <% } else if (ingredientAmount > 1) { %>
+                                        <% let unitRegexMatch = ingredientUnit.match(regex)%>
+                                        <%= pluralIngredientUnit %>
                                     <% } %>
                                     <%= ingredientIngredient %>
                                 </li>
@@ -154,7 +156,7 @@
                                 <li class="ingredient-list-item metricMeasurement">
                                     <% function customaryToMetricConversion() { %>
                                         <% if (unit == 'tablespoon') { %>
-                                            <% if (amount == 0) { %>
+                                            <% if (amount == 0 ) { %>
                                                 <% amount = '' %>
                                                 <%= amount %>
                                             <% } else { %>
@@ -192,6 +194,8 @@
                                         <% } else if (unit == 'pound') { %>
                                             <% unit = 'g' %>
                                             <% useAmountAndDecimal(poundConversion) %>
+                                        <% } else { %>
+                                            <%= amount + ' ' + name %>
                                         <% } %>
                                     <% } %>
                                     <% customaryToMetricConversion(); %>
@@ -408,7 +412,7 @@
                         onclick="return confirm('Are you sure you want to delete this recipe?');"
                         class="delete-comment"
                         id="<%=`recipe-delete-button-id-${recipeData['id']}`%>">Delete Recipe</a>
-                        <a href="<%=`/recipes/${recipeData['id']}/edit`%>" class="edit-recipe" id="<%=`recipe-edit-button-id-${recipeData['id']}`%>" data-recipe-id="<%= recipeData['id']%>">Edit Recipe</a>
+                        <a href="<%=`/recipes/categories/${recipeData['category']}/${recipeData['id']}/edit`%>" class="edit-recipe" id="<%=`recipe-edit-button-id-${recipeData['id']}`%>" data-recipe-id="<%= recipeData['id']%>">Edit Recipe</a>
                 </div>
             <% } %>
             <div class="user-rating-wrapper">

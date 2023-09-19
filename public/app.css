@@ -368,7 +368,6 @@ h4 {
     text-decoration: none;
 }
 
-
 /* || UTILITIES */
 
 
@@ -1610,6 +1609,10 @@ h4 {
     width: 100%;
 }
 
+.input-two-fields div:nth-child(2) {
+    width: 33.333%;
+}
+
 .input-three-fields {
     display: flex;
     margin-bottom: 1rem;
@@ -2357,7 +2360,7 @@ h4 {
         justify-content: center;
         gap: 0.25rem;
     }
-    
+
     .star-rating-container {
         margin-top: 1rem;
     }
@@ -2859,7 +2862,7 @@ h4 {
         justify-content: center;
         gap: 0.25rem;
     }
-    
+
     .mobile-star-rating-container {
         margin-top: 1rem;
     }
@@ -3368,7 +3371,7 @@ h4 {
         text-align: center;
         gap: 0.25rem;
     }
-    
+
     .mobile-star-rating-container {
         margin-top: 1rem;
     }
@@ -3399,6 +3402,11 @@ h4 {
 }
 
 /* EDIT RECIPE PAGE */
+.ingredients-container,
+.directions-container {
+    width: 100%;
+}
+
 @media (min-width: 1200px) {
     .edit-recipe-wrapper {
         display: grid;
@@ -3414,10 +3422,631 @@ h4 {
     .recipe-directions-input {
         width: 100%;
     }
+}
 
-    .ingredients-container,
-    .directions-container {
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+@media (min-width: 768px) and (max-width: 991px) {}
+
+@media (min-width: 567px) and (max-width: 767px) {}
+
+@media (max-width: 566px) {}
+
+/* CATEGORIES */
+.categories-show-wrapper {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(5, auto);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 0rem 1.5rem 1.5rem 1.5rem;
+    height: auto;
+}
+
+a[class^=categories-header-side-item-] {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--blacks-700);
+    text-decoration: none;
+}
+
+@media (min-width: 1200px) {
+    .categories-header-wrapper {
+        grid-area: 1 / 1 / 3 / 8;
+        height: 300px;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right 50px bottom -185px / 400px, var(--neutrals-900);
+    }
+
+    .categories-title-wrapper {
+        padding: 2rem 25% 0 2.5rem;
+    }
+
+    .categories-title-wrapper>h2 {
+        color: #fff;
+    }
+
+    .categories-title-wrapper>p {
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #fff;
+        opacity: 0.90;
+    }
+
+    .categories-header-side-item-1 {
+        grid-area: 1 / 8 / 2 / 11;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561831/BYTE%20branding/food_2_slflxv.png") no-repeat center top -150px/ 250px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        padding-bottom: 1.5rem;
+    }
+
+    .categories-header-side-item-2 {
+        grid-area: 1 / 11 / 2 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561334/BYTE%20branding/food_3_wjd0dj.png") no-repeat left -100px top -125px / 300px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        padding: 0 2.5rem 2rem 0;
+    }
+
+    .categories-header-side-item-3 {
+        grid-area: 2 / 8 / 3 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694562300/BYTE%20branding/food_4_wtdoog.png") no-repeat right bottom -200px / 400px, var(--neutrals-300);
+        display: flex;
+        align-items: center;
+        padding-left: 15%;
+    }
+
+    .categories-header {
+        grid-area: 3 / 1 / 4 / 14;
+    }
+
+    .category-1-wrapper {
+        grid-area: 4 / 1 / 5 / 5;
+    }
+
+    .category-2-wrapper {
+        grid-area: 4 / 5 / 5 / 10;
+    }
+
+    .category-3-wrapper {
+        grid-area: 4 / 10 / 5 / 14;
+    }
+
+    .category-4-wrapper {
+        grid-area: 5 / 1 / 6 / 6;
+    }
+
+    .category-5-wrapper {
+        grid-area: 5 / 6 / 6 / 9;
+
+    }
+
+    .category-6-wrapper {
+        grid-area: 5 / 9 / 6 / 14;
+    }
+
+    .category-7-wrapper {
+        grid-area: 6 / 1 / 7 / 5;
+    }
+
+    .category-8-wrapper {
+        grid-area: 6 / 5 / 7 / 10;
+
+    }
+
+    .category-9-wrapper {
+        grid-area: 6 / 10 / 7 / 14;
+
+    }
+
+    a[class^=category-] {
+        height: 75px;
+        background-color: var(--greys-000);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding-left: 3rem;
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--blacks-700);
+    }
+
+    /* a[class^=category-] > p {
+        padding-left: 3rem;
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--blacks-700);
+    } */
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .categories-header-wrapper {
+        grid-area: 1 / 1 / 3 / 8;
+        height: 300px;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right -50px bottom -185px / 400px, var(--neutrals-900);
+    }
+
+    .categories-title-wrapper {
+        padding: 2rem 25% 0 2.5rem;
+    }
+
+    .categories-title-wrapper>h2 {
+        color: #fff;
+    }
+
+    .categories-title-wrapper>p {
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #fff;
+        opacity: 0.90;
+    }
+
+    .categories-header-side-item-1 {
+        grid-area: 1 / 8 / 2 / 11;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561831/BYTE%20branding/food_2_slflxv.png") no-repeat center top -150px/ 250px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        padding-bottom: 1.5rem;
+    }
+
+    .categories-header-side-item-2 {
+        grid-area: 1 / 11 / 2 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561334/BYTE%20branding/food_3_wjd0dj.png") no-repeat left -100px top -150px / 300px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        padding: 0 2.5rem 2rem 0;
+    }
+
+    .categories-header-side-item-3 {
+        grid-area: 2 / 8 / 3 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694562300/BYTE%20branding/food_4_wtdoog.png") no-repeat right -75px bottom -200px / 400px, var(--neutrals-300);
+        display: flex;
+        align-items: center;
+        padding-left: 15%;
+    }
+
+    .categories-header {
+        grid-area: 3 / 1 / 4 / 14;
+    }
+
+    .category-1-wrapper {
+        grid-area: 4 / 1 / 5 / 5;
+    }
+
+    .category-2-wrapper {
+        grid-area: 4 / 5 / 5 / 10;
+    }
+
+    .category-3-wrapper {
+        grid-area: 4 / 10 / 5 / 14;
+    }
+
+    .category-4-wrapper {
+        grid-area: 5 / 1 / 6 / 6;
+    }
+
+    .category-5-wrapper {
+        grid-area: 5 / 6 / 6 / 9;
+
+    }
+
+    .category-6-wrapper {
+        grid-area: 5 / 9 / 6 / 14;
+    }
+
+    .category-7-wrapper {
+        grid-area: 6 / 1 / 7 / 5;
+    }
+
+    .category-8-wrapper {
+        grid-area: 6 / 5 / 7 / 10;
+
+    }
+
+    .category-9-wrapper {
+        grid-area: 6 / 10 / 7 / 14;
+
+    }
+
+    a[class^=category-] {
+        height: 75px;
+        background-color: var(--greys-000);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding-left: 3rem;
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--blacks-700);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .categories-header-wrapper {
+        grid-area: 1 / 1 / 3 / 14;
+        height: 300px;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right -50px bottom -185px / 400px, var(--neutrals-900);
+    }
+
+    .categories-title-wrapper {
+        padding: 2rem 25% 0 2.5rem;
+    }
+
+    .categories-title-wrapper>h2 {
+        color: #fff;
+    }
+
+    .categories-title-wrapper>p {
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #fff;
+        opacity: 0.90;
+    }
+
+    .categories-header-side-item-1 {
+        height: 100px;
+        grid-area: 3 / 1 / 4 / 7;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561831/BYTE%20branding/food_2_slflxv.png") no-repeat right -100px top -100px/ 250px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        padding-bottom: 1.5rem;
+        padding: 0 2.5rem 2rem 2rem;
+    }
+
+    .categories-header-side-item-2 {
+        height: 100px;
+        grid-area: 3 / 7 / 4 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694561334/BYTE%20branding/food_3_wjd0dj.png") no-repeat left -100px top -150px / 300px, var(--neutrals-100);
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        padding: 0 2.5rem 2rem 0;
+    }
+
+    .categories-header-side-item-3 {
+        height: 100px;
+        grid-area: 4 / 1 / 5 / 14;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694562300/BYTE%20branding/food_4_wtdoog.png") no-repeat right -75px bottom -200px / 400px, var(--neutrals-300);
+        display: flex;
+        align-items: center;
+        padding-left: 15%;
+    }
+
+    .categories-header {
+        grid-area: 5 / 1 / 6 / 14;
+    }
+
+    .category-1-wrapper {
+        grid-area: 6 / 1 / 7 / 5;
+    }
+
+    .category-2-wrapper {
+        grid-area: 6 / 5 / 7 / 10;
+    }
+
+    .category-3-wrapper {
+        grid-area: 6 / 10 / 7 / 14;
+    }
+
+    .category-4-wrapper {
+        grid-area: 7 / 1 / 8 / 6;
+    }
+
+    .category-5-wrapper {
+        grid-area: 7 / 6 / 8 / 9;
+    }
+
+    .category-6-wrapper {
+        grid-area: 7 / 9 / 8 / 14;
+    }
+
+    .category-7-wrapper {
+        grid-area: 8 / 1 / 9 / 5;
+    }
+
+    .category-8-wrapper {
+        grid-area: 8 / 5 / 9 / 10;
+
+    }
+
+    .category-9-wrapper {
+        grid-area: 8 / 10 / 9 / 14;
+
+    }
+
+    a[class^=category-] {
+        height: 75px;
+        background-color: var(--greys-000);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding-left: 3rem;
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--blacks-700);
+    }
+}
+
+@media (max-width: 767px) {
+    .categories-header-wrapper {
+        grid-area: 1 / 1 / 3 / 14;
+        height: 300px;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right -50px bottom -185px / 400px, var(--neutrals-900);
+    }
+
+    .categories-title-wrapper {
+        padding: 2rem 25% 0 2.5rem;
+    }
+
+    .categories-title-wrapper>h2 {
+        color: #fff;
+    }
+
+    .categories-title-wrapper>p {
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #fff;
+        opacity: 0.90;
+    }
+
+    .categories-header-side-item-1,
+    .categories-header-side-item-2,
+    .categories-header-side-item-3 {
+        display: none;
+    }
+
+    .categories-header {
+        grid-area: 3 / 1 / 4 / 14;
+    }
+
+    .category-1-wrapper {
+        grid-area: 4 / 1 / 5 / 14;
+    }
+
+    .category-2-wrapper {
+        grid-area: 5 / 1 / 6 / 14;
+    }
+
+    .category-3-wrapper {
+        grid-area: 6 / 1 / 7 / 14;
+    }
+
+    .category-4-wrapper {
+        grid-area: 7 / 1 / 8 / 14;
+
+    }
+
+    .category-5-wrapper {
+        grid-area: 8 / 1 / 9 / 14;
+
+    }
+
+    .category-6-wrapper {
+        grid-area: 9 / 1 / 10 / 14;
+
+    }
+
+    .category-7-wrapper {
+        grid-area: 10 / 1 / 11 / 14;
+    }
+
+    .category-8-wrapper {
+        grid-area: 11 / 1 / 12 / 14;
+    }
+
+    .category-9-wrapper {
+        grid-area: 12 / 1 / 13 / 14;
+    }
+
+    a[class^=category-] {
+        height: 75px;
+        background-color: var(--greys-000);
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        padding-left: 3rem;
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--blacks-700);
+    }
+}
+
+@media (max-width: 566px) {
+    .categories-header-wrapper {
+        grid-area: 1 / 1 / 3 / 14;
+        height: 300px;
+        border-radius: 1rem;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right -175px bottom -185px / 400px, var(--neutrals-900);
+    }
+}
+
+/* CATEGORY PAGE */
+.category-show-wrapper {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(5, auto);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 0rem 1.5rem 1.5rem 1.5rem;
+    height: auto;
+}
+
+.category-header-wrapper {
+    grid-area: 1 / 1 / 2 / 14;
+    height: 150px;
+    border-radius: 1rem;
+    background-color: var(--neutrals-900);
+}
+
+.category-title-wrapper {
+    padding: 2rem 25% 0 2.5rem;
+}
+
+.category-title-wrapper > * {
+    color: #fff;
+}
+
+@media (min-width: 1200px) {
+    
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+@media (min-width: 768px) and (max-width: 991px) {}
+
+@media (min-width: 567px) and (max-width: 767px) {}
+
+@media (max-width: 566px) {}
+
+/* ALL RECIPES */
+.all-recipes-wrapper {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(3, auto);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 0rem 1.5rem 1.5rem 1.5rem;
+    height: auto;
+}
+
+@media (min-width: 1200px) {
+    .all-recipe-header-wrapper {
+        grid-area: 1 / 1 / 3 / 8;
+        border-radius: 1rem;
+        background-color: var(--greys-000);
+    }
+
+    .all-recipes-title-wrapper {
+        padding: 2rem 25% 0 2.5rem;
+    }
+
+    .all-recipes-search {
+        display: flex;
+        flex: 1 1 0;
+        min-width: 150px;
+        padding: 0 25% 2rem 2.5rem;
+
+    }
+
+    .all-recipes-search input {
+        background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238E8E93' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 1rem 50%;
+        border-radius: 1rem;
+        height: 3rem;
+        min-width: inherit;
+        padding-left: 2.5rem;
+        border: 2px solid var(--greys-300);
+        color: var(--blacks-900);
+        text-decoration: none;
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+
+    .all-recipe-category-button-wrapper {
+        grid-area: 1 / 8 / 3 / 14;
+        display: flex;
+        background-color: var(--neutrals-900);
+        border-radius: 1rem;
+    }
+
+    .all-recipe-category-button {
+        text-decoration: none;
+        font-family: var(--font-family);
+        font-size: 2rem;
+        font-style: var(--font-style);
+        font-weight: 700;
+        line-height: 3rem;
+        display: inline-flex;
+        padding: 1.5rem 0rem;
+        color: white;
+        align-items: center;
         width: 100%;
+        justify-content: center;
+    }
+
+    .all-recipe-list,
+    .category-recipe-list {
+        display: flex;
+        margin: 0rem 1.5rem 1.5rem 1.5rem;
+        gap: 1rem;
+    }
+
+    .all-recipe-list > *,
+    .category-recipe-list > * {
+        flex: 1 1 50%;
+        gap: 1rem;
+        background-color: var(--greys-000);
+        border-radius: 1rem;
+    }
+
+    .recipe-image {
+        border-radius: 1rem;
+        overflow: hidden;
+        height: 150px;
+        width: 150px;
+        object-fit: cover;
+        margin: .75rem 2rem .75rem .75rem;
+    }
+
+    .recipe-info-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        padding: 2rem 2rem 2rem 0;
+    }
+
+    .recipe-info-wrapper  > p {
+        font-family: var(--font-family);
+        font-style: var(--font-style);
+        font-weight: 600;
+        font-size: 1.25rem;
+    }
+
+    .recipe-info-button {
+        margin: auto auto 0 0;
     }
 }
 
@@ -3439,4 +4068,3 @@ h4 {
 @media (min-width: 567px) and (max-width: 767px) {}
 
 @media (max-width: 566px) {}
-

@@ -8,31 +8,33 @@ async function createComment(recipeId, userId, firstName, lastName, comment) {
         ?`
 
     const [_createRecipeCommentRows, _createRecipeCommentFields] = await db.promise().query(createQuery, {
-       recipe_id: recipeId,
-       user_id: userId,
-       first_name: firstName,
-       last_name: lastName,
-       comment: comment
+        recipe_id: recipeId,
+        user_id: userId,
+        first_name: firstName,
+        last_name: lastName,
+        comment: comment
     });
 }
 
 async function readComment(recipeId, user) {
-    const readQuery = `
-    SELECT 
-        * 
-    FROM 
-        comments 
-    WHERE 
-        user_id = ?
-    AND 
-        recipe_id = ?`
-    
-    const [rows, _fields] = await db.promise().query(readQuery, [user.id, recipeId]);
+    if (user != undefined) {
+        const readQuery = `
+        SELECT 
+            * 
+        FROM 
+            comments 
+        WHERE 
+            user_id = ?
+        AND 
+            recipe_id = ?`
 
-    if (rows.lenght = 1) {
-        return 'user commented'
-    } else {
-        return 'not commented'
+        const [rows, _fields] = await db.promise().query(readQuery, [user.id, recipeId]);
+
+        if (rows.lenght = 1) {
+            return 'user commented'
+        } else {
+            return 'not commented'
+        }
     }
 }
 
@@ -46,7 +48,7 @@ async function updateComment(comment, commentId, userId) {
         id = ${commentId}
     AND 
         user_id = ${userId}`
-    
+
     const [_updateRows, _updateFields] = await db.promise().query(updateQuery, {
         comment: comment
     });
@@ -61,13 +63,13 @@ async function deleteComment(commentId, userId) {
         id = ?
     AND 
         user_id = ?`
-    
+
     const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [commentId, userId]);
 }
 
-module.exports = { 
-    createComment, 
-    readComment, 
-    updateComment, 
-    deleteComment 
+module.exports = {
+    createComment,
+    readComment,
+    updateComment,
+    deleteComment
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+    <div class="main-bread-crumbs-wrapper">
+        <ol class="bread-crumb-list">
+            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
+            <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
+        </ol>
+    </div>
+    <section class="categories-show-wrapper">
+        <div class="categories-header-wrapper">
+            <header class="categories-title-wrapper">
+                <h2>Explore All Recipes Categories</h2>
+                <p>Let's get cookin'</p>
+            </header>
+        </div>
+        <a href="/recipes/categories/appetizers" class="categories-header-side-item-1">Appetizers</a>
+        <a href="/recipes/categories/baking" class="categories-header-side-item-2">Baking</a>
+        <a href="/recipes/categories/drinks" class="categories-header-side-item-3">Drinks</a>
+        <h3 class="categories-header">Recipe Categories</h3>
+        <a href="/recipes/categories/breakfast" class="category-1-wrapper">Breakfast</a>
+        <a href="/recipes/categories/lunch" class="category-2-wrapper">Lunch</a>
+        <a href="/recipes/categories/snacketizers" class="category-3-wrapper">Sancketizers</a>
+        <a href="/recipes/categories/baking" class="category-4-wrapper">Baking</a>
+        <a href="/recipes/categories/soup" class="category-5-wrapper">Soup</a>
+        <a href="/recipes/categories/salad" class="category-6-wrapper">Salad</a>
+        <a href="/recipes/categories/dinner" class="category-7-wrapper">Dinner</a>
+        <a href="/recipes/categories/drinks" class="category-8-wrapper">Drinks</a>
+        <a href="/recipes/categories/dessert" class="category-9-wrapper">Dessert</a>
+    </section>
+    <%- include('../partials/footer') %>
+</body>
+</html>

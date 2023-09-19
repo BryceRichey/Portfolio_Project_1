@@ -26,12 +26,34 @@ router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, 
 
 // READ
 router.get('/recipes', async (_req, res, _next) => {
-    const recipes = await recipeQueries.getAllRecipes();
+    const allRecipes = await recipeQueries.getAllRecipes();
 
-    res.render('recipes/index', { recipes })
+    res.render('recipes/index', {
+        allRecipes
+    });
 });
 
-router.get('/recipes/:recipeId', async (req, res, _next) => {
+router.get('/recipes/categories', async (_req, res, _next) => {
+    res.render('recipes/categories');
+});
+
+router.get('/recipes/categories/:category', async (req, res, _next) => {
+    const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
+
+    let categoryLC = req.params.category;
+    let firstLetter = categoryLC.charAt(0);
+    let firstLetterCapital = firstLetter.toUpperCase();
+    let remainingLetters = categoryLC.substring(1);
+    let categoryUC = firstLetterCapital + remainingLetters;
+
+    res.render('recipes/category', {
+        categoryLC,
+        categoryUC,
+        categoryRecipes
+    });
+});
+
+router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
@@ -41,8 +63,15 @@ router.get('/recipes/:recipeId', async (req, res, _next) => {
     const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
     const recipeRating = await recipeQueries.getRecipeRatings(req.params.recipeId, req.user);
 
+    let categoryLC = req.params.category;
+    let firstLetter = categoryLC.charAt(0);
+    let firstLetterCapital = firstLetter.toUpperCase();
+    let remainingLetters = categoryLC.substring(1);
+    let categoryUC = firstLetterCapital + remainingLetters;
 
     res.render('recipes/show', {
+        categoryLC,
+        categoryUC,
         recipe,
         ingredients,
         directions,
@@ -56,16 +85,24 @@ router.get('/recipes/:recipeId', async (req, res, _next) => {
 });
 
 // UPDATE
-router.get('/recipes/:recipeId/edit', async (req, res, _next) => {
+router.get('/recipes/categories/:category/:recipeId/edit', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
     // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
 
+    let categoryLC = req.params.category;
+    let firstLetter = categoryLC.charAt(0);
+    let firstLetterCapital = firstLetter.toUpperCase();
+    let remainingLetters = categoryLC.substring(1);
+    let categoryUC = firstLetterCapital + remainingLetters;
+
     const ingredientsArray = new Array()
     let ingredientArray = new Array()
     ingredients.forEach(ingredient => {
         ingredientArray.push(ingredient.amount)
+        ingredientArray.push(ingredient.fraction)
+        ingredientArray.push(ingredient.unit)
         ingredientArray.push(ingredient.fraction_value_id)
         ingredientArray.push(ingredient.unit_value_id)
         ingredientArray.push(ingredient.ingredient)
@@ -84,6 +121,8 @@ router.get('/recipes/:recipeId/edit', async (req, res, _next) => {
     })
 
     res.render('recipes/edit', {
+        categoryLC,
+        categoryUC,
         id: req.params.recipeId,
         recipe: recipe,
         ingredients: ingredientsArray,
@@ -93,10 +132,10 @@ router.get('/recipes/:recipeId/edit', async (req, res, _next) => {
 
 router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
     await recipeQueries.updateRecipe(req.params.recipeId, req.body);
-    // await recipeQueries.createRecipeIngredient(req.body);
+    await recipeQueries.updateRecipeIngredients(req.params.recipeId, req.body);
     await recipeQueries.updateRecipeDirections(req.params.recipeId, req.body);
 
-    res.redirect(`/recipes/${req.params.recipeId}`);
+    res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
 });
 
 // DELETE

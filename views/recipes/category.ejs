@@ -7,29 +7,23 @@
 
 <body>
     <%- include('../partials/header') %>
+    <% const recipes = categoryRecipes %>
     <div class="main-bread-crumbs-wrapper">
         <ol class="bread-crumb-list">
             <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
             <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
         </ol>
     </div>
-    <section class="all-recipes-wrapper">
-        <div class="all-recipe-header-wrapper">
-            <header class="all-recipes-title-wrapper">
-                <h2>Search All Recipes</h2>
+    <section class="category-show-wrapper">
+        <div class="category-header-wrapper">
+            <header class="category-title-wrapper">
+                <h2><%= categoryUC %> Recipes</h2>
             </header>
-            <search class="all-recipes-search">
-                <form action="" class="search-form">
-                  <input type="search" name="" id="" placeholder="Search">
-                </form>
-            </search>
-        </div>
-        <div class="all-recipe-category-button-wrapper">
-            <a href="/recipes/categories" class="all-recipe-category-button">View Categories</a>
         </div>
     </section>
-    <section class="all-recipe-list">
-        <% const recipes = allRecipes %>
+    <section class="category-recipe-list">
         <% recipes.forEach(recipe => { %>
             <div class="recipe-wrapper">
                 <div class="recipe-image-wrapper">
@@ -37,12 +31,11 @@
                 </div>
                 <div class="recipe-info-wrapper">
                     <p id="recipe-title"><%= recipe['r_title'] %></p>
-                    <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>" class="button-2-solid recipe-info-button">View Recipe</a>
+                    <a href="/recipes/categories/<%= categoryLC %>/<%= recipe['id'] %>" class="button-2-solid recipe-info-button">View Recipe</a>
                 </div>
             </div>
-        <% }); %>
+        <% }) %>
     </section>
     <%- include('../partials/footer') %>
 </body>
-
 </html>

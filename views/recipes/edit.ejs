@@ -14,9 +14,9 @@
         <ol class="bread-crumb-list">
             <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
             <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/baking" class="bread-crumb">Baking</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
-            <li class="bread-crumb-item"><a href="/recipes/<%= recipeData['id'] %>/edit" class="bread-crumb">Edit Recipe</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
         </ol>
     </div>
     <main>
@@ -29,9 +29,30 @@
                 <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe">
                     <section class="recipe-details-wrapper">
                         <h3>Recipe Details</h3>
-                        <div class="input-field">
-                            <label for="recipe-title">Title</label>
-                            <input type="text" name="recipeTitle" class="normal-border" id="recipe-title" value="<%= recipeData['r_title'] %>">
+                        <div class="input-two-fields">
+                            <div class="input-field">
+                                <label for="recipe-title">Title</label>
+                                <input type="text" name="recipeTitle" class="normal-border" id="recipe-title" value="<%= recipeData['r_title'] %>">
+                            </div>
+                            <div class="input-field">
+                                <label for="recipe-category">Category</label>
+                                <select name="recipeCategory" id="recipe-category" class="normal-border">
+                                    <% if (recipeData['category']) { %>
+                                        <option value="<%= recipeData['category'] %>" default selected hidden><%= recipeData['category'] %></option>
+                                    <% } else { %>
+                                        <option value="" default selected hidden>Select Category</option>
+                                    <% } %>
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="snacketizers">Snacketizers</option>
+                                    <option value="baking">Baking</option>
+                                    <option value="soup">Soup</option>
+                                    <option value="salad">Salad</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="drinks">Drinks</option>
+                                    <option value="dessert">Dessert</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="input-field">
                             <label for="recipe-description">Description</label>
@@ -68,7 +89,12 @@
                                     <div class="input-field">
                                         <label for="ingredient-fraction">Fraction</label>
                                         <select name="ingredientFraction_<%=count%>" id="ingredient-fraction" class="normal-border">
-                                            <option value="<%=ingredient[1] %>" default selected hidden>Select Fraction</option>
+                                            <% if (ingredient[1]) { %>
+                                                <option value="<%=ingredient[3] %>" default selected hidden><%=ingredient[1] %></option>
+                                            <% } else { %>
+                                                <option value="" default selected hidden></option>
+                                            <% } %>
+                                            <option value=""></option>
                                             <option value="1">¾</option>
                                             <option value="2">⅔</option>
                                             <option value="3">½</option>
@@ -81,7 +107,12 @@
                                     <div class="input-field">
                                         <label for="ingredient-unit">Unit</label>
                                         <select name="ingredientUnit_<%=count%>" id="ingredient-unit" class="normal-border">
-                                            <option value="<%= ingredient[2] %>" default selected hidden>Select unit</option>
+                                            <% if (ingredient[2]) { %>
+                                                <option value="<%= ingredient[4] %>" default selected hidden><%= ingredient[2] %></option>
+                                            <% } else { %>
+                                                <option value="" default selected hidden></option>
+                                            <% } %>
+                                            <option value=""></option>
                                             <option value="1">tablespoon</option>
                                             <option value="2">teaspoon</option>
                                             <option value="3">ounce</option>
@@ -95,7 +126,7 @@
                                     </div>
                                     <div class="input-field">
                                         <label for="ingredient">Ingredient</label>
-                                        <input type="text" name="ingredient_<%=count%>" class="normal-border" id="ingredient" value="<%= ingredient[3] %>">
+                                        <input type="text" name="ingredient_<%=count%>" class="normal-border" id="ingredient" value="<%= ingredient[5] %>">
                                     </div>
                                 </div>
                             </div>
