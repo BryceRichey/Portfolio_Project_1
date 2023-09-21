@@ -1,7 +1,7 @@
 const commentButton = document.getElementById('create-comment');
 const commentList = document.getElementById('comment-list');
 
-commentButton.addEventListener('click', _e => {
+commentButton && commentButton.addEventListener('click', _e => {
     createComment();
 });
 

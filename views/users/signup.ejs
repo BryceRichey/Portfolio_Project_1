@@ -3,16 +3,17 @@
 
 <head>
     <%- include('../partials/head') %>
+    <title>Sign Up | BYTE Recipes</title>
 </head>
 
 <body>
     <div class="login-wrapper">
         <section class="auth-content-sidebar">
             <main>
-                <a class="login-back-button" href="/">Back</a>
+                <a class="button-back" href="/">Go Back</a>
                 <div class="auth-content">
-                    <h2>Create an <span>account</span></h2>
-                    <form action="/signup" id="create-account" method="post">
+                    <h1>Create an <span>account</span></h1>
+                    <form action="/signup" id="create-account" method="post" aria-label="Sign up form">
                         <div class="auth-input-two-fields">
                             <div class="auth-input-field">
                                 <label for="first-name">First name</label>
@@ -38,7 +39,7 @@
                             <div class="invalid-message"></div>
                         </div>
                         <div class="auth-button">
-                            <button type="submit" class="button-2-solid">Create account</button>
+                            <button type="submit" class="button-orange">Create account</button>
                         </div>
                     </form>
                     <p>Already have an account?

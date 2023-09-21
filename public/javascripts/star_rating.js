@@ -1,6 +1,5 @@
 const starRating = document.getElementById('star-rating-container').querySelectorAll('i');
 const mobileStarRating = document.getElementById('mobile-star-rating-container').querySelectorAll('i');
-console.log(mobileStarRating)
 
 starRating && starRating.forEach((star) => {
     star.addEventListener('mouseover', e => {
@@ -38,7 +37,7 @@ function mobileAddStarRatingFill(starIcon) {
 
 const stars = document.getElementById('star-rating-container').querySelectorAll('i');
 
-const mobileStars = document.getElementById('star-rating-container').querySelectorAll('i');
+const mobileStars = document.getElementById('mobile-star-rating-container').querySelectorAll('i');
 
 stars && stars.forEach((star) => {
     star.addEventListener('click', e => {

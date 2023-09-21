@@ -3,42 +3,42 @@
 
 <head>
     <%- include('partials/head') %>
+    <title>Home | BYTE Recipes</title>
 </head>
 
 <body>
     <%- include('partials/header') %>
-        <section class="wrapper">
-            <div class="home-box-1">
-                <p>Love</p>
-                <p>Every</p>
-                <p>Byte</p>
+        <main class="wrapper">
+            <div class="home-box-1" role="region">
+                <p role="heading">Love</p>
+                <p role="heading">Every</p>
+                <p role="heading">Byte</p>
                 <div>
-                    <a href="/recipes/categories" class="button-2-solid-grey">Categories
+                    <a href="/recipes/categories" class="button-muted">Categories
                     </a>
-
                 </div>
             </div>
-            <div class="home-box-2">
-                <p>
+            <div class="home-box-2" role="region">
+                <p role="heading">
                     Read All Of Our 
-                    <span style="color: #F1A24C;">
+                    <span>
                         Best Recipes
                     </span>
                 </p>
                 <div>
-                    <a href="/recipes" class="button-2-solid">Browse
+                    <a href="/recipes" class="button-muted">Browse
                     </a>
                 </div>
             </div>
-            <div class="home-box-3">
-                <p>
+            <div class="home-box-3" role="region">
+                <p role="heading">
                     Fast, Simple & Easy
                 </p>
                 <p>
                     The perfect recipe collection without the boring backstory
                 </p>
             </div>
-        </section>
+        </main>
     <%- include('partials/footer') %>
 </body>
 

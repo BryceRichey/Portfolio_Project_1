@@ -3,16 +3,17 @@
 
 <head>
     <%- include('../partials/head') %>
+    <title>Log In | BYTE Recipes</title>
 </head>
 
 <body>
     <div class="login-wrapper">
         <section class="auth-content-sidebar">
             <main>
-                <a class="login-back-button" href="/">Back</a>
+                <a class="button-back" href="/">Go Back</a>
                 <div class="auth-content">
-                    <h2>Welcome <span>Back</span></h2>
-                    <form action="login" id="account-login" method="POST">
+                    <h1>Welcome <span>Back</span></h1>
+                    <form action="login" id="account-login" method="POST" aria-label="Log in form">
                         <div class="auth-input-field">
                             <label for="email" class="">Email</label>
                             <input type="email" class="normal-border" id="email" name="email">
@@ -24,7 +25,7 @@
                             <div class="invalid-message"></div>
                         </div>
                         <div class="auth-button">
-                            <button type="submit" class="button-2-solid">Log In</button>
+                            <button type="submit" class="button-orange">Log In</button>
                         </div>
                     </form>
                     <p>Don't have an account?

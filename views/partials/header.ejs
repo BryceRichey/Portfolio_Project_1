@@ -1,9 +1,9 @@
 <header class="main-header">
   <div class="logo-wrapper">
-    <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg">
+    <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg" alt="BYTE Recipes logo">
     <span>BYTE</span>
   </div>
-  <nav class="main-nav">
+  <nav class="main-nav" aria-label="Main menu">
     <ul class="nav-list">
       <li><a href="/" class="inactive-link" id="homeLink">Home</a></li>
       <li><a href="/recipes" class="inactive-link" id="recipesLink">Recipes</a></li>
@@ -12,16 +12,17 @@
     </ul>
   </nav>
   <search class="main-search">
-    <form action="" class="search-form">
-      <input type="search" name="" id="" placeholder="Search">
+    <form id="main-search" action="" class="search-form" aria-label="Search BYTE recipes">
+      <label for="main-search-input" class="visually-hidden">Search BYTE recipes</label>
+      <input type="main-search" aria-label="Search BYTE recipes" id="main-search-input" placeholder="Search">
     </form>
   </search>
-  <% if(locals.currentUser) {%>
-    <a href="/logout" class="button-2-outline login-out-btn">Log Out</a>
-    <a href="/account" class="button-2-solid">My Account</a>  
+  <% if (locals.currentUser) {%>
+    <a href="/logout" class="button-muted">Log Out</a>
+    <a href="/account" class="button-orange">My Account</a>  
   <% } else { %>
-    <a href="/login" class="button-2-outline login-out-btn">Log In</a>  
-    <a href="/signup" class="button-2-solid signup-btn">Sign Up</a>
+    <a href="/login" class="button-muted">Log In</a>  
+    <a href="/signup" class="button-orange">Sign Up</a>
   <% } %>
 </header>
 

@@ -18,13 +18,19 @@ async function getAllRecipes() {
 async function getCategoryRecipes(category) {
     const getCategoryRecipesQuery = `
     SELECT 
-        * 
+        r.*, 
+        rp.photo_url
     FROM 
-        recipes 
+        recipes r
+    LEFT JOIN 
+        recipe_photos rp ON r.id = rp.recipe_id
     WHERE 
         category = ?`
 
-    const [categoryRecipesRows, _categoryRecipesFields] = await db.promise().query(getCategoryRecipesQuery, [category]);
+    const [categoryRecipesRows, _categoryRecipesFields] = await db.promise().query(getCategoryRecipesQuery, 
+        ["baking"]
+        // [category]
+        );
 
     return categoryRecipesRows;
 }

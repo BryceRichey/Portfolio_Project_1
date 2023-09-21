@@ -3,6 +3,7 @@
 
 <head>
     <%- include('../partials/head') %>
+    <title>Account | BYTE Recipes</title>
 </head>
 
 <body>
@@ -16,14 +17,14 @@
     <% let user = users[0] %>
     <main>
         <div class="new-account-wrapper">
-            <header class="header-wrapper">
-                <H2>Hello <%=user['f_name']%>!</H2>
+            <header class="header-wrapper" aria-label="welcome message">
+                <H1>Hello <%=user['f_name']%>!</H1>
                 <p>All the great stuff releating to your account</p>
             </header>
             <section class="account-wrapper">
                 <form action="account/contact" method="post" class="edit-account" id="contact-information">
-                    <section class="account-details-wrapper">
-                        <h3>Contact Information</h3>
+                    <section class="account-details-wrapper" aria-label="contact information">
+                        <h2>Contact Information</h2>
                         <div class="input-two-fields">
                             <div class="input-field">
                                 <label for="first-name">First Name</label>
@@ -45,14 +46,14 @@
                             </div>
                         </div>
                         <div class="account-buttons">
-                            <button type="submit" class="button-2-solid" id="">Save</button>
+                            <button type="submit" class="button-muted" id="">Save</button>
                         </div>
                     </section>
                 </form>
                 <section class="account-password-wrapper">
                     <form action="account/password" method="post" class="edit-account">
-                        <section class="account-details-wrapper">
-                            <h3>Change password</h3>
+                        <section class="account-details-wrapper" aria-label="change password">
+                            <h2>Change password</h2>
                             <div class="input-two-fields">
                                 <div class="input-field">
                                     <label for="newPassword">New Password</label>
@@ -64,14 +65,14 @@
                                 </div>
                             </div>
                             <div class="account-buttons">
-                                <button type="submit" class="button-2-solid" id="">Save</button>
+                                <button type="submit" class="button-muted" id="">Save</button>
                             </div>
                         </section>
                     </form>
                 </section>
                 <section class="account-recipe-wrapper">
-                        <section class="user-recipe-wrapper">
-                            <h3>Your recipes</h3>
+                        <section class="user-recipe-wrapper" aria-label="your sumbitted recipes">
+                            <h2>Your recipes</h2>
                             <% recipes.forEach(recipe => { %>
                                 <% if (recipe === []) { %>
                                     <p>No recipes submitted</p>
@@ -81,17 +82,17 @@
                                             <%= recipe['r_title'] %>
                                         </a>
                                 <% } %>
-                                        <div class="user-recipe-buttons">
-                                            <a href="/account/<%= recipe['id'] %>/delete" class="button-2-solid-grey">Delete</a>
-                                            <button class="button-2-solid">Edit</button>
+                                        <div class="user-recipe-buttons" aria-label="delete or edit <%= recipe['r_title'] %> recipe">
+                                            <a href="/account/<%= recipe['id'] %>/delete" class="button-grey">Delete</a>
+                                            <button class="button-muted">Edit</button>
                                         </div>
                                     </div>
                             <% }); %>
                         </section>
                 </section>
                 <section class="account-comment-wrapper">
-                        <section class="user-comment-wrapper">
-                            <h3>Your Comments</h3>
+                        <section class="user-comment-wrapper" aria-label="user comments">
+                            <h2>Your Comments</h2>
                             <% comments.forEach(comment => { %>
                                 <% if (comment === []) { %>
                                     <p>No comments submitted</p>

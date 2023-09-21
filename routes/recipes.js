@@ -11,8 +11,12 @@ const recipeRatingQueries = require('../db/recipe_ratings');
 
 // RECIPE CRUD
 // CREATE
-router.get('/recipes/new', (_req, res, _next) => {
-    res.render('recipes/new');
+router.get('/recipes/new', (req, res, _next) => {
+    if (!req.user || !req.user.id) {
+        res.render('users/login');
+    } else {
+        res.render('recipes/new');
+    }
 });
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
@@ -33,24 +37,32 @@ router.get('/recipes', async (_req, res, _next) => {
     });
 });
 
-router.get('/recipes/categories', async (_req, res, _next) => {
-    res.render('recipes/categories');
+router.get('/recipes/categories', async (req, res, _next) => {
+    const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
+
+    res.render('recipes/categories', {
+        categoryRecipes
+    });
 });
 
 router.get('/recipes/categories/:category', async (req, res, _next) => {
     const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
 
-    let categoryLC = req.params.category;
-    let firstLetter = categoryLC.charAt(0);
-    let firstLetterCapital = firstLetter.toUpperCase();
-    let remainingLetters = categoryLC.substring(1);
-    let categoryUC = firstLetterCapital + remainingLetters;
+    res.json({
+        recipes: categoryRecipes
+    })
 
-    res.render('recipes/category', {
-        categoryLC,
-        categoryUC,
-        categoryRecipes
-    });
+    // let categoryLC = req.params.category;
+    // let firstLetter = categoryLC.charAt(0);
+    // let firstLetterCapital = firstLetter.toUpperCase();
+    // let remainingLetters = categoryLC.substring(1);
+    // let categoryUC = firstLetterCapital + remainingLetters;
+
+    // res.render('recipes/category', {
+    //     categoryLC,
+    //     categoryUC,
+    //     categoryRecipes
+    // });
 });
 
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
