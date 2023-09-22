@@ -28,8 +28,7 @@ async function getCategoryRecipes(category) {
         category = ?`
 
     const [categoryRecipesRows, _categoryRecipesFields] = await db.promise().query(getCategoryRecipesQuery, 
-        ["baking"]
-        // [category]
+        ['breakfast']
         );
 
     return categoryRecipesRows;

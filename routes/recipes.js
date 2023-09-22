@@ -7,6 +7,7 @@ const recipeQueries = require('../db/recipes');
 const recipeCommentQuries = require('../db/recipe_comments');
 const recipeCommentInteractionQueries = require('../db/recipe_comment_interactions');
 const recipeRatingQueries = require('../db/recipe_ratings');
+const recipeCategories = require('../db/recipe_categories');
 
 
 // RECIPE CRUD
@@ -45,25 +46,33 @@ router.get('/recipes/categories', async (req, res, _next) => {
     });
 });
 
-router.get('/recipes/categories/:category', async (req, res, _next) => {
-    const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
+router.get('/recipes/categories/category=*', async (req, res, _next) => {
+    const categoryRecipes = await recipeCategories.readCategoryRecipe(req.params[0]);
 
     res.json({
-        recipes: categoryRecipes
-    })
-
-    // let categoryLC = req.params.category;
-    // let firstLetter = categoryLC.charAt(0);
-    // let firstLetterCapital = firstLetter.toUpperCase();
-    // let remainingLetters = categoryLC.substring(1);
-    // let categoryUC = firstLetterCapital + remainingLetters;
-
-    // res.render('recipes/category', {
-    //     categoryLC,
-    //     categoryUC,
-    //     categoryRecipes
-    // });
+        categoryRecipes
+    });
 });
+
+// router.get('/recipes/categories/:category', async (req, res, _next) => {
+//     const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
+
+//     res.json({
+//         recipes: categoryRecipes
+//     })
+
+// let categoryLC = req.params.category;
+// let firstLetter = categoryLC.charAt(0);
+// let firstLetterCapital = firstLetter.toUpperCase();
+// let remainingLetters = categoryLC.substring(1);
+// let categoryUC = firstLetterCapital + remainingLetters;
+
+// res.render('recipes/category', {
+//     categoryLC,
+//     categoryUC,
+//     categoryRecipes
+// });
+// });
 
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);

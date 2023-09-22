@@ -351,12 +351,14 @@ h2 {
     border-radius: 1rem;
 }
 
-.active-link {
+.active-link,
+.active-category-link {
     color: #FFF;
     background-color: var(--neutrals-900);
 }
 
-.inactive-link {
+.inactive-link,
+.inactive-category-link {
     color: var(--blacks-900);
 }
 
@@ -2593,9 +2595,15 @@ a[class^=categories-header-side-item-] {
     border: none;
 }
 
-.category-recipe-all-cards {
+section[class$=-category-container] {
     display: flex;
     gap: 3rem;
+}
+
+.no-category-container {
+    display: flex;
+    margin: 10rem auto 0 auto;
+    justify-content: center;
 }
 
 .category-recipe-card {
