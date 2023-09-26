@@ -41,7 +41,7 @@ function getSelectedCategory(categoryType) {
             for (const [_key, value] of Object.entries(data)) {
                 if (value.length === 0) {
                     const noRecipeP = document.createElement('p');
-                    
+
                     if (noRecipesSection) {
                         const section2Container = document.getElementById('no-category-container')
 
@@ -61,11 +61,25 @@ function getSelectedCategory(categoryType) {
                         const clone = template.cloneNode(true)
                         const a = clone.getElementById('category-recipe-card');
                         const photoDiv = clone.getElementById('category-recipe-photo');
+                        const ratingDiv = clone.getElementById('recipe-rating');
 
                         section.setAttribute('id', `${recipe['category']}-category-container`);
                         section.classList.add(`${recipe['category']}-category-container`);
 
                         a.setAttribute('href', `/recipes/categories/${recipe['category']}/${recipe['id']}`);
+                        a.setAttribute('data-recipe-name', `${recipe['r_title']}`);
+                        a.setAttribute('data-recipe-id', `${recipe['id']}`);
+                        a.setAttribute('data-recipe-created-at', `${recipe['created_at']}`);
+                        
+                        const recipeRating = parseInt(recipe['recipe_rating_avg']);
+                        
+                        a.setAttribute('data-recipe-rating', `${recipeRating}`);
+
+                        if (isNaN(recipeRating)) {
+                            ratingDiv.innerHTML = "Not Rated"
+                        } else {
+                            ratingDiv.innerHTML = parseInt(recipe['recipe_rating_avg']);
+                        }
 
                         checkPhotoURL(recipe, photoDiv);
                         setRecipeTitle(clone, recipe);

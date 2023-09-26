@@ -3,12 +3,26 @@ const db = require('../config/database');
 async function getAllRecipes() {
     const getAllRecipesQuery = `
     SELECT 
-        * 
+        *
     FROM 
-        recipes 
-    ORDER BY 
+    (
+        SELECT 
+            r.*, 
+            rp.photo_url,
+            AVG(rr.rating) AS recipe_rating_avg
+        FROM 
+            recipes r
+        LEFT JOIN 
+            recipe_photos rp ON r.id = rp.recipe_id
+        LEFT JOIN 
+            recipe_ratings rr ON r.id = rr.recipe_id
+        GROUP BY
+            r.id, rp.id
+    )
+    AS 
         id 
-    DESC`
+    ORDER BY 
+        RAND()`
 
     const [allRecipes, _fields] = await db.promise().query(getAllRecipesQuery);
 

@@ -111,8 +111,8 @@
                             </div>
                         </template>
                         <div id="ingredient-input-row"></div>
-                        <div class="ingredient-buttons">
-                            <button class="button-grey" id="delete-ingredient-button">Delete Ingredient</button>
+                        <div id="ingredient-buttons" class="single-ingredient-button">
+                            <button class="button-grey not-visible" id="delete-ingredient-button">Delete Ingredient</button>
                             <button class="button-muted" id="add-ingredient-button">Add Ingredient</button>
                         </div>
                     </section>
@@ -129,19 +129,19 @@
                             </div>
                         </template>
                         <div id="direction-input-row"></div>
-                        <div class="direction-buttons">
-                            <button class="button-grey" id="delete-step-button">Delete Step</button>
+                        <div id="direction-buttons" class="single-direction-button">
+                            <button class="button-grey not-visible" id="delete-step-button">Delete Step</button>
                             <button class="button-muted" id="add-direction-button">Add Step</button>
                         </div>
                     </section>
                     <section class="recipe-photos-wrapper" aria-label="photos">
-                        <h2>Photos</h2>
+                        <h2>Photo</h2>
                         <div class="file-selector-wrapper">
                             <div class="photo-input-row">
                                 <span id="filesSelected"></span>
                             </div>
-                            <div class="photo-buttons">
-                                <button class="button-grey" id="delete-photos-button">Delete Photo</button>
+                            <div id="photo-buttons" class="single-photo-button">
+                                <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
                                 <label for="fileInput" class="button-muted">Select Photo</label>
                                 <input type="file" hidden id="fileInput">
                             </div>

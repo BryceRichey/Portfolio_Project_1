@@ -54,6 +54,23 @@ router.get('/recipes/categories/category=*', async (req, res, _next) => {
     });
 });
 
+router.get('/random-recipes', async (_req, res, _next) => {
+    const randomRecipe = await recipeCategories.randomRecipe();
+
+    let id;
+    let category;
+
+    for (const [key, value] of Object.entries(randomRecipe[0])) {
+        if (key == 'id') {
+            id = value
+        } else if (key == 'category') {
+            category = value
+        }
+    }
+
+    res.redirect(`recipes/categories/${category}/${id}`);
+});
+
 // router.get('/recipes/categories/:category', async (req, res, _next) => {
 //     const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
 

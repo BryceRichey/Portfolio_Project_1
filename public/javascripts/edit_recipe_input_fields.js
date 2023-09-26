@@ -81,3 +81,58 @@ function addDirectionField() {
 function nameString(newName) {
     return newName;
 }
+
+const ingredientButtonDiv = document.getElementById('ingredient-buttons');
+const deleteIngredientButton = document.getElementById('delete-ingredient-button');
+const ingredientInputRow = document.getElementById('ingredients-container');
+const ingredientConfig = { childList: true }
+const ingredientcallback = (mutationList, _observer) => {
+    for (const mutation of mutationList) {
+        console.log(ingredientInputRow.length);
+        if (mutation.type = 'childList') {
+            if (deleteIngredientButton.classList.contains('not-visible')) {
+                if (ingredientInputRow.children.length > 1) {
+                    ingredientButtonDiv.classList.add('ingredient-buttons');
+                    ingredientButtonDiv.classList.remove('single-ingredient-button');
+                    deleteIngredientButton.classList.remove('not-visible');
+                }
+            } else {
+                if (ingredientInputRow.children.length <= 1) {
+                    ingredientButtonDiv.classList.remove('ingredient-buttons');
+                    ingredientButtonDiv.classList.add('single-ingredient-button');
+                    deleteIngredientButton.classList.add('not-visible');
+                }
+            }
+        }
+    }
+}
+const ingredientObserver = new MutationObserver(ingredientcallback);
+
+ingredientObserver.observe(ingredientInputRow, ingredientConfig);
+
+const directionButtonDiv = document.getElementById('direction-buttons');
+const deleteDirectionButton = document.getElementById('delete-step-button');
+const directionInputRow = document.getElementById('directions-container');
+const directionconfig = { childList: true }
+const directionCallback = (mutationList, _observer) => {
+    for (const mutation of mutationList) {
+        if (mutation.type = 'childList') {
+            if (deleteDirectionButton.classList.contains('not-visible')) {
+                if (directionInputRow.children.length > 1) {
+                    directionButtonDiv.classList.add('direction-buttons');
+                    directionButtonDiv.classList.remove('single-direction-button');
+                    deleteDirectionButton.classList.remove('not-visible');
+                }
+            } else {
+                if (directionInputRow.children.length <= 1) {
+                    directionButtonDiv.classList.remove('direction-buttons');
+                    directionButtonDiv.classList.add('single-direction-button');
+                    deleteDirectionButton.classList.add('not-visible');
+                }
+            }
+        }
+    }
+}
+const directionObserver = new MutationObserver(directionCallback);
+
+directionObserver.observe(directionInputRow, directionconfig);
