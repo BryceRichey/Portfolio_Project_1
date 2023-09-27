@@ -15,13 +15,13 @@
             <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
             <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
             <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'].charAt(0).toUpperCase() + recipeData['r_title'].slice(1) %></a></li>
         </ol>
     </nav>
     <section class="recipe-show-wrapper">
         <main class="recipe-main-wrapper" aria-label="recipe information">
             <header class="title-wrapper" aria-label="<%= recipeData['r_title'] %> details">
-                <h1><%= recipeData['r_title'] %></h1>
+                <h1><%= recipeData['r_title'].charAt(0).toUpperCase() + recipeData['r_title'].slice(1) %></h1>
                 <div class="recipe-interaction">
                     <div id="recipeHeaderRating" class="recipe-rating">
                         <% const AVG = parseFloat(recipeData['recipe_rating_avg']) %>

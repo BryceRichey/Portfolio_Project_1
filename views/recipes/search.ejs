@@ -8,6 +8,7 @@
 
 <body>
     <%- include('../partials/header') %>
+    <% const value = searchValue %>
     <nav class="main-bread-crumbs-wrapper">
         <ol class="bread-crumb-list">
             <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
@@ -17,8 +18,8 @@
         <section class="all-recipes-wrapper">
         <div class="all-recipe-header-wrapper">
             <header class="all-recipes-title-wrapper">
-                <h1>Search All Recipes</h1>
-                <p>Find the perfect meal</p>
+                <h1>Searched For:</h1>
+                <p><%= value.charAt(0).toUpperCase() + value.slice(1) %></p>
             </header>
             <search class="all-recipes-search">
                 <form action="" class="search-form">

@@ -29,6 +29,17 @@ router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, 
     res.redirect('/recipes');
 });
 
+router.post('/recipes/search', async (req, res, _next) => {
+    let searchValue = req.body.searchValue;
+
+    const allRecipes = await recipeQueries.getRecipeSearch(req.body.searchValue);
+    
+    res.render('recipes/search', {
+        allRecipes,
+        searchValue
+    });
+});
+
 // READ
 router.get('/recipes', async (_req, res, _next) => {
     const allRecipes = await recipeQueries.getAllRecipes();

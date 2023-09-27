@@ -10,6 +10,8 @@ const recipeQueries = require('../db/recipes');
 // CREATE
 //router.post('/signup', [passport.userExists, (req, res, _next) => {
 router.post('/signup', async (req, res, _next) => {
+    console.log(req.body)
+
     const saltHash = genPassword(req.body.password);
     const salt = saltHash.salt;
     const hash = saltHash.hash;

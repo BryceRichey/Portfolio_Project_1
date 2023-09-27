@@ -29,6 +29,30 @@ async function getAllRecipes() {
     return allRecipes;
 }
 
+async function getRecipeSearch(searchValue) {
+    const searchQuery = `
+    SELECT 
+        r.*, 
+        rp.photo_url,
+        AVG(rr.rating) AS recipe_rating_avg
+    FROM 
+        recipes r
+    LEFT JOIN 
+        recipe_photos rp ON r.id = rp.recipe_id
+    LEFT JOIN 
+        recipe_ratings rr ON r.id = rr.recipe_id
+    WHERE 
+        MATCH (r.r_title) AGAINST ('${searchValue}') 
+    GROUP BY
+        r.id, rp.id
+    LIMIT 
+        0, 25`
+
+    const [searchRows, _searchFileds] = await db.promise().query(searchQuery);
+
+    return searchRows;
+}
+
 async function getCategoryRecipes(category) {
     const getCategoryRecipesQuery = `
     SELECT 
@@ -41,9 +65,9 @@ async function getCategoryRecipes(category) {
     WHERE 
         category = ?`
 
-    const [categoryRecipesRows, _categoryRecipesFields] = await db.promise().query(getCategoryRecipesQuery, 
+    const [categoryRecipesRows, _categoryRecipesFields] = await db.promise().query(getCategoryRecipesQuery,
         ['breakfast']
-        );
+    );
 
     return categoryRecipesRows;
 }
@@ -220,7 +244,7 @@ async function createRecipe(user, body) {
         submit_user_id: user.id,
         submit_user_first_name: user.f_name,
         submit_user_last_name: user.l_name,
-        r_title: body.recipeTitle,
+        r_title: body.recipeTitle.toLowerCase(),
         description: body.recipeDescription,
         servings: body.recipeServings,
         prep_time: body.recipePrepTime,
@@ -816,6 +840,7 @@ async function updateRecipeDirections(recipeId, body) {
 
 module.exports = {
     getAllRecipes,
+    getRecipeSearch,
     getCategoryRecipes,
     getRecipe,
     getRecipeIngredients,
