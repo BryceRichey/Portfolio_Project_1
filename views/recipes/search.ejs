@@ -22,8 +22,9 @@
                 <p><%= value.charAt(0).toUpperCase() + value.slice(1) %></p>
             </header>
             <search class="all-recipes-search">
-                <form action="" class="search-form">
-                  <input type="search" name="" id="" placeholder="Search">
+                <form action="search" class="search-form" method="post">
+                    <label for="main-search-input" class="visually-hidden">Search BYTE recipes</label>
+                    <input name="searchValue" type="search" id="main-search-input" placeholder="Search">
                 </form>
             </search>
         </div>

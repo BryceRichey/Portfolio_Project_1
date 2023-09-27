@@ -28,9 +28,9 @@
         <div class="offcanvas-body">
           <div>
             <search class="main-search-mobile">
-              <form id="main-search" action="" class="search-form" aria-label="Search BYTE recipes">
+              <form id="main-search"  action="recipes/search"class="search-form" aria-label="Search BYTE recipes" method="post">
                 <label for="main-search-input" class="visually-hidden">Search BYTE recipes</label>
-                <input type="main-search" aria-label="Search BYTE recipes" id="main-search-input" placeholder="Search">
+                <input name="searchValue" type="main-search" aria-label="Search BYTE recipes" id="main-search-input" placeholder="Search">
               </form>
             </search>
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="mobile-nav-list">
