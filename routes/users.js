@@ -17,7 +17,7 @@ router.post('/signup', async (req, res, _next) => {
     const hash = saltHash.hash;
 
     await userQueries.createUser(req.body.firstName, req.body.lastName, req.body.email, salt, hash);
-    
+
     res.redirect('/login')
 });
 
@@ -96,19 +96,36 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
 
 
 // LOGIN & LOGOUT 
-router.get('/login', (_req, res, _next) => {
+router.get('/login', (req, res, _next) => {
+    console.log(req.session.returnTo);
+
     res.render('users/login.ejs')
 });
 
-router.get('/login/*', (req, res, _next) => {
-    res.render('users/login.ejs')
-    session.path = req.params[0];
-});
+router.post('/login',
+    passport.passport.authenticate('local', {
+        failureRedirect: '/login',
+        keepSessionInfo: true
+    }), (req, res) => {
+        const template = req.session.passport;
+        const returnTo = req.session.returnTo;
 
-router.post('/login', passport.passport.authenticate('local', {
-    successReturnToOrRedirect: '/',
-    failureRedirect: '/login'
-}));
+        req.session.regenerate(
+            function (_err) {
+                req.session.passport = template;
+                req.session.returnTo = returnTo;
+                req.session.save(
+                    function (_err) {
+                        res.sendStatus(200);
+                    }
+                );
+            }
+        );
+
+        res.redirect(previousUrl);
+        delete req.session.returnTo;
+    }
+);
 
 router.get('/logout', (req, res, _next) => {
     req.logout((err) => {
@@ -117,8 +134,16 @@ router.get('/logout', (req, res, _next) => {
         }
         res.redirect('/');
     });
-    
+
     res.redirect('/login');
 });
+
+// router.get('*', function (req, res, next) {
+//     if (req.url === '/' || req.url === '/login' || req.url === '/signup' || req.url === '/logout' || req.url === '/account') {
+//         return next();
+//     } else {
+//         res.status(400).render('errors/404_generic.ejs');
+//     }
+// });
 
 module.exports = router;

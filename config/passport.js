@@ -62,11 +62,18 @@ validPassword = (password, hash, salt) => {
 
 isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
-        next()
+        return next()
     } else {
-        req.session.path = req.originalUrl;
+        req.session.returnTo = req.originalUrl;
+        const previousUrl = req.originalUrl;
         res.redirect('/login');
     }
+    // if (req.isAuthenticated()) {
+    //     next()
+    // } else {
+    //     req.session.path = req.originalUrl;
+    //     res.redirect('/login');
+    // }
 }
 
 isAdmin = (req, res, next) => {

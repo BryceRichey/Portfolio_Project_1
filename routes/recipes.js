@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
+const path = require('path');
 const passport = require('../config/passport');
 const cloudinary = require('../config/cloudinary');
 const recipeQueries = require('../db/recipes');
@@ -33,7 +34,7 @@ router.post('/recipes/search', async (req, res, _next) => {
     let searchValue = req.body.searchValue;
 
     const allRecipes = await recipeQueries.getRecipeSearch(req.body.searchValue);
-    
+
     res.render('recipes/search', {
         allRecipes,
         searchValue
@@ -44,9 +45,13 @@ router.post('/recipes/search', async (req, res, _next) => {
 router.get('/recipes', async (_req, res, _next) => {
     const allRecipes = await recipeQueries.getAllRecipes();
 
-    res.render('recipes/index', {
-        allRecipes
-    });
+    if (allRecipes.length == 0) {
+        res.status(500).render('errors/500.ejs');
+    } else {
+        res.render('recipes/index', {
+            allRecipes
+        });
+    }
 });
 
 router.get('/recipes/categories', async (req, res, _next) => {
@@ -82,26 +87,6 @@ router.get('/random-recipes', async (_req, res, _next) => {
     res.redirect(`recipes/categories/${category}/${id}`);
 });
 
-// router.get('/recipes/categories/:category', async (req, res, _next) => {
-//     const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
-
-//     res.json({
-//         recipes: categoryRecipes
-//     })
-
-// let categoryLC = req.params.category;
-// let firstLetter = categoryLC.charAt(0);
-// let firstLetterCapital = firstLetter.toUpperCase();
-// let remainingLetters = categoryLC.substring(1);
-// let categoryUC = firstLetterCapital + remainingLetters;
-
-// res.render('recipes/category', {
-//     categoryLC,
-//     categoryUC,
-//     categoryRecipes
-// });
-// });
-
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
@@ -112,71 +97,79 @@ router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) =>
     const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
     const recipeRating = await recipeQueries.getRecipeRatings(req.params.recipeId, req.user);
 
-    let categoryLC = req.params.category;
-    let firstLetter = categoryLC.charAt(0);
-    let firstLetterCapital = firstLetter.toUpperCase();
-    let remainingLetters = categoryLC.substring(1);
-    let categoryUC = firstLetterCapital + remainingLetters;
+    if (recipe.length == 0) {
+        res.status(404).render('errors/404_no_recipe.ejs');
+    } else {
+        let categoryLC = req.params.category;
+        let firstLetter = categoryLC.charAt(0);
+        let firstLetterCapital = firstLetter.toUpperCase();
+        let remainingLetters = categoryLC.substring(1);
+        let categoryUC = firstLetterCapital + remainingLetters;
 
-    res.render('recipes/show', {
-        categoryLC,
-        categoryUC,
-        recipe,
-        ingredients,
-        directions,
-        previousComment,
-        comments,
-        commentLikes,
-        photos,
-        recipeRating,
-        dayjs
-    });
+        res.render('recipes/show', {
+            categoryLC,
+            categoryUC,
+            recipe,
+            ingredients,
+            directions,
+            previousComment,
+            comments,
+            commentLikes,
+            photos,
+            recipeRating,
+            dayjs
+        });
+    }
 });
 
 // UPDATE
-router.get('/recipes/categories/:category/:recipeId/edit', async (req, res, _next) => {
+router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, async (req, res, _next) => {
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
     // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
 
-    let categoryLC = req.params.category;
-    let firstLetter = categoryLC.charAt(0);
-    let firstLetterCapital = firstLetter.toUpperCase();
-    let remainingLetters = categoryLC.substring(1);
-    let categoryUC = firstLetterCapital + remainingLetters;
+    if (recipe.length == 0) {
+        res.status(500).render('errors/500.ejs');
+    } else {
+        let categoryLC = req.params.category;
+        let firstLetter = categoryLC.charAt(0);
+        let firstLetterCapital = firstLetter.toUpperCase();
+        let remainingLetters = categoryLC.substring(1);
+        let categoryUC = firstLetterCapital + remainingLetters;
 
-    const ingredientsArray = new Array()
-    let ingredientArray = new Array()
-    ingredients.forEach(ingredient => {
-        ingredientArray.push(ingredient.amount)
-        ingredientArray.push(ingredient.fraction)
-        ingredientArray.push(ingredient.unit)
-        ingredientArray.push(ingredient.fraction_value_id)
-        ingredientArray.push(ingredient.unit_value_id)
-        ingredientArray.push(ingredient.ingredient)
-        ingredientsArray.push(ingredientArray)
-        ingredientArray = []
-    })
+        const ingredientsArray = new Array()
+        let ingredientArray = new Array()
+        ingredients.forEach(ingredient => {
+            ingredientArray.push(ingredient.amount)
+            ingredientArray.push(ingredient.fraction)
+            ingredientArray.push(ingredient.unit)
+            ingredientArray.push(ingredient.fraction_value_id)
+            ingredientArray.push(ingredient.unit_value_id)
+            ingredientArray.push(ingredient.ingredient)
+            ingredientsArray.push(ingredientArray)
+            ingredientArray = []
+        })
 
-    const directionsArray = new Array()
-    let directionArray = new Array()
-    directions.forEach(direction => {
-        directionArray.push(direction.id)
-        directionArray.push(direction.direction_step)
-        directionArray.push(direction.direction)
-        directionsArray.push(directionArray)
-        directionArray = []
-    })
+        const directionsArray = new Array()
+        let directionArray = new Array()
+        directions.forEach(direction => {
+            directionArray.push(direction.id)
+            directionArray.push(direction.direction_step)
+            directionArray.push(direction.direction)
+            directionsArray.push(directionArray)
+            directionArray = []
+        })
 
-    res.render('recipes/edit', {
-        categoryLC,
-        categoryUC,
-        id: req.params.recipeId,
-        recipe: recipe,
-        ingredients: ingredientsArray,
-        directions: directions
-    });
+        res.render('recipes/edit', {
+            categoryLC,
+            categoryUC,
+            id: req.params.recipeId,
+            recipe: recipe,
+            ingredients: ingredientsArray,
+            directions: directions
+        });
+    }
 });
 
 router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
@@ -245,5 +238,13 @@ router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => 
         res.json({ rated: false });
     }
 });
+
+// router.get('*', function (req, res, next) {
+//     if (req.url === '/' || req.url === '/login' || req.url === '/signup' || req.url === 'logout' || req.url === 'account') {
+//         return next();
+//     } else {
+//         res.status(400).render('errors/404_generic.ejs');
+//     }
+// });
 
 module.exports = router;

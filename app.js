@@ -47,7 +47,7 @@ app.use(authConfig.setCurrentUser);
 app.use(recipeRouter);
 app.use(usersRouter);
 
-app.get('/', (_req, res, next) => {
+app.get('/', (_req, res, _next) => {
     if (session.path) {
         res.redirect(session.path);
         session.path = null;
