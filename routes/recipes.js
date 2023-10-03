@@ -13,12 +13,8 @@ const recipeCategories = require('../db/recipe_categories');
 
 // RECIPE CRUD
 // CREATE
-router.get('/recipes/new', (req, res, _next) => {
-    if (!req.user || !req.user.id) {
-        res.render('users/login');
-    } else {
+router.get('/recipes/new', passport.isAuth, (req, res, _next) => {
         res.render('recipes/new');
-    }
 });
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
@@ -88,6 +84,8 @@ router.get('/random-recipes', async (_req, res, _next) => {
 });
 
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
+    req.session.returnTo = req.originalUrl;
+
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
@@ -181,7 +179,7 @@ router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
 });
 
 // DELETE
-router.get('/recipes/:recipeId/delete', async (req, res, _next) => {
+router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next) => {
     await recipeQueries.deleteRecipe(req.params.recipeId);
 
     res.redirect('/recipes');

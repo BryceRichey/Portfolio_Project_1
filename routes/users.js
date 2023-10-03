@@ -97,8 +97,6 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
 
 // LOGIN & LOGOUT 
 router.get('/login', (req, res, _next) => {
-    console.log(req.session.returnTo);
-
     res.render('users/login.ejs')
 });
 
@@ -106,7 +104,8 @@ router.post('/login',
     passport.passport.authenticate('local', {
         failureRedirect: '/login',
         keepSessionInfo: true
-    }), (req, res) => {
+    })
+    , (req, res) => {
         const template = req.session.passport;
         const returnTo = req.session.returnTo;
 
@@ -122,8 +121,7 @@ router.post('/login',
             }
         );
 
-        res.redirect(previousUrl);
-        delete req.session.returnTo;
+        res.redirect(req.session.returnTo);
     }
 );
 
