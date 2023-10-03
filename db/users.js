@@ -35,7 +35,7 @@ async function readDetails(userId) {
 async function readRecipes(userId) {
     const userRecipeQuery = `
     SELECT 
-        id, r_title
+        id, r_title, category
     FROM 
         recipes
     WHERE

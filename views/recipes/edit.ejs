@@ -4,7 +4,8 @@
 <head>
     <%- include('../partials/head') %>
     <% const recipeData = recipe[0] %>
-    <title>Edit Recipe | <%= recipeData['r_title'] %> | BYTE Recipes</title>
+    <% const recipeTitle = recipeData['r_title'].charAt(0).toUpperCase() + recipeData['r_title'].slice(1) %>
+    <title>Edit Recipe | <%= recipeTitle %> | BYTE Recipes</title>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
         <div class="edit-recipe-wrapper">
             <header class="header-wrapper" aria-label="edit your recipe">
                 <h1>Edit Your Recipe</h1>
-                <p><%= recipeData['r_title'] %></p>
+                <p><%= recipeTitle %></p>
             </header>
             <section class="recipe-wrapper">
                 <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe">
@@ -33,7 +34,7 @@
                         <div class="input-two-fields">
                             <div class="input-field">
                                 <label for="recipe-title">Title</label>
-                                <input type="text" name="recipeTitle" class="normal-border" id="recipe-title" value="<%= recipeData['r_title'] %>">
+                                <input type="text" name="recipeTitle" class="normal-border" id="recipe-title" value="<%= recipeTitle %>">
                             </div>
                             <div class="input-two-fields-category">
                                 <label for="recipe-category">Category</label>

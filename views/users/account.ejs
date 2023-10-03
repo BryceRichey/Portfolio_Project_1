@@ -78,13 +78,13 @@
                                     <p>No recipes submitted</p>
                                 <% } else { %>
                                     <div class="user-recipe">
-                                        <a href="/recipes/<%= recipe['id'] %>" class="user-recipe-link">
-                                            <%= recipe['r_title'] %>
+                                        <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>" class="user-recipe-link">
+                                            <%= recipe['r_title'].charAt(0).toUpperCase() + recipe['r_title'].slice(1) %>
                                         </a>
                                 <% } %>
-                                        <div class="user-recipe-buttons" aria-label="delete or edit <%= recipe['r_title'] %> recipe">
+                                        <div class="user-recipe-buttons" aria-label="delete or edit recipe">
                                             <a href="/account/<%= recipe['id'] %>/delete" class="button-grey">Delete</a>
-                                            <button class="button-muted">Edit</button>
+                                            <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>/edit" class="button-muted">Edit</a>
                                         </div>
                                     </div>
                             <% }); %>
