@@ -54,7 +54,7 @@ function validateUniqueness(email, value) {
             invalidElement.innerHTML = "Email not valid"
         } else {
             invalidElement.innerHTML = '';
-            email.classList.remove('normal-border');
+            email.classList.remove('invalid-border');
             email.classList.add('valid-border');
         }
     }
