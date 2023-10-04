@@ -312,10 +312,6 @@ async function createRecipeIngredient(body) {
 
     let ingredientsData = ingredientsArray;
     let newRecipeId;
-    let amountId;
-    let fractionId;
-    let unitId;
-    let ingredientId;
 
     async function getInsertedRecipeId() {
         const insertRecipeIdQuery = `
@@ -330,22 +326,18 @@ async function createRecipeIngredient(body) {
     async function ingredientData() {
         ingredientsData.forEach(ingredient => {
             async function queryIngredientData() {
+                let amountId;
+                let fractionId;
+                let unitId;
+                let ingredientId;
+
                 for (const [key, value] of Object.entries(ingredient)) {
                     if (key.includes('ingredientAmount_')) {
-                        async function insertRecipeIngredientAmount(amount) {
-                            amountId = amount;
-                        }
-                        await insertRecipeIngredientAmount(value);
+                        amountId = value;
                     } else if (key.includes('ingredientFraction_')) {
-                        async function insertRecipeIngredientFrction(fraction) {
-                            fractionId = fraction;
-                        }
-                        await insertRecipeIngredientFrction(value);
+                        fractionId = value;
                     } else if (key.includes('ingredientUnit_')) {
-                        async function insertRecipeIngredientUnit(unit) {
-                            unitId = unit;
-                        }
-                        await insertRecipeIngredientUnit(value);
+                        unitId = value;
                     } else if (key.includes('ingredient_')) {
                         async function insertRecipeIngredient(ingredient) {
                             const checkIngredientQuery = `
@@ -365,21 +357,16 @@ async function createRecipeIngredient(body) {
                                         ingredients (ingredient)
                                     VALUES 
                                         (?)`
-                                await db.promise().query(insertIngredientQuery, [ingredient.toLowerCase()]);
+                                const [insertIngredientQueryRows, _insertIngredientQueryFields] = await db.promise().query(insertIngredientQuery, [ingredient.toLowerCase()]);
 
-                                const insertIngredientIdQuery = `
-                                    SELECT 
-                                        MAX(id)
-                                    FROM 
-                                        ingredients`
-                                const [insertIngredientIdRows, _insertIngredientIdFields] = await db.promise().query(insertIngredientIdQuery);
-                                ingredientId = insertIngredientIdRows[0].id;
+                                ingredientId = insertIngredientQueryRows.insertId;
                             }
                         }
                         await insertRecipeIngredient(value);
                     }
                 }
-                async function insertIngredientData() {
+
+                async function insertIngredientData(newRecipeId, amountId, fractionId, unitId, ingredientId) {
                     const insertIngredientData = `
                         INSERT INTO 
                             recipe_ingredients (recipe_id, amount, fraction_id, unit_id, ingredient_id) 
