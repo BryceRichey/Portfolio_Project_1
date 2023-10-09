@@ -4,7 +4,7 @@ accountLogin.addEventListener('submit', e => {
     e.preventDefault();
     validateLogin();
     accountLogin.submit();
-})
+});
 
 function validateLogin() {
     validateNotBlank('email');
@@ -33,7 +33,7 @@ function validateNotBlank(name) {
 
 const email = document.getElementById('email');
 email.addEventListener('blur', e => {
-    validateUniqueness(email, e.target.value)
+    validateUniqueness(email, e.target.value);
 });
 
 function validateUniqueness(email, value) {
@@ -51,7 +51,7 @@ function validateUniqueness(email, value) {
         if (regexMatch === null) {
             email.classList.remove('normal-border');
             email.classList.add('invalid-border');
-            invalidElement.innerHTML = "Email not valid"
+            invalidElement.innerHTML = "Email not valid";
         } else {
             invalidElement.innerHTML = '';
             email.classList.remove('invalid-border');
@@ -63,7 +63,7 @@ function validateUniqueness(email, value) {
 const password = document.getElementById('password');
 password.addEventListener('blur', _e => {
     password.classList.remove('invalid-border', 'valid-border');
-    validatePasswordPattern(password)
+    validatePasswordPattern(password);
 });
 
 function validatePasswordPattern(password) {

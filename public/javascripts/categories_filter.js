@@ -13,11 +13,11 @@ function filterConent(option) {
     const activeCategorySection = document.querySelectorAll(`[id$="-category-container"]`)
 
     activeCategorySection.forEach(section => {
-        const checkClass = section.classList
+        const checkClass = section.classList;
 
         if (checkClass.contains('not-visible')) {
         } else {
-            const sectionChildren = section.children
+            const sectionChildren = section.children;
             const sectionArray = new Array();
 
             for (const [_key, value] of Object.entries(sectionChildren)) {

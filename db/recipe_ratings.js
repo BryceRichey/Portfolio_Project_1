@@ -25,7 +25,10 @@ async function readRating(recipeId, userId) {
     AND 
         user_id = ?`
 
-    const [readRows, _readFields] = await db.promise().query(readQuery, [recipeId, userId]);
+    const [readRows, _readFields] = await db.promise().query(readQuery, [
+        recipeId,
+        userId
+    ]);
 
     return readRows;
 }
@@ -40,7 +43,10 @@ async function deleteRating(recipeId, userId) {
     AND 
         user_id = ?`
 
-    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [recipeId, userId]);
+    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [
+        recipeId,
+        userId
+    ]);
 }
 
 module.exports = {

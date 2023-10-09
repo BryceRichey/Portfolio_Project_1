@@ -9,7 +9,7 @@ let regexSplit;
 let temp;
 let celciusConversion;
 let celciusRounded;
-let regexReplace
+let regexReplace;
 
 const regex = /\b((\d{3}) ((f|f°)|(degre)((e|es) (f|fahrenheit))))\b/gim;
 const regexTwo = /\b(\d{3})\b/gim;

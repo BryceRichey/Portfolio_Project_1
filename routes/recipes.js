@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const dayjs = require('dayjs');
-const path = require('path');
 const passport = require('../config/passport');
 const cloudinary = require('../config/cloudinary');
 const recipeQueries = require('../db/recipes');
@@ -13,8 +12,8 @@ const recipeCategories = require('../db/recipe_categories');
 
 // RECIPE CRUD
 // CREATE
-router.get('/recipes/new', passport.isAuth, (req, res, _next) => {
-        res.render('recipes/new');
+router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
+    res.render('recipes/new');
 });
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
@@ -84,8 +83,6 @@ router.get('/random-recipes', async (_req, res, _next) => {
 });
 
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
-    req.session.returnTo = req.originalUrl;
-
     const recipe = await recipeQueries.getRecipe(req.params.recipeId);
     const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
     const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
@@ -139,24 +136,24 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
         const ingredientsArray = new Array()
         let ingredientArray = new Array()
         ingredients.forEach(ingredient => {
-            ingredientArray.push(ingredient.amount)
-            ingredientArray.push(ingredient.fraction)
-            ingredientArray.push(ingredient.unit)
-            ingredientArray.push(ingredient.fraction_value_id)
-            ingredientArray.push(ingredient.unit_value_id)
-            ingredientArray.push(ingredient.ingredient)
-            ingredientsArray.push(ingredientArray)
-            ingredientArray = []
+            ingredientArray.push(ingredient.amount);
+            ingredientArray.push(ingredient.fraction);
+            ingredientArray.push(ingredient.unit);
+            ingredientArray.push(ingredient.fraction_value_id);
+            ingredientArray.push(ingredient.unit_value_id);
+            ingredientArray.push(ingredient.ingredient);
+            ingredientsArray.push(ingredientArray);
+            ingredientArray = [];
         })
 
         const directionsArray = new Array()
         let directionArray = new Array()
         directions.forEach(direction => {
-            directionArray.push(direction.id)
-            directionArray.push(direction.direction_step)
-            directionArray.push(direction.direction)
-            directionsArray.push(directionArray)
-            directionArray = []
+            directionArray.push(direction.id);
+            directionArray.push(direction.direction_step);
+            directionArray.push(direction.direction);
+            directionsArray.push(directionArray);
+            directionArray = [];
         })
 
         res.render('recipes/edit', {
@@ -177,6 +174,7 @@ router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
 
     res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
 });
+
 
 // DELETE
 router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next) => {
@@ -229,11 +227,15 @@ router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => 
     if (readRating && readRating.length == 0) {
         await recipeRatingQueries.createRating(req.params.recipeId, req.user.id, req.params[0]);
 
-        res.json({ rated: true });
+        res.json({
+            rated: true
+        });
     } else {
         await recipeRatingQueries.deleteRating(req.params.recipeId, req.user.id);
 
-        res.json({ rated: false });
+        res.json({
+            rated: false
+        });
     }
 });
 

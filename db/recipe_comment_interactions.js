@@ -24,7 +24,10 @@ async function readLike(commentId, userId) {
     AND 
         user_id = ?`
 
-    const [readRows, _readFields] = await db.promise().query(readLike, [commentId, userId]);
+    const [readRows, _readFields] = await db.promise().query(readLike, [
+        commentId,
+        userId
+    ]);
 
     return readRows;
 }
@@ -39,11 +42,14 @@ async function deleteLike(commentId, userId) {
     AND 
         user_id = ?`
 
-    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [commentId, userId]);
+    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [
+        commentId,
+        userId
+    ]);
 }
 
-module.exports = { 
-    createLike, 
-    readLike, 
-    deleteLike 
+module.exports = {
+    createLike,
+    readLike,
+    deleteLike
 }

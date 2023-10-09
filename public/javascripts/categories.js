@@ -43,7 +43,7 @@ function getSelectedCategory(categoryType) {
                     const noRecipeP = document.createElement('p');
 
                     if (noRecipesSection) {
-                        const section2Container = document.getElementById('no-category-container')
+                        const section2Container = document.getElementById('no-category-container');
 
                         section2Container.classList.remove('not-visible');
                     } else {
@@ -58,7 +58,7 @@ function getSelectedCategory(categoryType) {
                 } else {
                     value.forEach(recipe => {
                         const template = document.getElementById('recipe_card_template').content;
-                        const clone = template.cloneNode(true)
+                        const clone = template.cloneNode(true);
                         const a = clone.getElementById('category-recipe-card');
                         const photoDiv = clone.getElementById('category-recipe-photo');
                         const ratingDiv = clone.getElementById('recipe-rating');
@@ -76,7 +76,7 @@ function getSelectedCategory(categoryType) {
                         a.setAttribute('data-recipe-rating', `${recipeRating}`);
 
                         if (isNaN(recipeRating)) {
-                            ratingDiv.innerHTML = "Not Rated"
+                            ratingDiv.innerHTML = "Not Rated";
                         } else {
                             ratingDiv.innerHTML = parseInt(recipe['recipe_rating_avg']);
                         }
@@ -115,6 +115,6 @@ function setRecipeTitle(clone, recipe) {
     const recipeTitle = clone.getElementById('recipe-title');
     const p2 = clone.getElementById('recipe-submitter');
 
-    recipeTitle.innerHTML = recipe['r_title'];
+    recipeTitle.innerHTML = recipe['r_title'].charAt(0).toUpperCase() + recipe['r_title'].slice(1);
     p2.innerHTML = 'By: ' + recipe['submit_user_first_name'];
 }

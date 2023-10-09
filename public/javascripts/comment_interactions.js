@@ -3,7 +3,7 @@ const commentLikeButton = document.querySelectorAll('.like-comment-button');
 const idArray = new Array();
 
 commentLikeButton.forEach(button => {
-    let commentId = button.dataset.commentId
+    let commentId = button.dataset.commentId;
 
     idArray.push(commentId);
 });

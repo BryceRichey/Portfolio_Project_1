@@ -17,7 +17,9 @@ async function readCategoryRecipe(category) {
     GROUP BY
 		r.id, rp.id`
 
-    const [readRows, _readFields] = await db.promise().query(readQuery, [category]);
+    const [readRows, _readFields] = await db.promise().query(readQuery, [
+        category
+    ]);
 
     return readRows;
 }
@@ -31,10 +33,11 @@ async function randomRecipe() {
     ORDER BY RAND() 
     LIMIT 1`
 
-    const [readRows, _readFields ] = await db.promise().query(readQuery);
+    const [readRows, _readFields] = await db.promise().query(readQuery);
 
-    return readRows
+    return readRows;
 }
+
 module.exports = {
     readCategoryRecipe,
     randomRecipe

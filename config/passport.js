@@ -1,8 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
-const session = require('express-session');
-
 const db = require('./database');
 
 const verifyCallback = (username, password, done) => {
@@ -11,12 +9,19 @@ const verifyCallback = (username, password, done) => {
             return done(err);
         }
         if (data.length == 0) {
-            return done(null, false, { message: 'Incorrect email or password.' });
+            return done(null, false, {
+                message: 'Incorrect email or password.'
+            });
         }
 
         const isValid = validPassword(password, data[0].hash, data[0].salt);
 
-        user = { id: data[0].id, username: data[0].username, hash: data[0].hash, salt: data[0].salt }
+        user = {
+            id: data[0].id,
+            username: data[0].username,
+            hash: data[0].hash,
+            salt: data[0].salt
+        }
 
         if (isValid) {
             return done(null, user);
@@ -26,17 +31,19 @@ const verifyCallback = (username, password, done) => {
     });
 }
 
-const strategy = new LocalStrategy({ usernameField: 'email' }, verifyCallback);
+const strategy = new LocalStrategy({
+    usernameField: 'email'
+}, verifyCallback);
 
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
     db.query('SELECT * FROM users WHERE id = ?', [id], (_err, data) => {
-        done(null, data[0])
+        done(null, data[0]);
     });
 });
 
@@ -62,7 +69,7 @@ validPassword = (password, hash, salt) => {
 
 isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
-        return next()
+        return next();
     } else {
         req.session.returnTo = req.originalUrl;
         res.redirect(`/login`);
@@ -87,7 +94,7 @@ userExists = (req, res, next) => {
         if (err) {
             console.log(err);
         } else if (data.length > 0) {
-            res.redirect('/')
+            res.redirect('/');
         } else {
             next();
         }

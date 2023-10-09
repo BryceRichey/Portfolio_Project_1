@@ -17,7 +17,7 @@ function validateAccount() {
 ['first-name', 'last-name', 'email', 'password'].forEach(field => {
     let element = document.getElementById(field);
     element.addEventListener('blur', e => {
-        validateNotBlank(field, e.target.value)
+        validateNotBlank(field, e.target.value);
     });
 });
 
@@ -32,9 +32,11 @@ function validateNotBlank(name, _value) {
 
     if (element.value.trim().length < 1) {
         const errorMsg = errorName + ' cannot be blank';
+
         invalidElement.innerHTML = errorMsg;
         element.classList.remove('normal-border');
         element.classList.add('invalid-border');
+
         return;
     } else {
         element.classList.remove('normal-border');
@@ -45,7 +47,7 @@ function validateNotBlank(name, _value) {
 
 const email = document.getElementById('email');
 email.addEventListener('blur', e => {
-    validateUniqueness(email, e.target.value)
+    validateUniqueness(email, e.target.value);
 });
 
 async function validateUniqueness(email, value) {
@@ -66,9 +68,9 @@ async function validateUniqueness(email, value) {
         if (regexMatch === null) {
             email.classList.remove('normal-border');
             email.classList.add('invalid-border');
-            invalidElement.innerHTML = "Email not valid"
+            invalidElement.innerHTML = "Email not valid";
         } else {
-            let data = {}
+            let data = {};
             data[email] = value;
 
             const urlParams = new URLSearchParams(Object.entries(data));
@@ -100,7 +102,7 @@ async function validateUniqueness(email, value) {
 const password = document.getElementById('password');
 password.addEventListener('blur', e => {
     password.classList.remove('invalid-border', 'valid-border');
-    validatePasswordPattern(password, e.target.value)
+    validatePasswordPattern(password, e.target.value);
 });
 
 function validatePasswordPattern(password, value) {

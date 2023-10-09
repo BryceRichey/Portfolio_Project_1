@@ -1,35 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../config/passport');
-const session = require('express-session');
 const userQueries = require('../db/users');
 const recipeQueries = require('../db/recipes');
 
 
 // CRUD
 // CREATE
-//router.post('/signup', [passport.userExists, (req, res, _next) => {
 router.post('/signup', async (req, res, _next) => {
-    console.log(req.body)
-
     const saltHash = genPassword(req.body.password);
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
     await userQueries.createUser(req.body.firstName, req.body.lastName, req.body.email, salt, hash);
 
-    res.redirect('/login')
+    res.redirect('/login');
 });
 
 // READ
 router.get('/signup', (_req, res, _next) => {
-    res.render('users/signup.ejs')
+    res.render('users/signup.ejs');
 });
 
 router.get('/account', passport.isAuth, async (req, res, _next) => {
     const users = await userQueries.readDetails(req.user.id);
     const recipes = await userQueries.readRecipes(req.user.id);
     const comments = await userQueries.readComments(req.user.id);
+
     res.render('users/account.ejs', { users, recipes, comments });
 });
 
@@ -52,7 +49,7 @@ router.get('/signup/user/validations', async (req, res, _next) => {
 router.post('/account/contact', async (req, res, _next) => {
     for (const [key, value] of Object.entries(req.body)) {
         if (key && !value) {
-            console.log('No change')
+            console.log('No change');
         } else if (key.includes("firstName")) {
             await userQueries.updateFirstName(req.user, req.body);
         } else if (key.includes("lastName")) {
@@ -66,16 +63,16 @@ router.post('/account/contact', async (req, res, _next) => {
 });
 
 router.post('/account/password', async (req, res, _next) => {
-    let newPassword
-    let confirmPassword
+    let newPassword;
+    let confirmPassword;
 
     for (const [key, value] of Object.entries(req.body)) {
         if (key && !value) {
-            console.log('No change')
+            console.log('No change');
         } else if (key.includes('confirmPassword')) {
-            confirmPassword = value
+            confirmPassword = value;
         } else if (key.includes('newPassword')) {
-            newPassword = value
+            newPassword = value;
         }
     }
 
@@ -88,6 +85,7 @@ router.post('/account/password', async (req, res, _next) => {
     res.redirect('/account');
 });
 
+
 // DELETE
 router.get('/account/:recipe_id/delete', async (req, res, _next) => {
     await recipeQueries.deleteRecipe(req.params.recipe_id);
@@ -96,8 +94,8 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
 
 
 // LOGIN & LOGOUT 
-router.get('/login', (req, res, _next) => {
-    res.render('users/login.ejs')
+router.get('/login', (_req, res, _next) => {
+    res.render('users/login.ejs');
 });
 
 router.post('/login',

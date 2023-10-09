@@ -14,13 +14,13 @@ function addIngredientField() {
     let inputChildren = ingredientInputRow.children[0].children;
 
     Array.from(inputChildren).forEach(input => {
-        childrenName = input.children[1].name
-        let newName = childrenName + ingredientInputCount
+        childrenName = input.children[1].name;
+        let newName = childrenName + ingredientInputCount;
         input.children[1].name = nameString(newName);
     });
 
     const appendInput = document.getElementById('ingredients-container');
-    appendInput.insertAdjacentElement("beforeend", ingredientInputRow)
+    appendInput.insertAdjacentElement("beforeend", ingredientInputRow);
 }
 
 ['delete-ingredient-button', 'delete-step-button'].forEach(button => {
@@ -34,9 +34,9 @@ function addIngredientField() {
 function deleteInput(element) {
     let elementId = element.getAttribute('id');
     let ingredientRowCount = document.querySelectorAll('#ingredient-input');
-    let ingredientRowLength = ingredientRowCount.length
+    let ingredientRowLength = ingredientRowCount.length;
     let stepRowCount = document.querySelectorAll('#direction-input');
-    let stepRowLength = stepRowCount.length
+    let stepRowLength = stepRowCount.length;
 
     if ((elementId === 'delete-ingredient-button') && ingredientRowLength > 1) {
         let ingredientInputRows = document.getElementById('ingredients-container');
@@ -67,11 +67,11 @@ function addDirectionField() {
     let directionInputCount = count + 1;
     let directionInputStep = directionInputRow.children[0].children[0].children[0]
     let stepNumber = 'Step ' + directionInputCount;
-    directionInputStep.textContent = stepNumber
+    directionInputStep.textContent = stepNumber;
 
     let inputDirection = directionInputRow.children[0].children[1].children[0];
-    let newName = inputDirection.name + directionInputCount
-    inputDirection.name = newName
+    let newName = inputDirection.name + directionInputCount;
+    inputDirection.name = newName;
 
     const appendInput = document.getElementById('directions-container');
     appendInput.insertAdjacentElement('beforeend', directionInputRow);

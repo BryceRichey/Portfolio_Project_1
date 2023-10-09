@@ -50,14 +50,14 @@ function createComment() {
     form.appendChild(fragment);
 
     const commentNewComment = document.getElementById('create-comment');
-    commentNewComment.classList.add('not-visible')
+    commentNewComment.classList.add('not-visible');
 
     const cancelNewCommentButton = document.getElementById('new-comment-cancel-button');
     const newCommentContainer = document.getElementById('new-comment-container');
 
     cancelNewCommentButton.addEventListener('click', e => {
-        e.preventDefault()
+        e.preventDefault();
         newCommentContainer.remove();
-        commentNewComment.classList.remove('not-visible')
+        commentNewComment.classList.remove('not-visible');
     });
 }

@@ -340,7 +340,8 @@
                                     <p class="comment-item" id="<%=`comment-${comment['id']}`%>" aria-label="user comment"><%= comment['comment'] %></p>
                                     <form action="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/edit`%>" method="post"></form>
                                     <div id="<%=`comment-${comment['id']}-like-container`%>" aria-label="comment like container">
-                                        <button class="comment-button like-comment-button" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/like`%>" aria-label="comment like button">
+                                        <% if (currentUser) { %>
+                                            <button class="comment-button like-comment-button" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/like`%>" aria-label="comment like button">
                                                 <div class="comment-button-interaction">
                                                     <div>
                                                         <p id="<%=`comment-${comment['id']}-like-count`%>" class="comment-like-count" aria-label="comment like count">
@@ -355,10 +356,24 @@
                                                         <% } %>
                                                     </div>
                                                 </div>
-                                        </button>
+                                            </button>
+                                        <% } else { %>
+                                            <div class="comment-button-interaction">
+                                                <div>
+                                                    <p id="<%=`comment-${comment['id']}-like-count`%>" class="comment-like-count" aria-label="comment like count">
+                                                        <%=comment['likes']%>
+                                                        <% if (comment['likes'] == 1) { %>
+                                                            like
+                                                        <% } else { %>
+                                                            likes
+                                                        <% } %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        <% } %>
                                     </div>
                                 </div>
-                                <% if(currentUser && currentUser.id===comment['user_id']) { %>
+                                <% if(currentUser && currentUser.id === comment['user_id']) { %>
                                     <div class="user-comment-buttons-wrapper" id="buttons-wrapper-user-edit">
                                         <a href="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/delete`%>"
                                             onclick="return confirm('Are you sure you want to delete this comment?');"

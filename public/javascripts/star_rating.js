@@ -4,7 +4,7 @@ const mobileStarRating = document.getElementById('mobile-star-rating-container')
 starRating && starRating.forEach((star) => {
     star.addEventListener('mouseover', e => {
         addStarRatingFill(e.target);
-    })
+    });
 });
 
 function addStarRatingFill(starIcon) {
@@ -21,7 +21,7 @@ function addStarRatingFill(starIcon) {
 mobileStarRating && mobileStarRating.forEach((star) => {
     star.addEventListener('mouseover', e => {
         mobileAddStarRatingFill(e.target);
-    })
+    });
 });
 
 function mobileAddStarRatingFill(starIcon) {
@@ -42,14 +42,14 @@ const mobileStars = document.getElementById('mobile-star-rating-container').quer
 stars && stars.forEach((star) => {
     star.addEventListener('click', e => {
         submitStarRating(e.target);
-    })
-})
+    });
+});
 
 mobileStars && mobileStars.forEach((star) => {
     star.addEventListener('click', e => {
         mobileSubmitStarRating(e.target);
-    })
-})
+    });
+});
 
 function submitStarRating(rating) {
     const url = rating.dataset.url;
@@ -115,10 +115,10 @@ const mobileStarRatingContainer = document.querySelector('#mobile-star-rating-co
 
 starRatingContainer && starRatingContainer.addEventListener('mouseleave', _e => {
     hideStarRating(starRating);
-})
+});
 mobileStarRatingContainer && mobileStarRatingContainer.addEventListener('mouseleave', _e => {
     hideStarRating(starRating);
-})
+});
 
 function hideStarRating(stars) {
     stars.forEach((star) => {

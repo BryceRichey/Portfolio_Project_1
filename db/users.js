@@ -29,6 +29,7 @@ async function readDetails(userId) {
     WHERE 
         id = ${userId}`
     const [userData, _fields] = await db.promise().query(userDetailsQuery);
+
     return userData;
 }
 
@@ -41,6 +42,7 @@ async function readRecipes(userId) {
     WHERE
         submit_user_id = ${userId}`
     const [userRecipe, _fields] = await db.promise().query(userRecipeQuery);
+
     return userRecipe;
 }
 
@@ -53,6 +55,7 @@ async function readComments(userId) {
     WHERE 
         user_id = ${userId}`
     const [userComments, _fields] = await db.promise().query(userCommentsQuery);
+
     return userComments;
 }
 
@@ -65,7 +68,9 @@ async function readEmail(email) {
     WHERE 
         email = ?`
 
-    const [readRows, _readFields] = await db.promise().query(readQuery, [email]);
+    const [readRows, _readFields] = await db.promise().query(readQuery, [
+        email
+    ]);
 
     return readRows;
 }

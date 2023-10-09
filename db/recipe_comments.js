@@ -28,7 +28,10 @@ async function readComment(recipeId, user) {
         AND 
             recipe_id = ?`
 
-        const [rows, _fields] = await db.promise().query(readQuery, [user.id, recipeId]);
+        const [rows, _fields] = await db.promise().query(readQuery, [
+            user.id, 
+            recipeId
+        ]);
 
         if (rows.lenght = 1) {
             return 'user commented'
@@ -64,7 +67,10 @@ async function deleteComment(commentId, userId) {
     AND 
         user_id = ?`
 
-    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [commentId, userId]);
+    const [_deleteRows, _deleteFields] = await db.promise().query(deleteQuery, [
+        commentId, 
+        userId
+    ]);
 }
 
 module.exports = {

@@ -16,9 +16,9 @@ function validateNames() {
         alert('Last name cannot be left blank');
         return false;
     } else if (newUsername == "") {
-        alert('Username cannot be left blank')
+        alert('Username cannot be left blank');
     } else if (newFirstName == "" && newLastName == "") {
-        alert('First and last name cannot be left blank')
+        alert('First and last name cannot be left blank');
     } else {
         return true;
     }
@@ -27,7 +27,7 @@ function validateNames() {
 
 const updateEmail = document.querySelector('#updateEmail');
 
-updateEmail.addEventListener('submit', e => {
+updateEmail.addEventListener('submit', _e => {
     validateEmail();
 });
 

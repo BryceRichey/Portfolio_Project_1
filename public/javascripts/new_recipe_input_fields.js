@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', e => {
+document.addEventListener('DOMContentLoaded', _e => {
     addIngredientField();
     addDirectionField();
 }, false);
@@ -18,8 +18,8 @@ function addIngredientField() {
     let ingredientInputCount = count + 1;
 
     Array.from(ingredientInputRow.children).forEach(input => {
-        childrenName = input.children[1].name
-        let newName = childrenName + ingredientInputCount
+        childrenName = input.children[1].name;
+        let newName = childrenName + ingredientInputCount;
         input.children[1].name = nameString(newName);
     });
     const appendInput = document.getElementById('ingredient-input-row');
@@ -31,15 +31,15 @@ function addIngredientField() {
     element.addEventListener('click', e => {
         e.preventDefault();
         deleteInput(element);
-    })
-})
+    });
+});
 
 function deleteInput(element) {
     let elementId = element.getAttribute('id');
     let ingredientRowCount = document.querySelectorAll('#ingredient-input');
-    let ingredientRowLength = ingredientRowCount.length
+    let ingredientRowLength = ingredientRowCount.length;
     let stepRowCount = document.querySelectorAll('#direction-input');
-    let stepRowLength = stepRowCount.length
+    let stepRowLength = stepRowCount.length;
 
     if ((elementId === 'delete-ingredient-button') && ingredientRowLength > 1) {
         const ingredientInputRows = document.getElementById('ingredient-input-row');
@@ -67,11 +67,11 @@ function addDirectionField() {
     let directionInputCount = count + 1;
     let directionInputStep = directionInputRow.children[0].children[0]
     let stepNumber = 'Step ' + directionInputCount;
-    directionInputStep.textContent = stepNumber
+    directionInputStep.textContent = stepNumber;
 
     Array.from(directionInputRow.children).forEach(input => {
-        childrenName = input.children[0].name
-        let newName = childrenName + directionInputCount
+        childrenName = input.children[0].name;
+        let newName = childrenName + directionInputCount;
         input.children[0].name = nameString(newName);
     });
 
