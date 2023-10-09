@@ -119,7 +119,11 @@ router.post('/login',
             }
         );
 
-        res.redirect(req.session.returnTo);
+        if (req.session.returnTo == undefined) {
+            res.redirect('/');
+        } else {
+            res.redirect(req.session.returnTo);
+        }
     }
 );
 

@@ -1,7 +1,7 @@
 const updateContactInformation = document.querySelector('#contact-information');
 
 // updateContactInformation.addEventListener('submit', e => {
-    
+
 // });
 
 function validateNames() {
@@ -47,8 +47,8 @@ function validateEmail() {
 }
 
 
-// const updatePassword = document.querySelector('#updatePassword');
-// updatePassword.addEventListener('submit', e => {
+// const updatePassword = document.querySelector('#update-password');
+// updatePassword.addEventListener('submit', _e => {
 //     validatePassword();
 // });
 // function validatePassword() {
@@ -64,3 +64,72 @@ function validateEmail() {
 //         return true;
 //     }
 // }
+
+
+
+const newPassword = document.getElementById('newPassword');
+
+newPassword.addEventListener('blur', e => {
+    validateNewPasswordPatter(newPassword, e.target.value);
+});
+
+function validateNewPasswordPatter(password, value) {
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,20}/;
+    const regexText = regex.test(value);
+    const validElement = password.parentElement.querySelector('.valid-message');
+    const invalidElement = password.parentElement.querySelector('.invalid-message');
+
+    if (password.value.length < 1) {
+        const errorMsg = 'Password cannot be blank';
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = errorMsg;
+        password.classList.remove('normal-border');
+        password.classList.add('invalid-border');
+    } else {
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = '';
+
+        if (regexText === false) {
+            password.classList.remove('normal-border');
+            password.classList.add('invalid-border');
+            invalidElement.innerHTML = "Password must contains:<br><br>• 8-20 characters <br>• An uppercase letter <br>• An lowercase letter <br> • A number <br>• A symbol"
+        } else {
+            password.classList.remove('normal-border');
+            password.classList.remove('invalid-border');
+            password.classList.add('valid-border');
+            validElement.innerHTML = "Password looks good";
+        }
+    }
+}
+
+
+const confirmPassword = document.getElementById('confirmPassword');
+
+
+confirmPassword.addEventListener('blur', e => {
+    validateNewPasswordMatch(confirmPassword, e.target.value);
+});
+
+function validateNewPasswordMatch(confirmPassword, value) {
+    const newPasswordValue = newPassword.value.trim();
+    const confirmPasswordValue = confirmPassword.value.trim();
+    const validElement = confirmPassword.parentElement.querySelector('.valid-message');
+    const invalidElement = confirmPassword.parentElement.querySelector('.invalid-message');
+
+    if (confirmPasswordValue == '') {
+        confirmPassword.classList.remove('normal-border');
+        confirmPassword.classList.remove('valid-border');
+        confirmPassword.classList.add('invalid-border');
+        invalidElement.innerHTML = "Password cannot be blank";
+    } else if (newPasswordValue != confirmPasswordValue) {
+        confirmPassword.classList.remove('normal-border');
+        confirmPassword.classList.remove('valid-border');
+        confirmPassword.classList.add('invalid-border');
+        invalidElement.innerHTML = "Password must match";
+    } else {
+        confirmPassword.classList.remove('normal-border');
+        confirmPassword.classList.remove('invalid-border');
+        confirmPassword.classList.add('valid-border');
+        validElement.innerHTML = "Passwords match";
+    }
+}
