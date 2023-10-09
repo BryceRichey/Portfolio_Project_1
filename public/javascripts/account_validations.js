@@ -1,9 +1,5 @@
 const updateContactInformation = document.querySelector('#contact-information');
 
-// updateContactInformation.addEventListener('submit', e => {
-
-// });
-
 function validateNames() {
     const newFirstName = document.getElementById('f_name').value.trim();
     const newLastName = document.getElementById('l_name').value.trim();
@@ -27,44 +23,59 @@ function validateNames() {
 
 const updateEmail = document.querySelector('#updateEmail');
 
-updateEmail.addEventListener('submit', _e => {
-    validateEmail();
+updateEmail.addEventListener('blur', e => {
+    validateEmailPatternl(updateEmail, e.target.value);
 });
 
-function validateEmail() {
-    const newEmail = document.getElementById('newEmail').value.trim();
-    const confirmEmail = document.getElementById('confirmEmail').value.trim();
+async function validateEmailPatternl(email, value) {
+    const validElement = email.parentElement.querySelector('.valid-message');
+    const invalidElement = email.parentElement.querySelector('.invalid-message');
 
-    if (newEmail == "" || confirmEmail == "") {
-        alert('No blank values allowed');
-        return false;
-    } else if (newEmail != confirmEmail) {
-        alert('Make sure new email matches');
-        return false;
-    } else if (newEmail === confirmEmail) {
-        return true;
+    if (email.value.length < 1) {
+        const errorMsg = 'Email cannot be blank';
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = errorMsg;
+        email.classList.remove('normal-border');
+        email.classList.add('invalid-border');
+    } else {
+        const regex = /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/gm;
+        const regexMatch = value.match(regex);
+
+        if (regexMatch === null) {
+            email.classList.remove('normal-border');
+            email.classList.add('invalid-border');
+            invalidElement.innerHTML = "Email not valid";
+        } else {
+            let data = {};
+            data[email] = value;
+
+            const urlParams = new URLSearchParams(Object.entries(data));
+
+            validElement.innerHTML = '';
+            invalidElement.innerHTML = '';
+
+            await fetch(`/signup/user/validations?${urlParams}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    let isEmailTaken = Object.values(data)[0]
+                    if (isEmailTaken === 'false') {
+                        const errorMsg = 'Email is already in use';
+                        validElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.remove('valid-border');
+                        email.classList.add('invalid-border');
+                        invalidElement.innerHTML = errorMsg;
+                    } else {
+                        invalidElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.remove('invalid-border');
+                        email.classList.add('valid-border');
+                        validElement.innerHTML = 'Email available';
+                    }
+                });
+        }
     }
 }
-
-
-// const updatePassword = document.querySelector('#update-password');
-// updatePassword.addEventListener('submit', _e => {
-//     validatePassword();
-// });
-// function validatePassword() {
-//     const newPassword = document.getElementById('newPassword').value.trim();
-//     const confirmPassword = document.getElementById('confirmPassword').value.trim();
-//     if (newPassword == "" || confirmPassword == "") {
-//         alert('No blank values allowed');
-//         return false;
-//     } else if (newPassword != confirmPassword) {
-//         alert('Make sure new password matches');
-//         return false;
-//     } else if (newPassword === confirmPassword) {
-//         return true;
-//     }
-// }
-
 
 
 const newPassword = document.getElementById('newPassword');
