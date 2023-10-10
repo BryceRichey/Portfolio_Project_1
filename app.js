@@ -56,6 +56,10 @@ app.get('/', (_req, res, _next) => {
     }
 });
 
+app.get('*', function (_req, res, _next) {
+    res.status(404).render('errors/404_generic.ejs');
+});
+
 const port = 3000;
 app.listen(port, () => {
     console.log(`Project_1 listening on port ${port}`)

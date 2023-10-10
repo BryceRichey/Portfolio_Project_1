@@ -19,83 +19,112 @@ router.post('/signup', async (req, res, _next) => {
 
 // READ
 router.get('/signup', (_req, res, _next) => {
-    res.render('users/signup.ejs');
+    try {
+        res.render('users/signup.ejs');
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 router.get('/account', passport.isAuth, async (req, res, _next) => {
-    const users = await userQueries.readDetails(req.user.id);
-    const recipes = await userQueries.readRecipes(req.user.id);
-    const comments = await userQueries.readComments(req.user.id);
+    try {
+        const users = await userQueries.readDetails(req.user.id);
+        const recipes = await userQueries.readRecipes(req.user.id);
+        const comments = await userQueries.readComments(req.user.id);
 
-    res.render('users/account.ejs', { users, recipes, comments });
+        res.render('users/account.ejs', { users, recipes, comments });
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 router.get('/signup/user/validations', async (req, res, _next) => {
-    const email = Object.values(req.query);
-    const data = await userQueries.readEmail(email);
+    try {
+        const email = Object.values(req.query);
+        const data = await userQueries.readEmail(email);
 
-    if (!(data && data.length)) {
-        res.json({
-            email: 'true'
-        });
-    } else {
-        res.json({
-            email: 'false'
-        });
+        if (!(data && data.length)) {
+            res.json({
+                email: 'true'
+            });
+        } else {
+            res.json({
+                email: 'false'
+            });
+        }
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
     }
 });
 
 // UPDATE
 router.post('/account/contact', async (req, res, _next) => {
-    for (const [key, value] of Object.entries(req.body)) {
-        if (key && !value) {
-            console.log('No change');
-        } else if (key.includes("firstName")) {
-            await userQueries.updateFirstName(req.user, req.body);
-        } else if (key.includes("lastName")) {
-            await userQueries.updateLastName(req.user, req.body);
-        } else if (key.includes("email")) {
-            await userQueries.updateEmail(req.user, req.body);
+    try {
+        for (const [key, value] of Object.entries(req.body)) {
+            if (key && !value) {
+                console.log('No change');
+            } else if (key.includes("firstName")) {
+                await userQueries.updateFirstName(req.user, req.body);
+            } else if (key.includes("lastName")) {
+                await userQueries.updateLastName(req.user, req.body);
+            } else if (key.includes("email")) {
+                await userQueries.updateEmail(req.user, req.body);
+            }
         }
-    }
 
-    res.redirect('/account');
+        res.redirect('/account');
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 router.post('/account/password', async (req, res, _next) => {
-    let newPassword;
-    let confirmPassword;
+    try {
+        let newPassword;
+        let confirmPassword;
 
-    for (const [key, value] of Object.entries(req.body)) {
-        if (key && !value) {
-            console.log('No change');
-        } else if (key.includes('confirmPassword')) {
-            confirmPassword = value;
-        } else if (key.includes('newPassword')) {
-            newPassword = value;
+        for (const [key, value] of Object.entries(req.body)) {
+            if (key && !value) {
+                console.log('No change');
+            } else if (key.includes('confirmPassword')) {
+                confirmPassword = value;
+            } else if (key.includes('newPassword')) {
+                newPassword = value;
+            }
         }
-    }
 
-    if (newPassword != confirmPassword) {
-        console.log(newPassword);
-        console.log(confirmPassword);
-    } else if (newPassword === confirmPassword) {
-        await userQueries.updatePassword(req.user, confirmPassword);
+        if (newPassword != confirmPassword) {
+            console.log(newPassword);
+            console.log(confirmPassword);
+        } else if (newPassword === confirmPassword) {
+            await userQueries.updatePassword(req.user, confirmPassword);
+        }
+        res.redirect('/account');
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
     }
-    res.redirect('/account');
 });
 
 
 // DELETE
 router.get('/account/:recipe_id/delete', async (req, res, _next) => {
-    await recipeQueries.deleteRecipe(req.params.recipe_id);
-    res.redirect('/account');
+    try {
+        await recipeQueries.deleteRecipe(req.params.recipe_id);
+
+        res.redirect('/account');
+    } catch (e) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 
 // LOGIN & LOGOUT 
 router.get('/login', (_req, res, _next) => {
-    res.render('users/login.ejs');
+    try {
+        res.render('users/login.ejs');
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 router.post('/login',
@@ -104,46 +133,46 @@ router.post('/login',
         keepSessionInfo: true
     })
     , (req, res) => {
-        const template = req.session.passport;
-        const returnTo = req.session.returnTo;
+        try {
+            const template = req.session.passport;
+            const returnTo = req.session.returnTo;
 
-        req.session.regenerate(
-            function (_err) {
-                req.session.passport = template;
-                req.session.returnTo = returnTo;
-                req.session.save(
-                    function (_err) {
-                        res.sendStatus(200);
-                    }
-                );
+            req.session.regenerate(
+                function (_err) {
+                    req.session.passport = template;
+                    req.session.returnTo = returnTo;
+                    req.session.save(
+                        function (_err) {
+                            res.sendStatus(200);
+                        }
+                    );
+                }
+            );
+
+            if (req.session.returnTo == undefined) {
+                res.redirect('/');
+            } else {
+                res.redirect(req.session.returnTo);
             }
-        );
-
-        if (req.session.returnTo == undefined) {
-            res.redirect('/');
-        } else {
-            res.redirect(req.session.returnTo);
+        } catch (err) {
+            res.status(500).redirect('/errors/500.ejs');
         }
     }
 );
 
 router.get('/logout', (req, res, _next) => {
-    req.logout((err) => {
-        if (err) {
-            console.log(err);
-        }
-        res.redirect('/');
-    });
+    try {
+        req.logout((err) => {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/');
+        });
 
-    res.redirect('/login');
+        res.redirect('/login');
+    } catch (err) {
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
-
-// router.get('*', function (req, res, next) {
-//     if (req.url === '/' || req.url === '/login' || req.url === '/signup' || req.url === '/logout' || req.url === '/account') {
-//         return next();
-//     } else {
-//         res.status(400).render('errors/404_generic.ejs');
-//     }
-// });
 
 module.exports = router;

@@ -13,88 +13,114 @@ const recipeCategories = require('../db/recipe_categories');
 // RECIPE CRUD
 // CREATE
 router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
-    res.render('recipes/new');
+    try {
+        res.render('recipes/new');
+    } catch (err) {
+        res.status(404).redirect('/errors/404_generic.ejs');
+    }
 });
 
 router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
-    await recipeQueries.createRecipe(req.user, req.body, req.file);
-    await recipeQueries.insertRecipePhoto(req.user, req.file);
-    await recipeQueries.createRecipeIngredient(req.body);
-    await recipeQueries.insertRecipeDirections(req.body);
+    try {
+        await recipeQueries.createRecipe(req.user, req.body, req.file);
+        await recipeQueries.insertRecipePhoto(req.user, req.file);
+        await recipeQueries.createRecipeIngredient(req.body);
+        await recipeQueries.insertRecipeDirections(req.body);
 
-    res.redirect('/recipes');
+        res.redirect('/recipes');
+    } catch (err) {
+        res.status(500).redirect('/errors/505.ejs');
+    }
 });
 
 router.post('/recipes/search', async (req, res, _next) => {
-    let searchValue = req.body.searchValue;
+    try {
+        let searchValue = req.body.searchValue;
 
-    const allRecipes = await recipeQueries.getRecipeSearch(req.body.searchValue);
+        const allRecipes = await recipeQueries.getRecipeSearch(req.body.searchValue);
 
-    res.render('recipes/search', {
-        allRecipes,
-        searchValue
-    });
+        res.render('recipes/search', {
+            allRecipes,
+            searchValue
+        });
+    } catch (err) {
+        res.status(500).redirect('/errors/505.ejs');
+    }
 });
 
 // READ
 router.get('/recipes', async (_req, res, _next) => {
-    const allRecipes = await recipeQueries.getAllRecipes();
+    try {
+        const allRecipes = await recipeQueries.getAllRecipes();
 
-    if (allRecipes.length == 0) {
-        res.status(500).render('errors/500.ejs');
-    } else {
-        res.render('recipes/index', {
-            allRecipes
-        });
+        if (allRecipes.length == 0) {
+            res.status(500).render('errors/500.ejs');
+        } else {
+            res.render('recipes/index', {
+                allRecipes
+            });
+        }
+    } catch (err) {
+        res.status(404).redirect('/errors/404_generic.ejs');
     }
 });
 
 router.get('/recipes/categories', async (req, res, _next) => {
-    const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
+    try {
+        const categoryRecipes = await recipeQueries.getCategoryRecipes(req.params.category);
 
-    res.render('recipes/categories', {
-        categoryRecipes
-    });
+        res.render('recipes/categories', {
+            categoryRecipes
+        });
+    } catch (err) {
+        res.status(404).redirect('/errors/404_generic.ejs');
+    }
 });
 
 router.get('/recipes/categories/category=*', async (req, res, _next) => {
-    const categoryRecipes = await recipeCategories.readCategoryRecipe(req.params[0]);
+    try {
+        const categoryRecipes = await recipeCategories.readCategoryRecipe(req.params[0]);
 
-    res.json({
-        categoryRecipes
-    });
+        res.json({
+            categoryRecipes
+        });
+    } catch (err) {
+        res.status(404).redirect('/errors/404_generic.ejs');
+    }
 });
 
 router.get('/random-recipes', async (_req, res, _next) => {
-    const randomRecipe = await recipeCategories.randomRecipe();
+    try {
+        const randomRecipe = await recipeCategories.randomRecipe();
 
-    let id;
-    let category;
+        let id;
+        let category;
 
-    for (const [key, value] of Object.entries(randomRecipe[0])) {
-        if (key == 'id') {
-            id = value
-        } else if (key == 'category') {
-            category = value
+        for (const [key, value] of Object.entries(randomRecipe[0])) {
+            if (key == 'id') {
+                id = value
+            } else if (key == 'category') {
+                category = value
+            }
         }
-    }
 
-    res.redirect(`recipes/categories/${category}/${id}`);
+        res.redirect(`recipes/categories/${category}/${id}`);
+    } catch (err) {
+        res.status(404).redirect('/errors/404_no_recipe.ejs');
+    }
 });
 
 router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) => {
-    const recipe = await recipeQueries.getRecipe(req.params.recipeId);
-    const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
-    const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
-    const previousComment = await recipeCommentQuries.readComment(req.params.recipeId, req.user)
-    const comments = await recipeQueries.getRecipeComments(req.params.recipeId);
-    const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.recipeId, req.user);
-    const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
-    const recipeRating = await recipeQueries.getRecipeRatings(req.params.recipeId, req.user);
+    try {
+        const recipe = await recipeQueries.getRecipe(req.params.recipeId);
+        const ingredients = await recipeQueries.getRecipeIngredients(req.params.recipeId);
+        const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
+        const previousComment = await recipeCommentQuries.readComment(req.params.recipeId, req.user)
+        const comments = await recipeQueries.getRecipeComments(req.params.recipeId);
+        const commentLikes = await recipeQueries.getUserRecipeCommentLikes(req.params.recipeId, req.user);
+        const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
+        const recipeRating = await recipeQueries.getRecipeRatings(req.params.recipeId, req.user);
 
-    if (recipe.length == 0) {
-        res.status(404).render('errors/404_no_recipe.ejs');
-    } else {
         let categoryLC = req.params.category;
         let firstLetter = categoryLC.charAt(0);
         let firstLetterCapital = firstLetter.toUpperCase();
@@ -114,19 +140,19 @@ router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) =>
             recipeRating,
             dayjs
         });
+    } catch (err) {
+        res.status(404).redirect('/errors/404_no_recipe.ejs');
     }
 });
 
 // UPDATE
 router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, async (req, res, _next) => {
-    const recipe = await recipeQueries.getRecipe(req.params.recipeId);
-    const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
-    const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
-    // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
+    try {
+        const recipe = await recipeQueries.getRecipe(req.params.recipeId);
+        const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
+        const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
+        // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
 
-    if (recipe.length == 0) {
-        res.status(500).render('errors/500.ejs');
-    } else {
         let categoryLC = req.params.category;
         let firstLetter = categoryLC.charAt(0);
         let firstLetterCapital = firstLetter.toUpperCase();
@@ -164,87 +190,109 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
             ingredients: ingredientsArray,
             directions: directions
         });
+    } catch (err) {
+        res.status(404).redirect('/errors/404_no_recipe.ejs');
     }
 });
 
 router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
-    await recipeQueries.updateRecipe(req.params.recipeId, req.body);
-    await recipeQueries.updateRecipeIngredients(req.params.recipeId, req.body);
-    await recipeQueries.updateRecipeDirections(req.params.recipeId, req.body);
+    try {
+        await recipeQueries.updateRecipe(req.params.recipeId, req.body);
+        await recipeQueries.updateRecipeIngredients(req.params.recipeId, req.body);
+        await recipeQueries.updateRecipeDirections(req.params.recipeId, req.body);
 
-    res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
+        res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
+    }
 });
 
 
 // DELETE
 router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next) => {
-    await recipeQueries.deleteRecipe(req.params.recipeId);
+    try {
+        await recipeQueries.deleteRecipe(req.params.recipeId);
 
-    res.redirect('/recipes');
+        res.redirect('/recipes');
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
+    }
 });
 
 
 // RECIPE COMMENTS
 router.post('/recipes/:recipeId/comment/new', async (req, res, _next) => {
-    await recipeCommentQuries.createComment(req.params.recipeId, req.user.id, req.user.f_name, req.user.l_name, req.body.comment);
+    try {
+        await recipeCommentQuries.createComment(req.params.recipeId, req.user.id, req.user.f_name, req.user.l_name, req.body.comment);
 
-    res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/${req.params.recipeId}`);
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
+    }
 });
 
 router.post('/recipes/:recipeId/comment/:commentId/edit', async (req, res, _next) => {
-    await recipeCommentQuries.updateComment(req.body.comment, req.params.commentId, req.user.id);
+    try {
+        await recipeCommentQuries.updateComment(req.body.comment, req.params.commentId, req.user.id);
 
-    res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/${req.params.recipeId}`);
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
+    }
 });
 
 router.get('/recipes/:recipeId/comment/:commentId/delete', async (req, res, _next) => {
-    await recipeCommentQuries.deleteComment(req.params.commentId, req.user.id);
+    try {
+        await recipeCommentQuries.deleteComment(req.params.commentId, req.user.id);
 
-    res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/${req.params.recipeId}`);
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
+    }
 });
 
 
 // COMMENT INTERACTIONS
 router.post('/recipes/:recipeId/comment/:commentId/like', async (req, res, _next) => {
-    const readLike = await recipeCommentInteractionQueries.readLike(req.params.commentId, req.user.id);
+    try {
+        const readLike = await recipeCommentInteractionQueries.readLike(req.params.commentId, req.user.id);
 
-    if (readLike && readLike.length == 0) {
-        await recipeCommentInteractionQueries.createLike(req.params.commentId, req.user.id);
+        if (readLike && readLike.length == 0) {
+            await recipeCommentInteractionQueries.createLike(req.params.commentId, req.user.id);
 
-        res.json({ liked: true });
-    } else {
-        await recipeCommentInteractionQueries.deleteLike(req.params.commentId, req.user.id);
+            res.json({ liked: true });
+        } else {
+            await recipeCommentInteractionQueries.deleteLike(req.params.commentId, req.user.id);
 
-        res.json({ liked: false });
+            res.json({ liked: false });
+        }
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
     }
 });
 
 
 // RECIPE RATINGS
 router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => {
-    const readRating = await recipeRatingQueries.readRating(req.params.recipeId, req.user.id);
+    try {
+        const readRating = await recipeRatingQueries.readRating(req.params.recipeId, req.user.id);
 
-    if (readRating && readRating.length == 0) {
-        await recipeRatingQueries.createRating(req.params.recipeId, req.user.id, req.params[0]);
+        if (readRating && readRating.length == 0) {
+            await recipeRatingQueries.createRating(req.params.recipeId, req.user.id, req.params[0]);
 
-        res.json({
-            rated: true
-        });
-    } else {
-        await recipeRatingQueries.deleteRating(req.params.recipeId, req.user.id);
+            res.json({
+                rated: true
+            });
+        } else {
+            await recipeRatingQueries.deleteRating(req.params.recipeId, req.user.id);
 
-        res.json({
-            rated: false
-        });
+            res.json({
+                rated: false
+            });
+        }
+    } catch (err) {
+        res.status(500).render('errors/500.ejs');
     }
 });
-
-// router.get('*', function (req, res, next) {
-//     if (req.url === '/' || req.url === '/login' || req.url === '/signup' || req.url === 'logout' || req.url === 'account') {
-//         return next();
-//     } else {
-//         res.status(400).render('errors/404_generic.ejs');
-//     }
-// });
 
 module.exports = router;
