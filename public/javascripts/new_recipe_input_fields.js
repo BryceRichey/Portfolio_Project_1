@@ -1,3 +1,5 @@
+import { addValidationListener } from '/javascripts/new_recipe_validation.js';
+
 document.addEventListener('DOMContentLoaded', _e => {
     addIngredientField();
     addDirectionField();
@@ -18,12 +20,15 @@ function addIngredientField() {
     let ingredientInputCount = count + 1;
 
     Array.from(ingredientInputRow.children).forEach(input => {
-        childrenName = input.children[1].name;
+        let childrenName = input.children[1].name;
         let newName = childrenName + ingredientInputCount;
         input.children[1].name = nameString(newName);
     });
     const appendInput = document.getElementById('ingredient-input-row');
     appendInput.append(ingredientInputRow);
+    
+    const inputs = ingredientInputRow.querySelectorAll('input, select');
+    inputs.forEach(addValidationListener);
 }
 
 ['delete-ingredient-button', 'delete-step-button'].forEach(button => {
@@ -70,13 +75,16 @@ function addDirectionField() {
     directionInputStep.textContent = stepNumber;
 
     Array.from(directionInputRow.children).forEach(input => {
-        childrenName = input.children[0].name;
+        let childrenName = input.children[0].name;
         let newName = childrenName + directionInputCount;
         input.children[0].name = nameString(newName);
     });
 
     const appendInput = document.getElementById('direction-input-row');
     appendInput.append(directionInputRow);
+
+    const inputs = directionInputRow.querySelectorAll('input');
+    inputs.forEach(addValidationListener);
 }
 
 function nameString(newName) {
@@ -89,7 +97,7 @@ const ingredientInputRow = document.getElementById('ingredient-input-row');
 const ingredientConfig = { childList: true }
 const ingredientcallback = (mutationList, _observer) => {
     for (const mutation of mutationList) {
-        if (mutation.type = 'childList') {
+        if (mutation.type == 'childList') {
             if (deleteIngredientButton.classList.contains('not-visible')) {
                 if (ingredientInputRow.children.length > 1) {
                     ingredientButtonDiv.classList.add('ingredient-buttons');
@@ -116,7 +124,7 @@ const directionInputRow = document.getElementById('direction-input-row');
 const directionconfig = { childList: true }
 const directionCallback = (mutationList, _observer) => {
     for (const mutation of mutationList) {
-        if (mutation.type = 'childList') {
+        if (mutation.type == 'childList') {
             if (deleteDirectionButton.classList.contains('not-visible')) {
                 if (directionInputRow.children.length > 1) {
                     directionButtonDiv.classList.add('direction-buttons');

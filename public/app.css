@@ -2837,7 +2837,7 @@ section[class$=-category-container] {
     }
 
     .categories-container>* {
-        animation: categoryBounce 1.5s both ease-in-out;
+        animation: 1.25s categoryBounce 0.75s both ease-in-out;
     }
 
     .categories-container::-webkit-scrollbar {
