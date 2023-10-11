@@ -33,7 +33,7 @@ async function readComment(recipeId, user) {
             recipeId
         ]);
 
-        if (rows.lenght = 1) {
+        if (rows.length === 1) {
             return 'user commented'
         } else {
             return 'not commented'

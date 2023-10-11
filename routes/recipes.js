@@ -16,6 +16,8 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
     try {
         res.render('recipes/new');
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_generic.ejs');
     }
 });
@@ -44,6 +46,8 @@ router.post('/recipes/search', async (req, res, _next) => {
             searchValue
         });
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/505.ejs');
     }
 });
@@ -73,6 +77,8 @@ router.get('/recipes/categories', async (req, res, _next) => {
             categoryRecipes
         });
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_generic.ejs');
     }
 });
@@ -85,6 +91,8 @@ router.get('/recipes/categories/category=*', async (req, res, _next) => {
             categoryRecipes
         });
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_generic.ejs');
     }
 });
@@ -106,6 +114,8 @@ router.get('/random-recipes', async (_req, res, _next) => {
 
         res.redirect(`recipes/categories/${category}/${id}`);
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_no_recipe.ejs');
     }
 });
@@ -141,6 +151,8 @@ router.get('/recipes/categories/:category/:recipeId', async (req, res, _next) =>
             dayjs
         });
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_no_recipe.ejs');
     }
 });
@@ -191,6 +203,8 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
             directions: directions
         });
     } catch (err) {
+        console.log(err);
+
         res.status(404).redirect('/errors/404_no_recipe.ejs');
     }
 });
@@ -215,38 +229,46 @@ router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next)
 
         res.redirect('/recipes');
     } catch (err) {
+        console.log(err);
+
         res.status(500).render('errors/500.ejs');
     }
 });
 
 
 // RECIPE COMMENTS
-router.post('/recipes/:recipeId/comment/new', async (req, res, _next) => {
+router.post('/recipes/categories/:recipeCategory/:recipeId/comment/new', async (req, res, _next) => {
     try {
         await recipeCommentQuries.createComment(req.params.recipeId, req.user.id, req.user.f_name, req.user.l_name, req.body.comment);
 
-        res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/categories/${req.params.recipeCategory}/${req.params.recipeId}`);
     } catch (err) {
+        console.log(err);
+
         res.status(500).render('errors/500.ejs');
     }
 });
 
-router.post('/recipes/:recipeId/comment/:commentId/edit', async (req, res, _next) => {
+router.post('/recipes/categories/:recipeCategory/:recipeId/comment/:commentId/edit', async (req, res, _next) => {
     try {
         await recipeCommentQuries.updateComment(req.body.comment, req.params.commentId, req.user.id);
 
-        res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/categories/${req.params.recipeCategory}/${req.params.recipeId}`);
     } catch (err) {
+        console.log(err);
+
         res.status(500).render('errors/500.ejs');
     }
 });
 
-router.get('/recipes/:recipeId/comment/:commentId/delete', async (req, res, _next) => {
+router.get('/recipes/categories/:recipeCategory/:recipeId/comment/:commentId/delete', async (req, res, _next) => {
     try {
         await recipeCommentQuries.deleteComment(req.params.commentId, req.user.id);
 
-        res.redirect(`/recipes/${req.params.recipeId}`);
+        res.redirect(`/recipes/categories/${req.params.recipeCategory}/${req.params.recipeId}`);
     } catch (err) {
+        console.log(err);
+        
         res.status(500).render('errors/500.ejs');
     }
 });
@@ -258,7 +280,7 @@ router.post('/recipes/:recipeId/comment/:commentId/like', async (req, res, _next
         const readLike = await recipeCommentInteractionQueries.readLike(req.params.commentId, req.user.id);
 
         if (readLike && readLike.length == 0) {
-            await recipeCommentInteractionQueries.createLike(req.params.commentId, req.user.id);
+            await recipeCommentInteractionQueries.createLike(req.params.recipeId, req.params.commentId, req.user.id);
 
             res.json({ liked: true });
         } else {
@@ -267,6 +289,8 @@ router.post('/recipes/:recipeId/comment/:commentId/like', async (req, res, _next
             res.json({ liked: false });
         }
     } catch (err) {
+        console.log(err);
+
         res.status(500).render('errors/500.ejs');
     }
 });
@@ -291,6 +315,8 @@ router.post('/recipes/:recipeId/rating/ratingInt=*', async (req, res, _next) => 
             });
         }
     } catch (err) {
+        console.log(err);
+
         res.status(500).render('errors/500.ejs');
     }
 });

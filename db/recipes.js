@@ -171,16 +171,19 @@ async function getRecipeDirections(recipe_id) {
 async function getRecipeComments(recipe_id) {
     const query = `
     SELECT 
-        comments.*, 
-        COUNT(l.id) AS likes 
+        c.*, 
+        COUNT(l.id) AS likes,
+        r.category AS recipe_category
     FROM 
-        comments 
+        comments c 
     LEFT JOIN 
-        likes l ON comments.id = l.comment_id 
+        likes l ON c.id = l.comment_id 
+    LEFT JOIN 
+		recipes r ON c.recipe_id = r.id 
     WHERE 
         recipe_id = ? 
     GROUP BY 
-        comments.id`
+        c.id`
 
     const [comments, _fields] = await db.promise().query(query, [
         recipe_id

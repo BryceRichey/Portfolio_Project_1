@@ -12,11 +12,21 @@
     <%- include('../partials/header') %>
     <nav class="main-bread-crumbs-wrapper" aria-label="breadcrumbs">
         <ol class="bread-crumb-list">
-            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
-            <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeTitle %></a></li>
+            <li class="bread-crumb-item">
+                <a href="/" class="bread-crumb">Home</a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes" class="bread-crumb">Recipes</a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes/categories" class="bread-crumb">Categories</a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb" id="bread-crumb-category"><%= categoryUC %></a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeTitle %></a>
+            </li>
         </ol>
     </nav>
     <section class="recipe-show-wrapper">
@@ -338,7 +348,7 @@
                                 </div>
                                 <div class="user-iteraction">
                                     <p class="comment-item" id="<%=`comment-${comment['id']}`%>" aria-label="user comment"><%= comment['comment'] %></p>
-                                    <form action="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/edit`%>" method="post"></form>
+                                    <form action="<%=`/recipes/categories/${comment['recipe_category']}/${comment['recipe_id']}/comment/${comment['id']}/edit`%>" method="post"></form>
                                     <div id="<%=`comment-${comment['id']}-like-container`%>" aria-label="comment like container">
                                         <% if (currentUser) { %>
                                             <button class="comment-button like-comment-button" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/like`%>" aria-label="comment like button">
@@ -375,7 +385,7 @@
                                 </div>
                                 <% if(currentUser && currentUser.id === comment['user_id']) { %>
                                     <div class="user-comment-buttons-wrapper" id="buttons-wrapper-user-edit">
-                                        <a href="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/delete`%>"
+                                        <a href="<%=`/recipes/categories/${comment['comment[recipe_category]']}/${comment['recipe_id']}/comment/${comment['id']}/delete`%>"
                                             onclick="return confirm('Are you sure you want to delete this comment?');"
                                             class="delete-comment"
                                             id="<%=`comment-delete-button-id-${comment['id']}`%>">Delete</a>

@@ -9,11 +9,12 @@ commentButton && commentButton.addEventListener('click', _e => {
 function createComment() {
     const form = document.createElement('form');
     const recipeId = document.getElementById('recipe-id').innerHTML;
+    const recipeCategory = document.getElementById('bread-crumb-category').innerHTML;
     const commentContainer = document.createElement('div');
 
     form.classList.add('new-comment-form');
     form.setAttribute('method', 'post');
-    form.setAttribute('action', `/recipes/${recipeId}/comment/new`);
+    form.setAttribute('action', `/recipes/categories/${recipeCategory.toLocaleLowerCase()}/${recipeId}/comment/new`);
     commentContainer.classList.add('new-comment-container');
     commentContainer.setAttribute('id', 'new-comment-container');
     commentList.insertAdjacentElement('afterbegin', commentContainer);

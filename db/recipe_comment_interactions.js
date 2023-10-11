@@ -1,6 +1,6 @@
 const db = require('../config/database');
 
-async function createLike(commentId, userId) {
+async function createLike(recipeId, commentId, userId) {
     const createLike = `
         INSERT INTO 
             likes 
@@ -8,6 +8,7 @@ async function createLike(commentId, userId) {
             ?`
 
     const [_creatRows, _creatFields] = await db.promise().query(createLike, {
+        recipeId: recipeId,
         comment_id: commentId,
         user_id: userId
     });

@@ -22,6 +22,8 @@ router.get('/signup', (_req, res, _next) => {
     try {
         res.render('users/signup.ejs');
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -34,6 +36,8 @@ router.get('/account', passport.isAuth, async (req, res, _next) => {
 
         res.render('users/account.ejs', { users, recipes, comments });
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -53,6 +57,8 @@ router.get('/signup/user/validations', async (req, res, _next) => {
             });
         }
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -74,6 +80,8 @@ router.post('/account/contact', async (req, res, _next) => {
 
         res.redirect('/account');
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -101,6 +109,8 @@ router.post('/account/password', async (req, res, _next) => {
         }
         res.redirect('/account');
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -112,7 +122,9 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
         await recipeQueries.deleteRecipe(req.params.recipe_id);
 
         res.redirect('/account');
-    } catch (e) {
+    } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -123,6 +135,8 @@ router.get('/login', (_req, res, _next) => {
     try {
         res.render('users/login.ejs');
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -155,6 +169,8 @@ router.post('/login',
                 res.redirect(req.session.returnTo);
             }
         } catch (err) {
+            console.log(err);
+
             res.status(500).redirect('/errors/500.ejs');
         }
     }
@@ -171,6 +187,8 @@ router.get('/logout', (req, res, _next) => {
 
         res.redirect('/login');
     } catch (err) {
+        console.log(err);
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
