@@ -4,11 +4,11 @@ let directionsListOneChildren = directionsListOne.children;
 let directionsListOneArray = Array.from(directionsListOneChildren);
 
 let text;
-let celciusArray = Array();
+let celsiusArray = Array();
 let regexSplit;
 let temp;
-let celciusConversion;
-let celciusRounded;
+let celsiusConversion;
+let celsiusRounded;
 let regexReplace;
 
 const regex = /\b((\d{3}) ((f|f°)|(degre)((e|es) (f|fahrenheit))))\b/gim;
@@ -23,13 +23,13 @@ directionsListOneArray.forEach(item => {
 
         if (regexSplit.length > 1) {
             if (temp == temp) {
-                celciusConversion = (temp - 32) / 1.8;
-                celciusRounded = Math.ceil(celciusConversion);
-                regexReplace = text.replaceAll(regex, celciusRounded + '°C');
-                celciusArray.push(regexReplace);
+                celsiusConversion = (temp - 32) / 1.8;
+                celsiusRounded = Math.ceil(celsiusConversion);
+                regexReplace = text.replaceAll(regex, celsiusRounded + '°C');
+                celsiusArray.push(regexReplace);
             }
         } else {
-            celciusArray.push(text);
+            celsiusArray.push(text);
         }
     });
 });
@@ -37,7 +37,7 @@ directionsListOneArray.forEach(item => {
 const element = document.getElementById('direction-list-two');
 const fragment = new DocumentFragment();
 
-celciusArray.forEach(item => {
+celsiusArray.forEach(item => {
     const li = document.createElement('li');
     li.classList.add('direction-list-item');
     li.textContent = item;

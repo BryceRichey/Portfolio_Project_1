@@ -3,9 +3,9 @@ const metricButton = document.getElementById('metricButton');
 const customaryWrapper = document.querySelector('.customaryWrapper');
 const metricWrapper = document.querySelector('.metricWrapper');
 const fahrenheitButton = document.getElementById('fahrenheitButton');
-const celciusButton = document.getElementById('celciusButton');
+const celsiusButton = document.getElementById('celsiusButton');
 const fahrenheitWrapper = document.querySelector('.fahrenheit-wrapper');
-const celciusWrapper = document.querySelector('.celcius-wrapper');
+const celsiusWrapper = document.querySelector('.celsius-wrapper');
 
 customaryButton.addEventListener('click', e => {
     e.preventDefault();
@@ -36,19 +36,19 @@ fahrenheitButton.addEventListener('click', e => {
 
 function toggleFahrenheitDisplay() {
     addInactiveButton(fahrenheitButton);
-    addActiveButton(celciusButton);
-    notVisible(fahrenheitWrapper, celciusWrapper);
+    addActiveButton(celsiusButton);
+    notVisible(fahrenheitWrapper, celsiusWrapper);
 }
 
-celciusButton.addEventListener('click', e => {
+celsiusButton.addEventListener('click', e => {
     e.preventDefault();
-    toggleCelciusDisplay();
+    togglecelsiusDisplay();
 })
 
-function toggleCelciusDisplay() {
-    addInactiveButton(celciusButton);
+function togglecelsiusDisplay() {
+    addInactiveButton(celsiusButton);
     addActiveButton(fahrenheitButton);
-    notVisible(celciusWrapper, fahrenheitWrapper);
+    notVisible(celsiusWrapper, fahrenheitWrapper);
 }
 
 function addInactiveButton(element) {
