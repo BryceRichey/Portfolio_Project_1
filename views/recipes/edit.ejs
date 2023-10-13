@@ -30,7 +30,7 @@
             <section class="recipe-wrapper">
                 <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe">
                     <section class="recipe-details-wrapper" aria-label="Recipe Details">
-                        <h1>Recipe Details</h1>
+                        <h2>Recipe Details</h2>
                         <div class="input-two-fields">
                             <div class="input-field">
                                 <label for="recipe-title">Title</label>
@@ -78,7 +78,7 @@
                         </div>
                     </section>
                     <section class="recipe-ingredients-wrapper" id="recipe-ingredients-wrapper" aria-label="ingredients">
-                        <h1>Ingredients</h1>
+                        <h2>Ingredients</h2>
                         <div class="ingredients-container" id="ingredients-container">
                             <% let count = 1 %>
                             <% recipeIngredients.forEach(ingredient => { %>
@@ -184,7 +184,7 @@
                         </div>
                     </section>
                     <section class="recipe-directions-wrapper" aria-label="directions">
-                        <h1>Directions</h1>
+                        <h2>Directions</h2>
                         <div class="directions-container" id="directions-container">
                             <% let directionCount = 1 %>
                             <% directions.forEach(direction => { %>
@@ -265,6 +265,7 @@
     <%- include('../partials/footer') %>
     
     <script src="/javascripts/edit_recipe_input_fields.js"></script>
+    <script src="/javascripts/new_recipe_photos.js"></script>
     <script src="/javascripts/delete_recipe_photo.js"></script>
 </body>
 
