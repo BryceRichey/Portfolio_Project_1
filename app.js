@@ -18,6 +18,7 @@ const sessionStore = new MySQLStore({}, db.promise());
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
+const flash = require('express-flash');
 
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
@@ -43,6 +44,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(authConfig.setCurrentUser);
 app.use(recipeRouter);
 app.use(usersRouter);

@@ -131,9 +131,19 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
 
 
 // LOGIN & LOGOUT 
-router.get('/login', (_req, res, _next) => {
+router.get('/login', (req, res, _next) => {
     try {
-        res.render('users/login.ejs');
+        const flashMessage = req.flash('IncorrectMessage');
+
+        if (flashMessage != 0) {
+            res.render('users/login.ejs', {
+                message: flashMessage[0]
+            });
+        } else {
+            res.render('users/login.ejs', {
+                message: null
+            });
+        }
     } catch (err) {
         console.log(err);
 
@@ -144,6 +154,7 @@ router.get('/login', (_req, res, _next) => {
 router.post('/login',
     passport.passport.authenticate('local', {
         failureRedirect: '/login',
+        failureFlash: true,
         keepSessionInfo: true
     })
     , (req, res) => {

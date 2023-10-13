@@ -3,15 +3,13 @@ const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
 const db = require('./database');
 
-const verifyCallback = (username, password, done) => {
+const verifyCallback = (req, username, password, done) => {
     db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, _fields) => {
         if (err) {
             return done(err);
         }
         if (data.length == 0) {
-            return done(null, false, {
-                message: 'Incorrect email or password.'
-            });
+            return done(null, false, req.flash('IncorrectMessage', 'Incorrect email or password.'));
         }
 
         const isValid = validPassword(password, data[0].hash, data[0].salt);
@@ -26,13 +24,14 @@ const verifyCallback = (username, password, done) => {
         if (isValid) {
             return done(null, user);
         } else {
-            return done(null, false);
+            return done(null, false, req.flash('IncorrectMessage', 'Incorrect email or password.'));
         }
     });
 }
 
 const strategy = new LocalStrategy({
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true
 }, verifyCallback);
 
 passport.use(strategy);

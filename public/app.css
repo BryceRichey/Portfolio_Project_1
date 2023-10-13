@@ -3202,3 +3202,33 @@ section[class$=-category-container] {
     white-space: nowrap !important;
     width: 1px !important;
 }
+
+.error-message {
+    display: flex;
+    position: absolute;
+    justify-self: center;
+    animation: fadeInOut 10s;
+    opacity: 0;
+}
+
+.error-message>p {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
