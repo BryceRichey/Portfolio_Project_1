@@ -50,5 +50,9 @@ function showFileSelector() {
         fileInput.files.value = null;
 
         filesSelected.innerText = "";
+
+        photoButtonDiv.classList.add('single-photo-button');
+        photoButtonDiv.classList.remove('photo-buttons');
+        deleteFiles.classList.add('not-visible');
     });
 }
