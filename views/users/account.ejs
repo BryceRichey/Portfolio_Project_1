@@ -103,7 +103,12 @@
                                 <% if (comment === []) { %>
                                     <p>No comments submitted</p>
                                 <% } else { %>
-                                    <p><%= comment['comment'] %></p>
+                                    <div class="user-comments">
+                                        <a href="/recipes/categories/<%= comment['category'] %>/<%= comment['recipe_id'] %>" class="user-comment-link" id="user-comment-link"><%= comment['comment'] %></a>
+                                        <div class="user-recipe-buttons" aria-label="delete or edit recipe">
+                                            <a href="/account/<%= comment['id'] %>/delete" class="button-grey">Delete</a>
+                                        </div>
+                                    </div>
                                 <% } %>
                             <% }); %>
                         </section>

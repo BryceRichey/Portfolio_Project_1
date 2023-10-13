@@ -49,9 +49,12 @@ async function readRecipes(userId) {
 async function readComments(userId) {
     const userCommentsQuery = `
     SELECT 
-        * 
+        c.*,
+        r.category AS 'category' 
     FROM 
-        comments 
+        comments c 
+    LEFT JOIN 
+        recipes r ON r.id = c.recipe_id 
     WHERE 
         user_id = ${userId}`
     const [userComments, _fields] = await db.promise().query(userCommentsQuery);
@@ -132,6 +135,16 @@ async function updatePassword(user, confirmPassword) {
     });
 }
 
+async function deleteComment(commentId) {
+    const deleteQuery = `
+    DELETE
+    FROM 
+        comments 
+    WHERE 
+        id = ${commentId}`
+    await db.promise().query(deleteQuery);
+}
+
 module.exports = {
     createUser,
     readDetails,
@@ -141,5 +154,6 @@ module.exports = {
     updateFirstName,
     updateLastName,
     updateEmail,
-    updatePassword
+    updatePassword,
+    deleteComment
 }

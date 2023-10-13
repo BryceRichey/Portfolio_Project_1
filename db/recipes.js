@@ -277,7 +277,12 @@ async function createRecipe(user, body) {
 async function insertRecipePhoto(user, file) {
     const insertIdQuery = `
     SELECT 
-        LAST_INSERT_ID()`
+        id 
+    FROM 
+        recipes 
+    ORDER BY 
+        id 
+    DESC LIMIT 1`
 
     const [insertIdRows, _insertIdFields] = await db.promise().query(insertIdQuery);
 
@@ -474,13 +479,21 @@ async function insertRecipeDirections(body) {
 }
 
 async function deleteRecipe(recipeId) {
-    const deleteRecipeQuery = `
-        DELETE 
-        FROM 
-            recipes 
-        WHERE 
-            id = ${recipeId}`
-    await db.promise().query(deleteRecipeQuery);
+    const deleteRecipePhotos = `
+    DELETE
+    FROM 
+        recipe_photos 
+    WHERE 
+        recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipePhotos);
+
+    const deleteRecipeLikes = `
+    DELETE
+    FROM 
+        likes 
+    WHERE 
+        recipeId = ${recipeId}`
+    await db.promise().query(deleteRecipeLikes);
 
     const deleteRecipeRatings = `
         DELETE
@@ -490,14 +503,6 @@ async function deleteRecipe(recipeId) {
             recipe_id = ${recipeId}`
     await db.promise().query(deleteRecipeRatings);
 
-    const deleteRecipePhotos = `
-        DELETE
-        FROM 
-            recipe_photos 
-        WHERE 
-            recipe_id = ${recipeId}`
-    await db.promise().query(deleteRecipePhotos);
-
     const deleteRecipeDirections = `
         DELETE
         FROM 
@@ -505,6 +510,14 @@ async function deleteRecipe(recipeId) {
         WHERE 
             recipe_id = ${recipeId}`
     await db.promise().query(deleteRecipeDirections);
+    
+    const deleteRecipeIngredients = `
+        DELETE
+        FROM 
+            recipe_ingredients 
+        WHERE 
+            recipe_id = ${recipeId}`
+    await db.promise().query(deleteRecipeIngredients);
 
     const deleteRecipeComments = `
         DELETE
@@ -514,14 +527,13 @@ async function deleteRecipe(recipeId) {
             recipe_id = ${recipeId}`
     await db.promise().query(deleteRecipeComments);
 
-    // ADD RECIPE ID TO LIKE SO CODE CAN DELETE LIKES
-    // const deleteRecipeLikes = `
-    // DELETE
-    // FROM 
-    //     recipe_likes 
-    // WHERE 
-    //     recipe_id = ${recipeId}`
-    // await db.promise().query(deleteRecipeLikes);
+    const deleteRecipeQuery = `
+    DELETE 
+    FROM 
+        recipes 
+    WHERE 
+        id = ${recipeId}`
+await db.promise().query(deleteRecipeQuery);
 }
 
 async function deletePhoto(photoId) {

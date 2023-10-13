@@ -34,7 +34,11 @@ router.get('/account', passport.isAuth, async (req, res, _next) => {
         const recipes = await userQueries.readRecipes(req.user.id);
         const comments = await userQueries.readComments(req.user.id);
 
-        res.render('users/account.ejs', { users, recipes, comments });
+        res.render('users/account.ejs', { 
+            users, 
+            recipes, 
+            comments 
+        });
     } catch (err) {
         console.log(err);
 
@@ -120,6 +124,18 @@ router.post('/account/password', async (req, res, _next) => {
 router.get('/account/:recipe_id/delete', async (req, res, _next) => {
     try {
         await recipeQueries.deleteRecipe(req.params.recipe_id);
+
+        res.redirect('/account');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.get('/account/:commentId/delete', async (req, res, _next) => {
+    try {
+        await userQueries.deleteComment(req.params.commentId);
 
         res.redirect('/account');
     } catch (err) {

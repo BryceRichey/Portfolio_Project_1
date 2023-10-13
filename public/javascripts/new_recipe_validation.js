@@ -42,7 +42,6 @@ function validateRecipeDetails(name) {
 
 const inputFields = document.querySelectorAll('input');
 const selectFields = document.querySelectorAll('select');
-console.log(inputFields);
 
 function validations(inputFields, selectFields) {
     inputFields.forEach(addValidationListener);

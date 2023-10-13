@@ -33,7 +33,7 @@ router.post('/recipes/new', cloudinary.upload.single('uploaded_file'), async (re
     } catch (err) {
         console.log(err)
 
-        // res.status(500).redirect('/errors/500.ejs');
+        res.status(500).redirect('/errors/500.ejs');
     }
 });
 
@@ -172,8 +172,6 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
         let firstLetterCapital = firstLetter.toUpperCase();
         let remainingLetters = categoryLC.substring(1);
         let categoryUC = firstLetterCapital + remainingLetters;
-
-        console.log(photos)
 
         const ingredientsArray = new Array()
         let ingredientArray = new Array()
