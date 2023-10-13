@@ -88,7 +88,6 @@ const ingredientInputRow = document.getElementById('ingredients-container');
 const ingredientConfig = { childList: true }
 const ingredientcallback = (mutationList, _observer) => {
     for (const mutation of mutationList) {
-        console.log(ingredientInputRow.length);
         if (mutation.type = 'childList') {
             if (deleteIngredientButton.classList.contains('not-visible')) {
                 if (ingredientInputRow.children.length > 1) {

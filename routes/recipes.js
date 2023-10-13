@@ -22,7 +22,7 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
     }
 });
 
-router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, _next) => {
+router.post('/recipes/new', cloudinary.upload.single('uploaded_file'), async (req, res, _next) => {
     try {
         await recipeQueries.createRecipe(req.user, req.body, req.file);
         await recipeQueries.insertRecipePhoto(req.user, req.file);
@@ -31,7 +31,9 @@ router.post('/recipes/new', cloudinary.upload.single('photo'), async (req, res, 
 
         res.redirect('/recipes');
     } catch (err) {
-        res.status(500).redirect('/errors/505.ejs');
+        console.log(err)
+
+        // res.status(500).redirect('/errors/500.ejs');
     }
 });
 
@@ -163,13 +165,15 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
         const recipe = await recipeQueries.getRecipe(req.params.recipeId);
         const ingredients = await recipeQueries.getRecipeIngredientsAndValueNumbers(req.params.recipeId);
         const directions = await recipeQueries.getRecipeDirections(req.params.recipeId);
-        // const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
+        const photos = await recipeQueries.getRecipePhotos(req.params.recipeId);
 
         let categoryLC = req.params.category;
         let firstLetter = categoryLC.charAt(0);
         let firstLetterCapital = firstLetter.toUpperCase();
         let remainingLetters = categoryLC.substring(1);
         let categoryUC = firstLetterCapital + remainingLetters;
+
+        console.log(photos)
 
         const ingredientsArray = new Array()
         let ingredientArray = new Array()
@@ -200,7 +204,8 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
             id: req.params.recipeId,
             recipe: recipe,
             ingredients: ingredientsArray,
-            directions: directions
+            directions: directions,
+            photos
         });
     } catch (err) {
         console.log(err);
@@ -232,6 +237,33 @@ router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next)
         console.log(err);
 
         res.status(500).render('errors/500.ejs');
+    }
+});
+
+/////////
+router.post('/recipes/*/:publicId/:photoId/delete', async (req, res, _next) => {
+    try {        
+        cloudinary.uploader.destroy(req.body.publicId).then(result => {
+            let resultValue;
+
+            for (const [key, value] of Object.entries(result)) {
+                if (key == 'result') {
+                    resultValue = value;
+                }
+            }
+
+            if (resultValue == 'ok') {
+                deletePhotoFromDB()
+            }
+
+            async function deletePhotoFromDB() {
+                await recipeQueries.deletePhoto(req.params.photoId);
+            }
+        });
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/505.ejs');
     }
 });
 
@@ -268,7 +300,7 @@ router.get('/recipes/categories/:recipeCategory/:recipeId/comment/:commentId/del
         res.redirect(`/recipes/categories/${req.params.recipeCategory}/${req.params.recipeId}`);
     } catch (err) {
         console.log(err);
-        
+
         res.status(500).render('errors/500.ejs');
     }
 });

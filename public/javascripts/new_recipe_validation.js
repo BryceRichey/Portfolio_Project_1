@@ -1,9 +1,9 @@
 const submit = document.getElementById('submit-recipe');
 
-submit.addEventListener('click', e => {
+submit.addEventListener('submit', e => {
     e.preventDefault();
     validateNewRecipe();
-    // submit.submit();
+    submit.submit();
 });
 
 function validateNewRecipe() {

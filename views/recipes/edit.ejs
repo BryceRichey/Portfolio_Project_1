@@ -219,6 +219,42 @@
                             <button class="button-muted" id="add-direction-button">Add Step</button>
                         </div>
                     </section>
+
+                    <section class="recipe-photos-wrapper" id="recipe-photos-wrapper" aria-label="photos">
+                        <h2>Photo</h2>
+                        <% if (photos.length === 0) { %>
+                            <div class="file-selector-wrapper">
+                                <div class="photo-input-row">
+                                    <span id="filesSelected"></span>
+                                </div>
+                                <div id="photo-buttons" class="single-photo-button">
+                                    <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
+                                    <label for="fileInput" class="button-muted">Select Photo</label>
+                                    <input type="file" hidden id="fileInput">
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="recipe-photos-edit-wrapper" id="recipe-photos-edit-wrapper">
+                                <a href="<%= photos[0].photo_url %>">Recipe Photo 1</a>
+                                <div class="user-recipe-buttons" aria-label="delete or edit recipe">
+                                    <button class="button-grey" id="delete-photo-button" data-url="/recipes/<%= photos[0].file_name %>/<%= photos[0].id %>/delete">Delete Photo</button>
+                                </div>
+                            </div>
+                        <% } %>
+                        <template id="file-selector-template">
+                            <div class="file-selector-wrapper">
+                                <div class="photo-input-row">
+                                    <span id="filesSelected"></span>
+                                </div>
+                                <div id="photo-buttons" class="single-photo-button">
+                                    <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
+                                    <label for="fileInput" class="button-muted">Select Photo</label>
+                                    <input type="file" hidden id="fileInput">
+                                </div>
+                            </div>
+                        </template>
+                    </section>
+
                     <div class="edit-recipe-submit-button">
                         <button type="reset" class="button-grey">Clear Form</button>
                         <button type="submit" class="button-orange">Submit Recipe</button>
@@ -229,6 +265,7 @@
     <%- include('../partials/footer') %>
     
     <script src="/javascripts/edit_recipe_input_fields.js"></script>
+    <script src="/javascripts/delete_recipe_photo.js"></script>
 </body>
 
 </html>

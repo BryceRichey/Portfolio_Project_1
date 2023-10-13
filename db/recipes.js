@@ -283,8 +283,7 @@ async function insertRecipePhoto(user, file) {
 
     let newRecipeId = (Object.values(insertIdRows[0]));
 
-    // if (!file) {
-    // } else {}
+    console.log(newRecipeId)
 
     if (file) {
         const insertRecipePhotoQuery = `
@@ -296,7 +295,8 @@ async function insertRecipePhoto(user, file) {
         const [_insertRecipePhotoRows, _insertRecipePhotoFields] = await db.promise().query(insertRecipePhotoQuery, {
             recipe_id: newRecipeId,
             user_id: user.id,
-            photo_url: file.path
+            photo_url: file.path,
+            file_name: file.filename
         });
     }
 }
@@ -522,6 +522,16 @@ async function deleteRecipe(recipeId) {
     // WHERE 
     //     recipe_id = ${recipeId}`
     // await db.promise().query(deleteRecipeLikes);
+}
+
+async function deletePhoto(photoId) {
+    const deleteQuery = `
+    DELETE 
+    FROM 
+        recipe_photos 
+    WHERE 
+        id = ${photoId}`
+    await db.promise().query(deleteQuery);
 }
 
 async function updateRecipe(recipeId, body) {
@@ -891,5 +901,6 @@ module.exports = {
     updateRecipe,
     updateRecipeIngredients,
     updateRecipeDirections,
-    deleteRecipe
+    deleteRecipe,
+    deletePhoto
 }

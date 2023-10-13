@@ -35,8 +35,16 @@ const limits = {
 
 const upload = multer({
     storage: storage,
+    dest: './public/data/uploads/',
     fileFilter: fileFilter,
     limits: limits
 });
 
-module.exports = { cloudinary, storage, upload }
+const uploader = cloudinary.uploader
+
+module.exports = {
+    cloudinary,
+    storage,
+    upload,
+    uploader
+}

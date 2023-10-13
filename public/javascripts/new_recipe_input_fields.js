@@ -145,29 +145,30 @@ const directionObserver = new MutationObserver(directionCallback);
 
 directionObserver.observe(directionInputRow, directionconfig);
 
-const photoButtonDiv = document.getElementById('photo-buttons');
-const deletePhotoButton = document.getElementById('delete-photos-button');
-const photoInputRow = document.getElementById('filesSelected');
-const photoconfig = { childList: true }
-const photoCallback = (mutationList, _observer) => {
-    for (const mutation of mutationList) {
-        if (mutation.type = 'childList') {
-            if (deletePhotoButton.classList.contains('not-visible')) {
-                if (photoInputRow.innerHTML.length > 1) {
-                    photoButtonDiv.classList.add('photo-buttons');
-                    photoButtonDiv.classList.remove('single-photo-button');
-                    deletePhotoButton.classList.remove('not-visible');
-                }
-            } else {
-                if (photoInputRow.innerHTML.length <= 1) {
-                    photoButtonDiv.classList.remove('photo-buttons');
-                    photoButtonDiv.classList.add('single-photo-button');
-                    deletePhotoButton.classList.add('not-visible');
-                }
-            }
-        }
-    }
-}
-const photoObserver = new MutationObserver(photoCallback);
+// const photoButtonDiv = document.getElementById('photo-buttons');
+// const deletePhotoButton = document.getElementById('delete-photos-button');
+// const photoInputRow = document.getElementById('filesSelected');
+// const photoconfig = { childList: true }
+// const photoCallback = (mutationList, _observer) => {
+//     for (const mutation of mutationList) {
+//         console.log(mutation)
+//         if (mutation.type = 'childList') {
+//             if (deletePhotoButton.classList.contains('not-visible')) {
+//                 if (photoInputRow.innerHTML.length > 1) {
+//                     photoButtonDiv.classList.add('photo-buttons');
+//                     photoButtonDiv.classList.remove('single-photo-button');
+//                     deletePhotoButton.classList.remove('not-visible');
+//                 }
+//             } else {
+//                 if (photoInputRow.innerHTML.length <= 1) {
+//                     photoButtonDiv.classList.remove('photo-buttons');
+//                     photoButtonDiv.classList.add('single-photo-button');
+//                     deletePhotoButton.classList.add('not-visible');
+//                 }
+//             }
+//         }
+//     }
+// }
+// const photoObserver = new MutationObserver(photoCallback);
 
-photoObserver.observe(photoInputRow, photoconfig);
+// photoObserver.observe(photoInputRow, photoconfig);

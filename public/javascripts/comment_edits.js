@@ -17,8 +17,6 @@ function showEditInput(editBtn) {
     const userInteraction = form.nextElementSibling;
     const commentButtons = document.getElementById('buttons-wrapper-user-edit');
 
-    console.log(commentButtons);
-
     commentTextElement.classList.add('not-visible');
     userInteraction.classList.add('not-visible');
     commentButtons.classList.add('not-visible');
