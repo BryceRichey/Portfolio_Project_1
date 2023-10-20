@@ -1,132 +1,223 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../config/database');
 const passport = require('../config/passport');
-const session = require('express-session');
+const userQueries = require('../db/users');
+const recipeQueries = require('../db/recipes');
 
-router.get('/sign_up', (req, res, next) => {
-    res.render('users/sign_up.ejs')
-});
 
-router.get('/sign_up/user/validations', (req, res, _next) => {
-    const username = req.query.username
-    const email = req.query.email
-
-    if (username) {
-        db.query(`SELECT username FROM users WHERE username = '${username}'`, (err, data) => {
-            if (!(data && data.length) || err) {
-                res.json({
-                    username: true
-                }).end();
-            } else {
-                res.json({
-                    username: false
-                }).end();
-            }
-        });
-    } else if (email) {
-        db.query(`SELECT email FROM users WHERE email = '${email}'`, (err, data) => {
-            if (!(data && data.length) || err) {
-                res.json({
-                    email: true
-                }).end();
-            } else {
-                res.json({
-                    email: false
-                }).end();
-            }
-        });
-    }
-});
-
-router.post('/sign_up', [passport.userExists, (req, res, next) => {
-    sign_up = {
-        f_name: req.body.f_name,
-        l_name: req.body.l_name,
-        username: req.body.username,
-        email: req.body.email
-    }
+// CRUD
+// CREATE
+router.post('/signup', async (req, res, _next) => {
     const saltHash = genPassword(req.body.password);
     const salt = saltHash.salt;
     const hash = saltHash.hash;
-    db.query('INSERT INTO users(f_name, l_name, username, email, hash, salt, isAdmin) values(?, ?, ?, ?, ?, ?, 0)', [...Object.values(sign_up), hash, salt], (err, data, fields) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Successfully created an account')
-        }
-    });
-    res.redirect('/login')
-}]);
 
+    await userQueries.createUser(req.body.firstName, req.body.lastName, req.body.email, salt, hash);
 
-router.get('/login', (req, res, next) => {
-    res.render('users/login.ejs')
-});
-
-router.get('/login/*', (req, res, next) => {
-    res.render('users/login.ejs')
-    session.path = req.params[0];
-});
-
-router.post('/login', passport.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login', failureMessage: true }));
-
-router.get('/account', passport.isAuth, (req, res, next) => {
-    db.query(`SELECT id, f_name, l_name, username, email FROM users WHERE id = ${req.user.id}`, (err, data) => {
-        if (err) {
-            throw err
-        } else {
-            res.render('users/account.ejs', { users: data });
-        }
-    })
-});
-
-router.post('/account/new_names', (req, res, next) => {
-    if (req.body.f_name != "" && req.body.l_name != "" && req.body.username != "") {
-        db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { f_name: req.body.f_name, l_name: req.body.l_name, username: req.body.username }, (err, data) => {
-            if (err) {
-                throw err
-            } else {
-                res.redirect('/account');
-            }
-        });
-    }
-});
-
-router.post('/account/change_email', (req, res, next) => {
-    if (req.body.newEmail === req.body.confirmEmail) {
-        db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, { email: req.body.confirmEmail }, (err, data) => {
-            if (err) {
-                throw err
-            } else {
-                res.redirect('/account');
-            }
-        });
-    }
-});
-
-// router.post('/account/change_password', [passport.genPassword, (req, res, next) => {
-//     const saltHash = genPassword(req.body.confirmPassword);
-//     const salt = saltHash.salt;
-//     const hash = saltHash.hash;
-//     db.query(`UPDATE users SET ? WHERE id = ${req.user.id}`, {hash, salt}, (err, data, fields) => {
-//         if (err) {
-//             throw err
-//         } else {
-//             res.redirect('/account');
-//         }
-//     })
-// }
-// ])
-
-router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            console.log(err)
-        }
-        res.redirect('/')
-    });
     res.redirect('/login');
+});
+
+// READ
+router.get('/signup', (_req, res, _next) => {
+    try {
+        res.render('users/signup.ejs');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.get('/account', passport.isAuth, async (req, res, _next) => {
+    try {
+        const users = await userQueries.readDetails(req.user.id);
+        const recipes = await userQueries.readRecipes(req.user.id);
+        const comments = await userQueries.readComments(req.user.id);
+
+        res.render('users/account.ejs', { 
+            users, 
+            recipes, 
+            comments 
+        });
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.get('/signup/user/validations', async (req, res, _next) => {
+    try {
+        const email = Object.values(req.query);
+        const data = await userQueries.readEmail(email);
+
+        if (!(data && data.length)) {
+            res.json({
+                email: 'true'
+            });
+        } else {
+            res.json({
+                email: 'false'
+            });
+        }
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+// UPDATE
+router.post('/account/contact', async (req, res, _next) => {
+    try {
+        for (const [key, value] of Object.entries(req.body)) {
+            if (key && !value) {
+                console.log('No change');
+            } else if (key.includes("firstName")) {
+                await userQueries.updateFirstName(req.user, req.body);
+            } else if (key.includes("lastName")) {
+                await userQueries.updateLastName(req.user, req.body);
+            } else if (key.includes("email")) {
+                await userQueries.updateEmail(req.user, req.body);
+            }
+        }
+
+        res.redirect('/account');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.post('/account/password', async (req, res, _next) => {
+    try {
+        let newPassword;
+        let confirmPassword;
+
+        for (const [key, value] of Object.entries(req.body)) {
+            if (key && !value) {
+                console.log('No change');
+            } else if (key.includes('confirmPassword')) {
+                confirmPassword = value;
+            } else if (key.includes('newPassword')) {
+                newPassword = value;
+            }
+        }
+
+        if (newPassword != confirmPassword) {
+            console.log(newPassword);
+            console.log(confirmPassword);
+        } else if (newPassword === confirmPassword) {
+            await userQueries.updatePassword(req.user, confirmPassword);
+        }
+        res.redirect('/account');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+
+// DELETE
+router.get('/account/:recipe_id/delete', async (req, res, _next) => {
+    try {
+        await recipeQueries.deleteRecipe(req.params.recipe_id);
+
+        res.redirect('/account');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.get('/account/:commentId/delete', async (req, res, _next) => {
+    try {
+        await userQueries.deleteComment(req.params.commentId);
+
+        res.redirect('/account');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+
+// LOGIN & LOGOUT 
+router.get('/login', (req, res, _next) => {
+    try {
+        const flashMessage = req.flash('IncorrectMessage');
+
+        if (flashMessage != 0) {
+            res.render('users/login.ejs', {
+                message: flashMessage[0]
+            });
+        } else {
+            res.render('users/login.ejs', {
+                message: null
+            });
+        }
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
+
+router.post('/login',
+    passport.passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: true,
+        keepSessionInfo: true
+    })
+    , (req, res) => {
+        try {
+            const template = req.session.passport;
+            const returnTo = req.session.returnTo;
+
+            req.session.regenerate(
+                function (_err) {
+                    req.session.passport = template;
+                    req.session.returnTo = returnTo;
+                    req.session.save(
+                        function (_err) {
+                            res.sendStatus(200);
+                        }
+                    );
+                }
+            );
+
+            if (req.session.returnTo == undefined) {
+                res.redirect('/');
+            } else {
+                res.redirect(req.session.returnTo);
+            }
+        } catch (err) {
+            console.log(err);
+
+            res.status(500).redirect('/errors/500.ejs');
+        }
+    }
+);
+
+router.get('/logout', (req, res, _next) => {
+    try {
+        req.logout((err) => {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/');
+        });
+
+        res.redirect('/login');
+    } catch (err) {
+        console.log(err);
+
+        res.status(500).redirect('/errors/500.ejs');
+    }
 });
 
 module.exports = router;

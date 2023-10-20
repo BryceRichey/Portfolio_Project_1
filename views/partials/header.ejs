@@ -1,27 +1,74 @@
-<header class="main-head">
+<header class="main-header">
   <div class="logo-wrapper">
-    <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg">
-    <h2>BYTE</h2>
+    <img src="https://res.cloudinary.com/djq3aojia/image/upload/v1689791695/BYTE%20branding/Logo_rqiw2c.svg" alt="BYTE Recipes logo">
+    <span>BYTE</span>
   </div>
-  <nav class="main-nav">
+  <nav id="main-nav" class="main-nav" aria-label="Main menu">
     <ul class="nav-list">
-      <li><a href="/" class="inactive-link" id="homeLink">Home</a></li>
-      <li><a href="/recipes" class="inactive-link" id="recipesLink">Recipes</a></li>
-      <li><a href="/recipes/categories" class="inactive-link" id="catergoriesLink">Categories</a></li>
-      <li><a href="/recipes/new" class="inactive-link" id="submitRecipeLink">Submit Recipe</a></li>
+      <li><a href="/" class="inactive-link main-home" id="homeLink">Home</a></li>
+      <li><a href="/recipes" class="inactive-link main-recipes" id="recipesLink">Recipes</a></li>
+      <li><a href="/recipes/categories" class="inactive-link main-categories" id="catergoriesLink">Categories</a></li>
+      <li><a href="/recipes/new" class="inactive-link main-new" id="submitRecipeLink">Submit Recipe</a></li>
     </ul>
   </nav>
   <search class="main-search">
-    <form action="" class="search-form">
-      <input type="search" name="" id="" placeholder="Search Recipes">
+    <form id="main-search" action="/recipes/search" class="search-form" aria-label="Search BYTE recipes" method="post">
+      <label for="main-search-input" class="visually-hidden">Search BYTE recipes</label>
+      <input name="searchValue" type="main-search" aria-label="Search BYTE recipes" id="main-search-input" placeholder="Search">
     </form>
   </search>
-  <% if(locals.currentUser) {%>
-    <a href="/logout" class="button-2-outline">Log Out</a>
-    <a href="/my_account" class="button-2-solid">My Account</a>  
+
+  <nav class="navbar">
+    <div class="container-fluid navbar">
+      <button class="button-orange no-border" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">Menu</button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <search class="main-search-mobile">
+              <form id="main-search" action="/recipes/search" class="search-form" aria-label="Search BYTE recipes" method="post">
+                <label for="main-search-input" class="visually-hidden">Search BYTE recipes</label>
+                <input name="searchValue" type="main-search" aria-label="Search BYTE recipes" id="main-search-input" placeholder="Search">
+              </form>
+            </search>
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="mobile-nav-list">
+              <li class="nav-item" id="mobile-nav-home">
+                <a class="mobile-nav-link-black" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item" id="mobile-nav-recipes">
+                <a class="mobile-nav-link-black" href="/recipes">Recipes</a>
+              </li>
+              <li class="nav-item" id="mobile-nav-categories">
+                <a class="mobile-nav-link-black" href="/recipes/categories">Categories</a>
+              </li>
+              <li class="nav-item" id="mobile-nav-new">
+                <a class="mobile-nav-link-black" href="/recipes/new">Submit Recipe</a>
+              </li>
+            </ul>
+
+          </div>
+          <div class="mobile-nav-account-buttons">
+            <% if (locals.currentUser) {%>
+              <a href="/logout" id="mobile-login-out-btn" class="button-muted">Log Out</a>
+              <a href="/account" id="mobile-signup-btn" class="button-orange">My Account</a>  
+            <% } else { %>
+              <a href="/login" id="mobile-login-out-btn" class="button-muted">Log In</a>  
+              <a href="/signup" id="mobile-signup-btn" class="button-orange">Sign Up</a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <% if (locals.currentUser) {%>
+    <a href="/logout" id="login-out-btn" class="button-muted">Log Out</a>
+    <a href="/account" id="signup-btn" class="button-orange">My Account</a>  
   <% } else { %>
-    <a href="/login" class="button-2-outline">Log In</a>  
-    <a href="/sign_up" class="button-2-solid">Sign Up</a>
+    <a href="/login" id="login-out-btn" class="button-muted">Log In</a>  
+    <a href="/signup" id="signup-btn" class="button-orange">Sign Up</a>
   <% } %>
 </header>
 

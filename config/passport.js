@@ -1,42 +1,48 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const crypto = require('crypto');
-const session = require('express-session');
-
 const db = require('./database');
 
-const verifyCallback = (username, password, done) => {
+const verifyCallback = (req, username, password, done) => {
     db.query('SELECT * FROM users WHERE email = ?', [username], (err, data, _fields) => {
         if (err) {
             return done(err);
         }
         if (data.length == 0) {
-            return done(null, false, { message: 'Incorrect email or password.' });
+            return done(null, false, req.flash('IncorrectMessage', 'Incorrect email or password.'));
         }
 
         const isValid = validPassword(password, data[0].hash, data[0].salt);
 
-        user = { id: data[0].id, username: data[0].username, hash: data[0].hash, salt: data[0].salt }
+        user = {
+            id: data[0].id,
+            username: data[0].username,
+            hash: data[0].hash,
+            salt: data[0].salt
+        }
 
         if (isValid) {
             return done(null, user);
         } else {
-            return done(null, false);
+            return done(null, false, req.flash('IncorrectMessage', 'Incorrect email or password.'));
         }
     });
 }
 
-const strategy = new LocalStrategy({ usernameField: 'email' }, verifyCallback);
+const strategy = new LocalStrategy({
+    usernameField: 'email',
+    passReqToCallback: true
+}, verifyCallback);
 
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
     db.query('SELECT * FROM users WHERE id = ?', [id], (_err, data) => {
-        done(null, data[0])
+        done(null, data[0]);
     });
 });
 
@@ -62,11 +68,10 @@ validPassword = (password, hash, salt) => {
 
 isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
-        next()
+        return next();
     } else {
-        const postLoginRedirect = req.originalUrl;
-        session.path = postLoginRedirect;
-        res.redirect('/login');
+        req.session.returnTo = req.originalUrl;
+        res.redirect(`/login`);
     }
 }
 
@@ -88,11 +93,18 @@ userExists = (req, res, next) => {
         if (err) {
             console.log(err);
         } else if (data.length > 0) {
-            res.redirect('/')
+            res.redirect('/');
         } else {
             next();
         }
     });
 }
 
-module.exports = { passport, isAuth, isAdmin, setCurrentUser, userExists };
+module.exports = {
+    passport,
+    isAuth,
+    isAdmin,
+    setCurrentUser,
+    userExists,
+    genPassword
+};

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+    <title>Sign Up | BYTE Recipes</title>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <section class="auth-content-sidebar">
+            <main>
+                <a class="button-back" href="/">Go Back</a>
+                <div class="auth-content">
+                    <h1>Create an <span>account</span></h1>
+                    <form action="/signup" id="create-account" method="post" aria-label="Sign up form">
+                        <div class="auth-input-two-fields">
+                            <div class="auth-input-field">
+                                <label for="first-name">First name</label>
+                                <input type="text" class="normal-border" id="first-name" name="firstName">
+                                <div class="invalid-message"></div>
+                            </div>
+                            <div class="auth-input-field">
+                                <label for="last-name">Last name</label>
+                                <input type="text" class="normal-border" id="last-name" name="lastName">
+                                <div class="invalid-message"></div>
+                            </div>
+                        </div>
+                        <div class="auth-input-field">
+                            <label for="email">Email</label>
+                            <input type="email" class="normal-border" id="email" name="email">
+                            <div class="valid-message"></div>
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-input-field">
+                            <label for="password">Password</label>
+                            <input type="password" class="normal-border" id="password" name="password">
+                            <div class="valid-message"></div>
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-button">
+                            <button type="submit" class="button-orange">Create account</button>
+                        </div>
+                    </form>
+                    <p>Already have an account?
+                        <a href="/login">Log In</a>
+                    </p>
+                </div>
+            </main>
+        </section>
+        <section class="auth-sidebar"></section>
+    </div>
+    <script src="/javascripts/signup_validations.js"></script>
+</body>
+
+</html>

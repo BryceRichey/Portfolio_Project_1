@@ -3,143 +3,190 @@
 
 <head>
     <%- include('../partials/head') %>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    
-    <script>
-        tinymce.init({ 
-            selector: "#description"
-        });
-    </script>
-    
+    <title>Submit Recipe | BYTE Recipes</title>
 </head>
 
 <body>
     <%- include('../partials/header') %>
-        <header class="container text-centered mt-5">
-            <h1>Submit your recipe to us</h1>
-            <p>We're always looking for new and exciting recipies. Submit yours today!</p>
-        </header>
-        <br>
-        <form action="/recipes/new" class="container" method="POST" enctype="multipart/form-data">
-            <div>
-                <label for="r_title" class="form-label">Recipe Title</label>
-                <input type="text" name="r_title" id="r_title" class="form-control" placeholder="Apple Strudel" required>
-            </div>
-            <div class="mt-4">
-                <label for="num_serv" class="form-label">Number of Servings</label>
-                <input type="number" name="num_serv" id="num_serv" class="form-control" placeholder="12" required>
-            </div>
-                <label for="prep_time" class="form-label">Prep Time</label>
-                <input type="number" name="prep_time" id="prep_time" class="form-control" placeholder="30 mins" required>
-            </div>
-                <label for="cook_time" class="form-label">Cook Time</label>
-                <input type="number" name="cook_time" id="cook_time" class="form-control" placeholder="15 mins" required>
-            </div>
-            <div class="mt-4">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" name="description" id="description" class="form-control"
-                    placeholder="1 cup whole wheat pastry flour" required>
-            </div>
+    <div class="main-bread-crumbs-wrapper">
+        <ol class="bread-crumb-list">
+            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/new" class="bread-crumb">Sumbit Recipe</a></li>
+        </ol>
+    </div>
+    <main>
+        <div class="new-recipe-wrapper">
+            <header class="header-wrapper" aria-label="submit your recipe">
+                <H1>Submit Your Recipe</H1>
+                <p>Share with us some of your greatest creations</p>
+            </header>
+            <section class="recipe-wrapper">
+                <form action="/recipes/new" method="post" class="create-recipe" enctype="multipart/form-data">
+                    <section class="recipe-details-wrapper" aria-label="recipe details">
+                        <h2>Recipe Details</h2>
+                        <div class="input-two-fields">
+                            <div class="input-field">
+                                <label for="recipe-title">Title</label>
+                                <input type="text" name="recipeTitle" class="normal-border" id="recipe-title">
+                                <div class="valid-message"></div>
+                                <div class="invalid-message"></div>
+                            </div>
+                            <div class="input-two-fields-category">
+                                <label for="recipe-category">Category</label>
+                                <select name="recipeCategory" id="recipe-category" class="normal-border">
+                                    <option value="" default selected hidden>Select</option>
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="snacketizers">Snacketizers</option>
+                                    <option value="baking">Baking</option>
+                                    <option value="soup">Soup</option>
+                                    <option value="salad">Salad</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="drinks">Drinks</option>
+                                    <option value="dessert">Dessert</option>
+                                </select>
+                                <div class="valid-message"></div>
+                                <div class="invalid-message"></div>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <label for="recipe-description">Description</label>
+                            <input type="text" name="recipeDescription" class="normal-border" id="recipe-description">
+                            <div class="valid-message"></div>
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="input-three-fields">
+                            <div class="input-field">
+                                <label for="recipe-servings">Servings</label>
+                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings">
+                                <div class="valid-message"></div>
+                                <div class="invalid-message"></div>
+                            </div>
+                            <div class="input-field-two-fields">
+                                <div class="input-field">
+                                    <label for="recipe-prep-time">Prep Time</label>
+                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time">
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="recipe-cook-time">Cook Time</label>
+                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time">
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recipe-ingredients-wrapper" aria-label="ingredients">
+                        <h2>Ingredients</h2>
+                        <template id="recipe-ingredients-input-template">
+                            <div class="input-field-four-fields" id="ingredient-input">
+                                <div class="input-field">
+                                    <label for="ingredient-amount">Amount</label>
+                                    <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount">
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient-fraction">Fraction</label>
+                                    <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border">
+                                        <option value="" default selected hidden>Select</option>
+                                        <option value="8"></option>
+                                        <option value="1">¾</option>
+                                        <option value="2">⅔</option>
+                                        <option value="3">½</option>
+                                        <option value="4">⅓</option>
+                                        <option value="5">¼</option>
+                                        <option value="6">⅛</option>
+                                        <option value="7">¹⁄₁₆</option>
+                                    </select>
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient-unit">Unit</label>
+                                    <select name="ingredientUnit_" id="ingredient-unit" class="normal-border">
+                                        <option value="" default selected hidden>Select</option>
+                                        <option value=""></option>
+                                        <option value="1">tablespoon</option>
+                                        <option value="2">teaspoon</option>
+                                        <option value="3">ounce</option>
+                                        <option value="4">fluid ounce</option>
+                                        <option value="5">cup</option>
+                                        <option value="6">pint</option>
+                                        <option value="7">quart</option>
+                                        <option value="8">gallon</option>
+                                        <option value="9">grams</option>
+                                    </select>
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                                <div class="input-field">
+                                    <label for="ingredient">Ingredient</label>
+                                    <input type="text" name="ingredient_" class="normal-border" id="ingredient">
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                            </div>
+                        </template>
+                        <div id="ingredient-input-row"></div>
+                        <div id="ingredient-buttons" class="single-ingredient-button">
+                            <button class="button-grey not-visible" id="delete-ingredient-button">Delete Ingredient</button>
+                            <button class="button-muted" id="add-ingredient-button">Add Ingredient</button>
+                        </div>
+                    </section>
+                    <section class="recipe-directions-wrapper" aria-label="directions">
+                        <h2>Directions</h2>
+                        <template id="recipe-directions-input-template">
+                            <div class="directions-input-field-two-fields" id="direction-input">
+                                <div class="input-step" id="input-step">
+                                    <p></p>
+                                </div>
+                                <div class="input-field">
+                                    <label for="recipeDerection" hidden >Direction</label>
+                                    <input type="text" name="recipeDirection_" class="normal-border" id="recipeDirection">
+                                    <div class="valid-message"></div>
+                                    <div class="invalid-message"></div>
+                                </div>
+                            </div>
+                        </template>
+                        <div id="direction-input-row"></div>
+                        <div id="direction-buttons" class="single-direction-button">
+                            <button class="button-grey not-visible" id="delete-step-button">Delete Step</button>
+                            <button class="button-muted" id="add-direction-button">Add Step</button>
+                        </div>
+                    </section>
+                    <section class="recipe-photos-wrapper" aria-label="photos">
+                        <h2>Photo</h2>
+                        <div class="file-selector-wrapper">
+                            <div class="photo-input-row">
+                                <span id="filesSelected"></span>
+                            </div>
+                            <div id="photo-buttons" class="single-photo-button">
+                                <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
+                                <label for="fileInput" class="button-muted">Select Photo</label>
+                                <input type="file" hidden id="fileInput" name="uploaded_file">
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recipe-disclaimer-wrapper" aria-label="acknowledgement">
+                        <h2>Acknowledgement</h2>
+                        <p class="body">By submitting your recipe to us you understand that we are released of any and all liability. We retain the ability to modify or change the recipe, photos, etc. as we see fit.</p>
+                        <div class="recipe-submit-button">
+                            <button type="reset" class="button-grey">Clear Form</button>
+                            <button type="submit" class="button-orange" id="submit-recipe">Submit Recipe</button>
+                        </div>
+                    </section>
+                </form>
+            </section>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
 
-            <div class="mt-4">
-                <template id="ingredient-input-template">
-                    <div class="input-group mb-3 ingredient-input-row">
-                        <input type="text" name="amount" placeholder="Amount" class="form-control">
-                        <select class="form-select" name="unit">
-                            <option selected>Select unit</option>
-                            <option value="1">tbsp</option>
-                            <option value="2">tsp</option>
-                            <option value="3">oz</option>
-                            <option value="4">fl. oz</option>
-                            <option value="5">cup</option>
-                        </select>
-                        <input type="text" class="form-control" placeholder="Ingredient" name="ingredient">
-                    </div>
-                </template>
-                <div id="ingredientInputRows"></div>
-                <button class="btn btn-dark mt-2" id="addIngredientBtn">Add ingredient</button>
-                <script>
-                    const addIngredientBtn = document.getElementById('addIngredientBtn');
-                    addIngredientBtn.addEventListener('click', e => {
-                        addIngredientField();
-                        e.preventDefault();
-                    });
-
-                    document.addEventListener('DOMContentLoaded', e => {
-                        addIngredientField();
-                    }, false);
-
-                    function addIngredientField() {
-                        const inputRows = document.getElementsByClassName('ingredient-input-row') || [];
-                        const templateElement = document.getElementById('ingredient-input-template').content;
-                        let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
-
-                        Array.from(ingredientInputRow.children).forEach(input => {
-                            const name = input.name;
-                            input.name = nameString(inputRows.length, name);
-                        });
-
-                        document.getElementById('ingredientInputRows').append(ingredientInputRow);
-                    }
-
-                    function nameString(index, fieldName) {
-                        return `ingredients[${index}][${fieldName}]`;
-                    }
-                </script>
-            </div>
-
-            <div class="mt-4">
-                <template id="direction-step-template">
-                    <label for="direction-input" id="direction-step-row"></label>
-                </template>
-                <template id="direction-input-template" name="direction-input">
-                    <div class="input-group mb-3 direction-input-row">
-                        <input type="text" name="directions" class="form-control">
-                    </div>
-                </template>
-                <div id="directionInputRows"></div>
-                <button class="btn btn-dark mt2" id="addDirectionBtn">Add step</button>
-                <script>
-                    const addDirectionBtn = document.getElementById('addDirectionBtn');
-                    addDirectionBtn.addEventListener('click', e => {
-                        addDirectionField();
-                        e.preventDefault();
-                    });
-
-                    document.addEventListener('DOMContentLoaded', e => {
-                        addDirectionField();
-                    }, false);
-
-                    let stepNumber = 1;
-                    function addDirectionField() {
-                        const inputRows = document.getElementsByClassName('direction-input-row') || [];
-                        const directionInutTemplateElement = document.getElementById('direction-input-template').content;
-                        let directionInputRow = directionInutTemplateElement.cloneNode(true).querySelector('div');
-
-                        Array.from(directionInputRow.children).forEach(input => {
-                            const name = input.name;
-                            input.name = nameString(inputRows.length, name);
-                        });
-
-                        const stepRow = document.getElementById('direction-step-row') || [];
-                        const directionStepTemplateElement = document.getElementById('direction-step-template').content;
-                        let directionStepRow = directionStepTemplateElement.cloneNode(true).querySelector('label');
-                        directionStepRow.innerText = `Step ${stepNumber++}`
-
-                        document.getElementById('directionInputRows').append(directionStepRow, directionInputRow);
-                    }
-
-                    function nameString(index, fieldName) {
-                        return `directions[${index}][${fieldName}]`;
-                    }
-                </script>
-            </div>
-            <div class="input-group mt-4">
-                <input type="file" name="photo" id="photo" class="form-control" accept=".png,.jpg,.jpeg,image/png,image/jpg,image/jpeg">
-            </div>
-            <input type="submit" id="submit" value="submit" class="btn btn-dark mt-4">
-        </form>
-        <%- include('../partials/footer') %>
+    <script src="/javascripts/new_recipe_input_fields.js" type="module"></script>
+    <script src="/javascripts/new_recipe_photos.js"></script>
+    <script src="/javascripts/new_recipe_validation.js" type="module"></script>
 </body>
 
 </html>

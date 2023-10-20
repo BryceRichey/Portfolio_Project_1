@@ -3,44 +3,270 @@
 
 <head>
     <%- include('../partials/head') %>
+    <% const recipeData = recipe[0] %>
+    <% const recipeTitle = recipeData['r_title'].charAt(0).toUpperCase() + recipeData['r_title'].slice(1) %>
+    <title>Edit Recipe | <%= recipeTitle %> | BYTE Recipes</title>
 </head>
 
 <body>
     <%- include('../partials/header') %>
-        <header class="container text-centered mt-5">
-            <h1>Edit your recipe</h1>
-        </header>
-        <br>
-        <% JSON.stringify(recipe) %>
-            <% recipe.forEach((recipe_info)=> { %>
-                <form action="/recipes/<%= id %>/edit" class="container" method="POST">
-                    <div>
-                        <label for="r_title" class="form-label">Recipe Title</label>
-                        <input type="text" name="r_title" id="r_title" class="form-control"
-                            value="<%= recipe_info['r_title'] %>" required>
+    <% const recipeIngredients = ingredients %>
+    <% const recipeDirections = directions %>
+    <nav class="main-bread-crumbs-wrapper" aria-label="breadcrumb">
+        <ol class="bread-crumb-list" aria-label="breadcrumbs">
+            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
+            <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
+            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
+        </ol>
+    </nav>
+    <main>
+        <div class="edit-recipe-wrapper">
+            <header class="header-wrapper" aria-label="edit your recipe">
+                <h1>Edit Your Recipe</h1>
+                <p><%= recipeTitle %></p>
+            </header>
+            <section class="recipe-wrapper">
+                <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe">
+                    <section class="recipe-details-wrapper" aria-label="Recipe Details">
+                        <h2>Recipe Details</h2>
+                        <div class="input-two-fields">
+                            <div class="input-field">
+                                <label for="recipe-title">Title</label>
+                                <input type="text" name="recipeTitle" class="normal-border" id="recipe-title" value="<%= recipeTitle %>">
+                            </div>
+                            <div class="input-two-fields-category">
+                                <label for="recipe-category">Category</label>
+                                <select name="recipeCategory" id="recipe-category" class="normal-border">
+                                    <% if (recipeData['category']) { %>
+                                        <option value="<%= recipeData['category'] %>" default selected hidden><%= recipeData['category'] %></option>
+                                    <% } else { %>
+                                        <option value="" default selected hidden>Select Category</option>
+                                    <% } %>
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="snacketizers">Snacketizers</option>
+                                    <option value="baking">Baking</option>
+                                    <option value="soup">Soup</option>
+                                    <option value="salad">Salad</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="drinks">Drinks</option>
+                                    <option value="dessert">Dessert</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-field">
+                            <label for="recipe-description">Description</label>
+                            <input type="text" name="recipeDescription" class="normal-border" id="recipe-description" value="<%= recipeData['description'] %>">
+                        </div>
+                        <div class="input-three-fields">
+                            <div class="input-field">
+                                <label for="recipe-servings">Servings</label>
+                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings" value="<%= recipeData['servings'] %>">
+                            </div>
+                            <div class="input-field-two-fields">
+                                <div class="input-field">
+                                    <label for="recipe-prep-time">Prep Time</label>
+                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time" value="<%= recipeData['prep_time'] %>">
+                                </div>
+                                <div class="input-field">
+                                    <label for="recipe-cook-time">Cook Time</label>
+                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time" value="<%= recipeData['cook_time'] %>">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recipe-ingredients-wrapper" id="recipe-ingredients-wrapper" aria-label="ingredients">
+                        <h2>Ingredients</h2>
+                        <div class="ingredients-container" id="ingredients-container">
+                            <% let count = 1 %>
+                            <% recipeIngredients.forEach(ingredient => { %>
+                            <div class="recipe-ingredients-input-wrapper" id="recipe-ingredients-input-wrapper">
+                                <div class="input-field-four-fields" id="ingredient-input">
+                                    <div class="input-field">
+                                        <label for="ingredient-amount">Amount</label>
+                                        <input type="number" name="ingredientAmount_<%=count%>" class="normal-border" id="ingredient-amount" value="<%= ingredient[0] %>">
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient-fraction">Fraction</label>
+                                        <select name="ingredientFraction_<%=count%>" id="ingredient-fraction" class="normal-border">
+                                            <% if (ingredient[1]) { %>
+                                                <option value="<%=ingredient[3] %>" default selected hidden><%=ingredient[1] %></option>
+                                            <% } else { %>
+                                                <option value="" default selected hidden></option>
+                                            <% } %>
+                                            <option value=""></option>
+                                            <option value="1">¾</option>
+                                            <option value="2">⅔</option>
+                                            <option value="3">½</option>
+                                            <option value="4">⅓</option>
+                                            <option value="5">¼</option>
+                                            <option value="6">⅛</option>
+                                            <option value="7">¹⁄₁₆</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient-unit">Unit</label>
+                                        <select name="ingredientUnit_<%=count%>" id="ingredient-unit" class="normal-border">
+                                            <% if (ingredient[2]) { %>
+                                                <option value="<%= ingredient[4] %>" default selected hidden><%= ingredient[2] %></option>
+                                            <% } else { %>
+                                                <option value="" default selected hidden></option>
+                                            <% } %>
+                                            <option value=""></option>
+                                            <option value="1">tablespoon</option>
+                                            <option value="2">teaspoon</option>
+                                            <option value="3">ounce</option>
+                                            <option value="4">fluid ounce</option>
+                                            <option value="5">cup</option>
+                                            <option value="6">pint</option>
+                                            <option value="7">quart</option>
+                                            <option value="8">gallon</option>
+                                            <option value="9">grams</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient">Ingredient</label>
+                                        <input type="text" name="ingredient_<%=count%>" class="normal-border" id="ingredient" value="<%= ingredient[5] %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <% count ++ %>
+                            <% }) %>
+                        </div>
+                        <template id="recipe-ingredients-input-template">
+                            <div id="recipe-ingredients-input-wrapper" class="recipe-ingredients-input-wrapper">
+                                <div class="input-field-four-fields" id="ingredient-input">
+                                    <div class="input-field">
+                                        <label for="ingredient-amount">Amount</label>
+                                        <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount">
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient-fraction">Fraction</label>
+                                        <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border">
+                                            <option value="" default selected hidden>Select Fraction</option>
+                                            <option value="1">¾</option>
+                                            <option value="2">⅔</option>
+                                            <option value="3">½</option>
+                                            <option value="4">⅓</option>
+                                            <option value="5">¼</option>
+                                            <option value="6">⅛</option>
+                                            <option value="7">¹⁄₁₆</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient-unit">Unit</label>
+                                        <select name="ingredientUnit_" id="ingredient-unit" class="normal-border">
+                                            <option value="" default selected hidden>Select unit</option>
+                                            <option value="1">tablespoon</option>
+                                            <option value="2">teaspoon</option>
+                                            <option value="3">ounce</option>
+                                            <option value="4">fluid ounce</option>
+                                            <option value="5">cup</option>
+                                            <option value="6">pint</option>
+                                            <option value="7">quart</option>
+                                            <option value="8">gallon</option>
+                                            <option value="9">grams</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="ingredient">Ingredient</label>
+                                        <input type="text" name="ingredient_" class="normal-border" id="ingredient">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div id="ingredient-input-row"></div>
+                        <div id="ingredient-buttons" class="ingredient-buttons">
+                            <button class="button-grey" id="delete-ingredient-button">Delete Ingredient</button>
+                            <button class="button-muted" id="add-ingredient-button">Add Ingredient</button>
+                        </div>
+                    </section>
+                    <section class="recipe-directions-wrapper" aria-label="directions">
+                        <h2>Directions</h2>
+                        <div class="directions-container" id="directions-container">
+                            <% let directionCount = 1 %>
+                            <% directions.forEach(direction => { %>
+                            <div class="recipe-directions-input" id="recipe-directions-input">
+                                <div class="directions-input-field-two-fields" id="direction-input">
+                                    <div class="input-step" id="input-step">
+                                        <p>Step <%= directionCount %></p>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="text" name="recipeDirection_<%= directionCount %>" class="normal-border" id="recipeDirection" value="<%= direction.direction %>">
+                                    </div>
+                                </div>
+                            </div>
+                            <% directionCount ++ %>
+                            <% }); %>
+                        </div>
+                        <template id="recipe-directions-input-template">
+                            <div class="recipe-directions-input" id="recipe-directions-input">
+                                <div class="directions-input-field-two-fields" id="direction-input">
+                                    <div class="input-step" id="input-step">
+                                        <p></p>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="text" name="recipeDirection_" class="normal-border" id="recipeDirection">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <div id="direction-input-row"></div>
+                        <div id="direction-buttons" class="direction-buttons">
+                            <button class="button-grey" id="delete-step-button">Delete Step</button>
+                            <button class="button-muted" id="add-direction-button">Add Step</button>
+                        </div>
+                    </section>
+
+                    <section class="recipe-photos-wrapper" id="recipe-photos-wrapper" aria-label="photos">
+                        <h2>Photo</h2>
+                        <% if (photos.length === 0) { %>
+                            <div class="file-selector-wrapper">
+                                <div class="photo-input-row">
+                                    <span id="filesSelected"></span>
+                                </div>
+                                <div id="photo-buttons" class="single-photo-button">
+                                    <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
+                                    <label for="fileInput" class="button-muted">Select Photo</label>
+                                    <input type="file" hidden id="fileInput">
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="recipe-photos-edit-wrapper" id="recipe-photos-edit-wrapper">
+                                <a href="<%= photos[0].photo_url %>">Recipe Photo 1</a>
+                                <div class="user-recipe-buttons" aria-label="delete or edit recipe">
+                                    <button class="button-grey" id="delete-photo-button" data-url="/recipes/<%= photos[0].file_name %>/<%= photos[0].id %>/delete">Delete Photo</button>
+                                </div>
+                            </div>
+                        <% } %>
+                        <template id="file-selector-template">
+                            <div class="file-selector-wrapper">
+                                <div class="photo-input-row">
+                                    <span id="filesSelected"></span>
+                                </div>
+                                <div id="photo-buttons" class="single-photo-button">
+                                    <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
+                                    <label for="fileInput" class="button-muted">Select Photo</label>
+                                    <input type="file" hidden id="fileInput">
+                                </div>
+                            </div>
+                        </template>
+                    </section>
+
+                    <div class="edit-recipe-submit-button">
+                        <button type="reset" class="button-grey">Clear Form</button>
+                        <button type="submit" class="button-orange">Submit Recipe</button>
                     </div>
-                    <div class="mt-4">
-                        <label for="num_serv" class="form-label">Number of Servings</label>
-                        <input type="number" name="num_serv" id="num_serv" class="form-control"
-                            value="<%= recipe_info['num_serv'] %>" required>
-                    </div>
-                    <div class="mt-4">
-                        <label for="ingredients" class="form-label">Ingredients</label>
-                        <input type="text" name="ingredients" id="ingredients" class="form-control"
-                            value="<%= recipe_info['ingredients'] %>" required>
-                    </div>
-                    <div class="mt-4">
-                        <label for="directions" class="form-label">Directions</label>
-                        <input type="text" name="directions" id="directions" class="form-control"
-                            value="<%= recipe_info['directions'] %>" required>
-                    </div>
-                    <div class="input-group mt-4">
-                        <input type="file" name="photos" id="photos" class="form-control">
-                    </div>
-                    <input type="submit" id="submit" value="Submit" class="btn btn-dark mt-4">
                 </form>
-                <% }) %>
-                    <%- include('../partials/footer') %>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+    
+    <script src="/javascripts/edit_recipe_input_fields.js"></script>
+    <script src="/javascripts/new_recipe_photos.js"></script>
+    <script src="/javascripts/delete_recipe_photo.js"></script>
 </body>
 
 </html>

@@ -1,109 +1,134 @@
-const createAccount = document.querySelector('#createAccount');
+const createAccount = document.querySelector('#create-account');
 
 createAccount.addEventListener('submit', e => {
-    e.preventDefault;
+    e.preventDefault();
     validateAccount();
+    createAccount.submit();
 });
 
 function validateAccount() {
-    const firstName = document.getElementById('f_name').value.trim();
-    const lastName = document.getElementById('l_name').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim();
-
-    if (firstName == "") {
-        alert('First name cannot be left blank');
-        return false;
-    } else if (lastName == "") {
-        alert('Last name cannot be left blank');
-        return false;
-    } else if (username == "") {
-        alert('Username cannot be left blank')
-        return false;
-    } else if (email == "") {
-        alert('Email cannot be left blank')
-        return false;
-    } else if (firstName == "" && lastName == "") {
-        alert('First and last name cannot be left blank')
-        return false;
-    } else {
-        return true;
-    }
+    validateNotBlank('first-name');
+    validateNotBlank('last-name');
+    validateNotBlank('email');
+    validateNotBlank('password');
 }
 
-async function validateUniqueness(name, value) {
-    const element = document.getElementById(name);
-    const invalidElement = element.parentElement.querySelector('.invalid-feedback');
-    const errorName = name.charAt(0).toUpperCase() + name.slice(1);
 
-    element.classList.remove('is-invalid', 'is-valid');
-
-    if (element.value.length < 1) {
-        // add 'cannot be blank' message
-        const errorMsg = errorName + ' cannot be blank';
-        invalidElement.innerHTML = errorMsg;
-        element.classList.add('is-invalid');
-        return;
-    }
-
-    let data = {}
-    data[name] = value;
-
-    const urlParams = new URLSearchParams(Object.entries(data));
-
-    let validation = await fetch(`/sign_up/user/validations?${urlParams}`)
-        .then(response => (response.json()))
-        .then(data => (data));
-
-    if (validation[name] === false) {
-        const errorMsg = errorName + ' is taken';
-        invalidElement.innerHTML = errorMsg;
-        element.classList.add('is-invalid');
-    } else if (validation[name] === true) {
-        element.classList.add('is-valid');
-    }
-}
-
-['username', 'email'].forEach(field => {
+['first-name', 'last-name', 'email', 'password'].forEach(field => {
     let element = document.getElementById(field);
     element.addEventListener('blur', e => {
-        validateUniqueness(field, e.target.value)
+        validateNotBlank(field, e.target.value);
     });
 });
 
-
-async function validateNotBlank(name, _value) {
+function validateNotBlank(name, _value) {
     const element = document.getElementById(name);
-    const invalidElement = element.parentElement.querySelector('.invalid-feedback');
+    const invalidElement = element.parentElement.querySelector('.invalid-message');
     const errorName = element.parentElement.querySelector('label').innerText;
 
-    element.classList.remove('is-invalid', 'is-valid');
+    element.classList.remove('invalid-border');
+    element.classList.add('normal-border');
+    invalidElement.innerHTML = '';
 
-    if (element.value.length < 1) {
-        // add 'cannot be blank' message
+    if (element.value.trim().length < 1) {
         const errorMsg = errorName + ' cannot be blank';
+
         invalidElement.innerHTML = errorMsg;
-        element.classList.add('is-invalid');
+        element.classList.remove('normal-border');
+        element.classList.add('invalid-border');
+
         return;
+    } else {
+        element.classList.remove('normal-border');
+        element.classList.add('valid-border');
     }
 }
 
-['f_name', 'l_name', 'password'].forEach(field => {
-    let element = document.getElementById(field);
-    element.addEventListener('blur', e => {
-        validateNotBlank(field, e.target.value)
-    });
+
+const email = document.getElementById('email');
+email.addEventListener('blur', e => {
+    validateUniqueness(email, e.target.value);
 });
 
-function validatePattern(element, name, errorField) {
-    const errorMsg = name + ' cannot be blank';
-    errorField.innerHTML = errorMsg;
-    element.classList.add('is-invalid');
+async function validateUniqueness(email, value) {
+    const validElement = email.parentElement.querySelector('.valid-message');
+    const invalidElement = email.parentElement.querySelector('.invalid-message');
+    if (email.value.length < 1) {
+        const errorMsg = 'Email cannot be blank';
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = errorMsg;
+        email.classList.remove('normal-border');
+        email.classList.add('invalid-border');
+    } else {
+        const regex = /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/gm;
+        const regexMatch = value.match(regex);
+        const validElement = email.parentElement.querySelector('.valid-message');
+        const invalidElement = email.parentElement.querySelector('.invalid-message');
 
-    const pattern = getAtribute('pattern');
+        if (regexMatch === null) {
+            email.classList.remove('normal-border');
+            email.classList.add('invalid-border');
+            invalidElement.innerHTML = "Email not valid";
+        } else {
+            let data = {};
+            data[email] = value;
 
-    if (!(pattern && pattern.length)) return false;
+            const urlParams = new URLSearchParams(Object.entries(data));
 
-    const regex = new RegExp(pattern)
-    if (regex.test(element.value));
+            validElement.innerHTML = '';
+            invalidElement.innerHTML = '';
+
+            await fetch(`/signup/user/validations?${urlParams}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    let isEmailTaken = Object.values(data)[0]
+                    if (isEmailTaken === 'false') {
+                        const errorMsg = 'Email is already in use';
+                        validElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.add('invalid-border');
+                        invalidElement.innerHTML = errorMsg;
+                    } else {
+                        invalidElement.innerHTML = '';
+                        email.classList.remove('normal-border');
+                        email.classList.add('valid-border');
+                    }
+                });
+        }
+    }
+}
+
+
+const password = document.getElementById('password');
+password.addEventListener('blur', e => {
+    password.classList.remove('invalid-border', 'valid-border');
+    validatePasswordPattern(password, e.target.value);
+});
+
+function validatePasswordPattern(password, value) {
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,20}/;
+    const regexText = regex.test(value);
+    const validElement = password.parentElement.querySelector('.valid-message');
+    const invalidElement = password.parentElement.querySelector('.invalid-message');
+
+    if (password.value.length < 1) {
+        const errorMsg = 'Password cannot be blank';
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = errorMsg;
+        password.classList.remove('normal-border');
+        password.classList.add('invalid-border');
+    } else {
+        validElement.innerHTML = '';
+        invalidElement.innerHTML = '';
+
+        if (regexText === false) {
+            password.classList.remove('normal-border');
+            password.classList.add('invalid-border');
+            invalidElement.innerHTML = "Password must contains:<br><br>• 8-20 characters <br>• An uppercase letter <br>• An lowercase letter <br> • A number <br>• A symbol"
+        } else {
+            password.classList.remove('normal-border');
+            password.classList.add('valid-border');
+            validElement.innerHTML = "Password looks good";
+        }
+    }
 }

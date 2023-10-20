@@ -39,3 +39,51 @@
 </body>
 
 </html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+    <title>Log In | BYTE Recipes</title>
+</head>
+
+<body>
+    <div class="login-wrapper">
+        <% const flashMessage = message %>
+        <% if (flashMessage != null) { %>
+            <div class="alert alert-danger error-message" id="error-message" role="alert"></divclass>
+                <p><%= flashMessage %></p>
+            </div>
+        <% } %>
+        <section class="auth-content-sidebar">
+            <main>
+                <a class="button-back" href="/">Go Back</a>
+                <div class="auth-content">
+                    <h1>Welcome <span>Back</span></h1>
+                    <form action="login" id="account-login" method="POST" aria-label="Log in form">
+                        <div class="auth-input-field">
+                            <label for="email" class="">Email</label>
+                            <input type="email" class="normal-border" id="email" name="email">
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-input-field">
+                            <label for="password" class="">Password</label>
+                            <input type="password" class="normal-border" id="password" name="password">
+                            <div class="invalid-message"></div>
+                        </div>
+                        <div class="auth-button">
+                            <button type="submit" class="button-orange">Log In</button>
+                        </div>
+                    </form>
+                    <p>Don't have an account?
+                        <a href="/signup">Sign Up</a>
+                    </p>
+                </div>
+            </main>
+        </section>
+        <section class="auth-sidebar"></section>
+    </div>
+    <script src="/javascripts/login_validations.js"></script>
+</body>
+
+</html>

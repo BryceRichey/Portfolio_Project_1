@@ -18,6 +18,7 @@ const sessionStore = new MySQLStore({}, db.promise());
 const dayjs = require('dayjs');
 const relativeTime = require('dayjs/plugin/relativeTime');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
+const flash = require('express-flash');
 
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
@@ -43,17 +44,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(authConfig.setCurrentUser);
 app.use(recipeRouter);
 app.use(usersRouter);
 
-app.get('/', (_req, res, next) => {
+app.get('/', (_req, res, _next) => {
     if (session.path) {
         res.redirect(session.path);
         session.path = null;
     } else {
         res.render('home')
     }
+});
+
+app.get('*', function (_req, res, _next) {
+    res.status(404).render('errors/404_generic.ejs');
 });
 
 const port = 3000;
