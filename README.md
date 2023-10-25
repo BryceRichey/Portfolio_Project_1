@@ -26,7 +26,7 @@ DB_PASS =
 ```
 
 ### Cloudinary
-test
+ADD IN CLOUDINARY DETAILS LATER
 
 ## Run
 If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
