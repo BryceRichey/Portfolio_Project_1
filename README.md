@@ -32,6 +32,23 @@ test
 If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
 
 ## Dependencies
-test
-### Dev dependencies
-test
+- [body-parser](https://www.npmjs.com/package/body-parser)
+- [bootstrap-icons](https://www.npmjs.com/package/bootstrap-icons)
+- [cloudinary](https://www.npmjs.com/package/cloudinary)
+- [cookie-parser](https://www.npmjs.com/package/cookie-parser)
+- [daysjs](https://www.npmjs.com/package/dayjs)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [ejs](https://ejs.co/)
+- [express](https://expressjs.com/)
+- [express-flash](https://www.npmjs.com/package/express-flash)
+- [express-mysql-session](https://www.npmjs.com/package/express-mysql-session)
+- [express-session](https://www.npmjs.com/package/express-session)
+- [multer](https://www.npmjs.com/package/multer)
+- [multer-storage-cloudinary](https://www.npmjs.com/package/multer-storage-cloudinary)
+- [mysql2](https://www.npmjs.com/package/mysql2)
+- [node.js](https://nodejs.org/en)
+- [nodemon](https://www.npmjs.com/package/nodemon)
+- [parseurl](https://www.npmjs.com/package/parseurl)
+- [passport](https://www.passportjs.org/)
+- [passport-local](https://www.npmjs.com/package/passport-local)
+- [path](https://www.npmjs.com/package/path)
