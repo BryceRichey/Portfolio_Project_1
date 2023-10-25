@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../config/passport');
-const userQueries = require('../db/users');
-const recipeQueries = require('../db/recipes');
+
+const userCreateQueries = require('../db/users/create');
+const userReadQueries = require('../db/users/read');
+const userUpdateQueries = require('../db/users/update');
+const userDeleteQueries = require('../db/users/delete');
+
+const recipeDeleteQueries = require('../db/recipes/delete');
 
 
 // CRUD
@@ -12,7 +17,7 @@ router.post('/signup', async (req, res, _next) => {
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
-    await userQueries.createUser(req.body.firstName, req.body.lastName, req.body.email, salt, hash);
+    await userCreateQueries.createUser(req.body.firstName, req.body.lastName, req.body.email, salt, hash);
 
     res.redirect('/login');
 });
@@ -30,9 +35,9 @@ router.get('/signup', (_req, res, _next) => {
 
 router.get('/account', passport.isAuth, async (req, res, _next) => {
     try {
-        const users = await userQueries.readDetails(req.user.id);
-        const recipes = await userQueries.readRecipes(req.user.id);
-        const comments = await userQueries.readComments(req.user.id);
+        const users = await userReadQueries.getUserData(req.user.id);
+        const recipes = await userReadQueries.getUserRecipes(req.user.id);
+        const comments = await userReadQueries.getUserComments(req.user.id);
 
         res.render('users/account.ejs', { 
             users, 
@@ -49,7 +54,7 @@ router.get('/account', passport.isAuth, async (req, res, _next) => {
 router.get('/signup/user/validations', async (req, res, _next) => {
     try {
         const email = Object.values(req.query);
-        const data = await userQueries.readEmail(email);
+        const data = await userReadQueries.getUserEmail(email);
 
         if (!(data && data.length)) {
             res.json({
@@ -74,11 +79,11 @@ router.post('/account/contact', async (req, res, _next) => {
             if (key && !value) {
                 console.log('No change');
             } else if (key.includes("firstName")) {
-                await userQueries.updateFirstName(req.user, req.body);
+                await userUpdateQueries.updateUserFirstName(req.user, req.body);
             } else if (key.includes("lastName")) {
-                await userQueries.updateLastName(req.user, req.body);
+                await userUpdateQueries.updateUserLastName(req.user, req.body);
             } else if (key.includes("email")) {
-                await userQueries.updateEmail(req.user, req.body);
+                await userUpdateQueries.updateUserEmail(req.user, req.body);
             }
         }
 
@@ -109,7 +114,7 @@ router.post('/account/password', async (req, res, _next) => {
             console.log(newPassword);
             console.log(confirmPassword);
         } else if (newPassword === confirmPassword) {
-            await userQueries.updatePassword(req.user, confirmPassword);
+            await userUpdateQueries.updatePassword(req.user, confirmPassword);
         }
         res.redirect('/account');
     } catch (err) {
@@ -123,7 +128,7 @@ router.post('/account/password', async (req, res, _next) => {
 // DELETE
 router.get('/account/:recipe_id/delete', async (req, res, _next) => {
     try {
-        await recipeQueries.deleteRecipe(req.params.recipe_id);
+        await recipeDeleteQueries.deleteRecipe(req.params.recipe_id);
 
         res.redirect('/account');
     } catch (err) {
@@ -135,7 +140,7 @@ router.get('/account/:recipe_id/delete', async (req, res, _next) => {
 
 router.get('/account/:commentId/delete', async (req, res, _next) => {
     try {
-        await userQueries.deleteComment(req.params.commentId);
+        await userDeleteQueries.deleteUserComment(req.params.commentId);
 
         res.redirect('/account');
     } catch (err) {
