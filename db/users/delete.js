@@ -7,6 +7,7 @@ async function deleteUserComment(commentId) {
         comments 
     WHERE 
         id = ${commentId}`
+        
     await db.promise().query(deleteQuery);
 }
 

@@ -218,12 +218,17 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
 router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
     try {
         await recipeUpdateQueries.updateRecipe(req.params.recipeId, req.body);
-        await recipeUpdateQueries.updateRecipeIngredients(req.params.recipeId, req.body);
+        const currentRecipeIngredients = await recipeUpdateQueries.getRecipeIngredients(req.params.recipeId);
+        const allIngredientsObject = recipeUpdateQueries.createRecipeIngredientObject(req.body);
+        const splitQuarterCounter = recipeUpdateQueries.splitQuarterCounter(allIngredientsObject);
+        const newIngredientsArray = recipeUpdateQueries.splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter);
+        recipeUpdateQueries.checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, req.params.recipeId);
         await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
 
         res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
     } catch (err) {
-        res.status(500).render('errors/500.ejs');
+        // res.status(500).render('errors/500.ejs');
+        console.log(err)
     }
 });
 

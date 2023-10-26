@@ -18,7 +18,11 @@ async function updateRecipe(recipeId, body) {
     });
 }
 
-async function updateRecipeIngredients(recipeId, body) {
+///////////////////////////////////////////////
+// BEGIN UPDATE RECIPE INGREDIENTS FUNCTIONS //
+///////////////////////////////////////////////
+
+async function getRecipeIngredients(recipeId) {
     const getQuery = `
     SELECT 
         ri.id, amount, fraction_id, unit_id,
@@ -30,274 +34,290 @@ async function updateRecipeIngredients(recipeId, body) {
     WHERE 
         recipe_id = ?`
 
-    const [recipeIngredients, _fields] = await db.promise().query(getQuery, [
+    const [currentRecipeIngredients, _fields] = await db.promise().query(getQuery, [
         recipeId
     ]);
 
+    return currentRecipeIngredients;
+}
+
+function createRecipeIngredientObject(body) {
     let allIngredientsObject = Object.create(null);
-    let count = 0;
-    let quarterCounter;
+    let addKeyValueCounter = 0;
 
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('ingredient')) {
             allIngredientsObject[`${key}`] = `${value}`;
-            count++
+            addKeyValueCounter++
         }
     }
 
-    quarterCounter = count / 4;
+    return allIngredientsObject;
+}
 
-    function splitObjects(allIngredientsObject, quarterCounter) {
-        let counter = 0;
-        let ingredientObject = Object.create(null);
-        let ingredientsArray = [];
+// SPLITQUARTERCOUNT ENSURES AN INGREDIENTS AMOUNT, FRACTION, AND UNIT ARE GROUPED TOGETHER
+function splitQuarterCounter(allIngredientsObject) {
+    return Object.keys(allIngredientsObject).length / 4;
+}
 
-        for (const [key, value] of Object.entries(allIngredientsObject)) {
-            for (let i = 0; i <= quarterCounter; i++) {
-                if (key.endsWith('_' + i)) {
-                    ingredientObject[`${key}`] = `${value}`;
-                    counter++;
-                    check(i);
-                }
-            }
+function splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter) {
+    let ingredientObject = Object.create(null);
 
-            function check(i) {
-                if (counter >= 4) {
-                    let newIngredientObject = ingredientObject;
-                    ingredientsArray.push(newIngredientObject);
-                    counter = 0;
+    let splitCounter = 0;
+    let newIngredientsArray = [];
+
+    for (const [key, value] of Object.entries(allIngredientsObject)) {
+        for (let i = 0; i <= splitQuarterCounter; i++) {
+            if (key.endsWith('_' + i)) {
+                ingredientObject[`${key}`] = `${value}`;
+                splitCounter++;
+
+                if (splitCounter >= 4) {
+                    addIngredientGroupObjectToIngredientArray(ingredientObject, newIngredientsArray);
+
                     ingredientObject = Object.create(null);
+                    splitCounter = 0;
                     i++
                 }
             }
         }
+    }
 
-        let ingredientData = ingredientsArray;
+    return newIngredientsArray;
+}
 
-        function checkIngredientMatch(recipeId, ingredientData, recipeIngredients) {
-            if (quarterCounter < recipeIngredients.length) {
-                for (let i = quarterCounter; i < recipeIngredients.length; i++) {
-                    let deleteRow = recipeIngredients[i];
+function addIngredientGroupObjectToIngredientArray(ingredientObject, newIngredientsArray) {
+    let newIngredientObject = ingredientObject;
 
-                    Object.entries(deleteRow).forEach(([key, value]) => {
-                        if (key == "id") {
-                            deleteIngredient(value);
-                        }
-                    })
+    newIngredientsArray.push(newIngredientObject);
+}
+
+function checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, recipeId) {
+    if (splitQuarterCounter < currentRecipeIngredients.length) {
+        for (let i = splitQuarterCounter; i < currentRecipeIngredients.length; i++) {
+            let deleteCurrentIngredient = currentRecipeIngredients[i];
+
+            Object.entries(deleteCurrentIngredient).forEach(([key, value]) => {
+                if (key == "id") {
+                    deleteIngredient(value);
                 }
+            });
+        }
+    } else {
+        for (let i = 0; i < newIngredientsArray.length; i++) {
+            let newIngredientGroup = newIngredientsArray[i];
+            let currentIngredientGroup = currentRecipeIngredients[i];
 
-                async function deleteIngredient(deleteId) {
-                    const deleteQuery = `
-                    DELETE 
-                    FROM 
-                        recipe_ingredients 
-                    WHERE 
-                        id = ?`
-                    await db.promise().query(deleteQuery, [deleteId]);
-                }
-            } else {
-                for (let i = 0; i < ingredientData.length; i++) {
-                    let newIngredient = ingredientData[i];
-                    let getRow = recipeIngredients[i];
+            getNewIngredientValue(recipeId, newIngredientGroup, currentIngredientGroup);
+        }
+    }
+}
 
-                    getNewIngredientValue(
-                        recipeId,
-                        newIngredient,
-                        getRow
-                    );
-                }
+async function deleteIngredient(deleteId) {
+    const deleteQuery = `
+    DELETE 
+    FROM 
+        recipe_ingredients 
+    WHERE 
+        id = ?`
+    await db.promise().query(deleteQuery, [deleteId]);
+}
+
+function getNewIngredientValue(recipeId, newIngredientGroup, currentIngredientGroup) {
+    let newAmount;
+    let newFraction;
+    let newUnit;
+    let newIngredient;
+    let counter = 0;
+
+    for (const [key, value] of Object.entries(newIngredientGroup)) {
+        if (key.includes('ingredientAmount_')) {
+            newAmount = value;
+            counter++
+        } else if (key.includes('ingredientFraction_')) {
+            newFraction = value;
+            counter++
+        } else if (key.includes('ingredientUnit_')) {
+            newUnit = value;
+            counter++
+        } else if (key.includes('ingredient_')) {
+            newIngredient = value;
+            counter++
+        }
+
+        if (counter >= 4) {
+            getCurrentIngredientValue(recipeId, newAmount, newFraction, newUnit, newIngredient, currentIngredientGroup);
+
+            counter = 0;
+        }
+    }
+}
+
+async function getCurrentIngredientValue(recipeId, newAmount, newFraction, newUnit, newIngredient, currentIngredientGroup) {
+    let id;
+    let currentAmount;
+    let currentFraction;
+    let currentUnit;
+    let currentIngredient;
+    let counter = 0;
+
+    if (currentIngredientGroup != undefined) {
+        for (const [key, value] of Object.entries(currentIngredientGroup)) {
+            if (key == 'id') {
+                id = value
+                counter++
+            } else if (key.includes('amount')) {
+                currentAmount = value;
+                counter++
+            } else if (key.includes('fraction_id')) {
+                currentFraction = value;
+                counter++
+            } else if (key.includes('unit_id')) {
+                currentUnit = value;
+                counter++
+            } else if (key.includes('ingredient')) {
+                currentIngredient = value;
+                counter++
             }
 
-            function getNewIngredientValue(recipeId, newIngredient, getRow) {
-                let amountNew;
-                let fractionNew;
-                let unitNew;
-                let ingredientNew;
-                let count = 0;
+            if (counter >= 5) {
+                checkIfIngredientChange(id, recipeId, currentAmount, currentFraction, currentUnit, currentIngredient, newAmount, newFraction, newUnit, newIngredient);
 
-                for (const [key, value] of Object.entries(newIngredient)) {
-                    if (key.includes('ingredientAmount_')) {
-                        amountNew = value;
-                        count++
-                    } else if (key.includes('ingredientFraction_')) {
-                        fractionNew = value;
-                        count++
-                    } else if (key.includes('ingredientUnit_')) {
-                        unitNew = value;
-                        count++
-                    } else if (key.includes('ingredient_')) {
-                        ingredientNew = value;
-                        count++
-                    }
-
-                    if (count >= 4) {
-                        getOldIngredientValue(recipeId, amountNew, fractionNew, unitNew, ingredientNew, getRow);
-                        count = 0;
-                    }
-                }
-            }
-
-            async function getOldIngredientValue(recipeId, amountNew, fractionNew, unitNew, ingredientNew, getRow) {
-                let id;
-                let amount;
-                let fraction;
-                let unit;
-                let ingredient;
-                let count = 0;
-
-                if (getRow != undefined) {
-                    for (const [key, value] of Object.entries(getRow)) {
-                        if (key == 'id') {
-                            id = value
-                            count++
-                        } else if (key.includes('amount')) {
-                            amount = value;
-                            count++
-                        } else if (key.includes('fraction_id')) {
-                            fraction = value;
-                            count++
-                        } else if (key.includes('unit_id')) {
-                            unit = value;
-                            count++
-                        } else if (key.includes('ingredient')) {
-                            ingredient = value;
-                            count++
-                        }
-
-                        if (count >= 5) {
-                            checkIfIngredientChange(id, recipeId, amount, fraction, unit, ingredient, amountNew, fractionNew, unitNew, ingredientNew);
-                            count = 0;
-                        }
-                    }
-                } else {
-                    const updateNewIngredient = await getIngredientId(ingredientNew);
-                    insertNewIngredient(recipeId, amountNew, fractionNew, unitNew, updateNewIngredient);
-                }
-            }
-
-            async function checkIfIngredientChange(id, recipeId, amount, fraction, unit, _ingredient, amountNew, fractionNew, unitNew, ingredientNew) {
-                let updateAmount;
-                let updateFraction;
-                let updateUnit;
-                let newUpdateIngredient;
-                let updateIngredient
-                let updateIngredientId;
-
-                newUpdateIngredient = ingredientNew.toLowerCase();
-                updateIngredientId = await getIngredientId(newUpdateIngredient);
-                updateIngredient = updateIngredientId;
-
-                if (amountNew == amount) {
-                    updateAmount = amount;
-                } else if (amountNew != amount) {
-                    updateAmount = amountNew;
-                }
-
-                if (fractionNew == fraction) {
-                    updateFraction = fraction;
-                } else if (fractionNew != fraction) {
-                    updateFraction = fractionNew;
-                }
-
-                if (unitNew == unit) {
-                    updateUnit = unit;
-                } else if (unitNew != unit) {
-                    updateUnit = unitNew;
-                }
-
-                updateNewIngredient(id, recipeId, updateAmount, updateFraction, updateUnit, updateIngredient);
-
-                delete updateAmount;
-                delete updateFraction;
-                delete updateUnit;
-                delete updateIngredient;
-            }
-
-            async function insertNewIngredient(recipeId, updateAmount, updateFraction, updateUnit, updateIngredient) {
-                const insertQuery = `
-                INSERT INTO 
-                    recipe_ingredients
-                SET 
-                    ?`
-
-                await db.promise().query(insertQuery, {
-                    recipe_id: recipeId,
-                    amount: updateAmount,
-                    fraction_id: updateFraction,
-                    unit_id: updateUnit,
-                    ingredient_id: updateIngredient
-                });
-            }
-
-            async function updateNewIngredient(id, recipeId, updateAmount, updateFraction, updateUnit, updateIngredient) {
-                const updateQuery = `
-                UPDATE 
-                    recipe_ingredients 
-                SET 
-                    ?
-                WHERE 
-                    id = ${id}`
-                const [_updateRows, _updateFields] = await db.promise().query(updateQuery, {
-                    recipe_id: recipeId,
-                    amount: updateAmount,
-                    fraction_id: updateFraction,
-                    unit_id: updateUnit,
-                    ingredient_id: updateIngredient
-                });
-            }
-
-            async function getIngredientId(updateIngredient) {
-                const getQuery = `
-                SELECT 
-                    id 
-                FROM 
-                    ingredients 
-                WHERE 
-                    ingredient = ?`
-
-                const [getIdRows, _getIdFields] = await db.promise().query(getQuery, [updateIngredient]);
-
-                if (getIdRows.length > 0) {
-                    for (const [_key, value] of Object.entries(getIdRows[0])) {
-                        return value;
-                    }
-                } else {
-                    let insertIngredientId = insertNewUpdateIngredient(updateIngredient);
-
-                    return insertIngredientId;
-                }
-            }
-
-            async function insertNewUpdateIngredient(updateIngredient) {
-                const insertIngredientQuery = `
-                INSERT INTO 
-                    ingredients 
-                SET 
-                    ?`
-                await db.promise().query(insertIngredientQuery, {
-                    ingredient: updateIngredient
-                });
-
-                const ingredientIdQuery = `
-                SELECT 
-                    MAX(id) 
-                FROM 
-                    ingredients`
-                const [idRows, _idFields] = await db.promise().query(ingredientIdQuery);
-
-                for (const [key, value] of Object.entries(idRows[0])) {
-                    if (key == 'MAX(id)') {
-                        let id = value;
-
-                        return id;
-                    }
-                }
+                counter = 0;
             }
         }
-        checkIngredientMatch(recipeId, ingredientData, recipeIngredients);
+    } else {
+        let newIngredientId = await getIngredientId(newIngredient);
+
+        insertNewIngredient(recipeId, newAmount, newFraction, newUnit, newIngredientId);
     }
-    splitObjects(allIngredientsObject, quarterCounter);
 }
+
+async function checkIfIngredientChange(id, recipeId, currentAmount, currentFraction, currentUnit, _currentIngredient, newAmount, newFraction, newUnit, newIngredient) {
+    let updateAmount;
+    let updateFraction;
+    let updateUnit;
+
+    if (newAmount == currentAmount) {
+        updateAmount = currentAmount;
+    } else if (newAmount != currentAmount) {
+        updateAmount = newAmount;
+    }
+
+    if (newFraction == currentFraction) {
+        updateFraction = currentFraction;
+    } else if (newFraction != currentFraction) {
+        updateFraction = newFraction;
+    }
+
+    if (newUnit == currentUnit) {
+        updateUnit = currentUnit;
+    } else if (newUnit != currentUnit) {
+        updateUnit = newUnit;
+    }
+
+    let lowerCaseIngredient = newIngredient.toLowerCase();
+    let newIngredientId = await getIngredientId(lowerCaseIngredient);
+    // let updateIngredient = newIngredientId;
+
+    updateNewIngredient(id, recipeId, updateAmount, updateFraction, updateUnit, newIngredientId);
+
+    delete updateAmount;
+    delete updateFraction;
+    delete updateUnit;
+    delete newIngredientId;
+}
+
+async function insertNewIngredient(recipeId, updateAmount, updateFraction, updateUnit, updateIngredient) {
+    const insertQuery = `
+    INSERT INTO 
+        recipe_ingredients
+    SET 
+        ?`
+
+    await db.promise().query(insertQuery, {
+        recipe_id: recipeId,
+        amount: updateAmount,
+        fraction_id: updateFraction,
+        unit_id: updateUnit,
+        ingredient_id: updateIngredient
+    });
+}
+
+async function updateNewIngredient(id, recipeId, updateAmount, updateFraction, updateUnit, newIngredientId) {
+    const updateQuery = `
+    UPDATE 
+        recipe_ingredients 
+    SET 
+        ?
+    WHERE 
+        id = ${id}`
+    const [_rows, _fields] = await db.promise().query(updateQuery, {
+        recipe_id: recipeId,
+        amount: updateAmount,
+        fraction_id: updateFraction,
+        unit_id: updateUnit,
+        ingredient_id: newIngredientId
+    });
+}
+
+async function getIngredientId(newIngredient) {
+    const getQuery = `
+    SELECT 
+        id 
+    FROM 
+        ingredients 
+    WHERE 
+        ingredient = ?`
+
+    const [newIngredientId, _fields] = await db.promise().query(getQuery, [newIngredient]);
+
+    if (newIngredientId.length > 0) {
+        for (const [_key, value] of Object.entries(newIngredientId[0])) {
+            return value;
+        }
+    } else {
+        let newIngredientId = await insertNewIngredient(newIngredient);
+
+        return newIngredientId;
+    }
+}
+
+async function insertNewIngredient(newIngredient) {
+    const createQuery = `
+    INSERT INTO 
+        ingredients 
+    SET 
+        ?`
+
+    await db.promise().query(createQuery, {
+        ingredient: newIngredient
+    });
+
+    const getQuery = `
+    SELECT 
+        MAX(id) 
+    FROM 
+        ingredients`
+
+    const [newIngredientId, _fields] = await db.promise().query(getQuery);
+
+    for (const [key, value] of Object.entries(newIngredientId[0])) {
+        if (key == 'MAX(id)') {
+            let id = value;
+
+            return id;
+        }
+    }
+}
+
+/////////////////////////////////////////////
+// END UPDATE RECIPE INGREDIENTS FUNCTIONS //
+/////////////////////////////////////////////
+
+//////////////////////////////////////////////
+// BEGIN UPDATE RECIPE DIRECTIONS FUNCTIONS //
+//////////////////////////////////////////////
 
 async function updateRecipeDirections(recipeId, body) {
     const deleteQuery = `
@@ -309,47 +329,56 @@ async function updateRecipeDirections(recipeId, body) {
 
     await db.promise().query(deleteQuery, [recipeId]);
 
-    let allDirectionsObject = Object.create(null);
+    let directionsObject = Object.create(null);
     let directionsArray = [];
 
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('recipeDirection')) {
-            allDirectionsObject[`${key}`] = `${value}`;
-            directionsArray.push(allDirectionsObject);
-            allDirectionsObject = Object.create(null);
+            directionsObject[`${key}`] = `${value}`;
+            directionsArray.push(directionsObject);
+            directionsObject = Object.create(null);
         }
     }
 
-    let directionsData = directionsArray;
+    splitDirectionArray(directionsArray, recipeId);
+}
+
+async function splitDirectionArray(directionsArray, recipeId) {
     let directionStep = 1;
 
-    async function directionData() {
-        directionsData.forEach(direction => {
-            for (const [_key, value] of Object.entries(direction)) {
-                let step = directionStep++;
+    directionsArray.forEach(direction => {
+        for (const [_key, value] of Object.entries(direction)) {
+            let step = directionStep++;
 
-                async function insertDirectionData() {
-                    const insertQuery = `
-                    INSERT INTO 
-                        recipe_directions (recipe_id, direction_step, direction)
-                    VALUES
-                        (?, ?, ?)`
-
-                    await db.promise().query(insertQuery, [
-                        recipeId,
-                        step,
-                        value
-                    ]);
-                }
-                insertDirectionData(recipeId, step, value);
-            }
-        });
-    }
-    directionData();
+            createNewDirection(recipeId, step, value);
+        }
+    });
 }
+
+async function createNewDirection(recipeId, step, value) {
+    const insertQuery = `
+        INSERT INTO 
+            recipe_directions (recipe_id, direction_step, direction)
+        VALUES
+            (?, ?, ?)`
+
+    await db.promise().query(insertQuery, [
+        recipeId,
+        step,
+        value
+    ]);
+}
+
+////////////////////////////////////////////
+// END UPDATE RECIPE DIRECTIONS FUNCTIONS //
+////////////////////////////////////////////
 
 module.exports = {
     updateRecipe,
-    updateRecipeIngredients,
+    getRecipeIngredients,
+    createRecipeIngredientObject,
+    splitQuarterCounter,
+    splitRecipeIngredientObject,
+    checkIngredientMatch,
     updateRecipeDirections
 }

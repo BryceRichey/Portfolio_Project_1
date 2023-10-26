@@ -8,6 +8,7 @@ async function updateUserFirstName(user, body) {
         ? 
     WHERE 
         id = ${user.id}`
+
     await db.promise().query(updateQuery, {
         f_name: body.firstName
     });
@@ -21,6 +22,7 @@ async function updateUserLastName(user, body) {
         ? 
     WHERE 
         id = ${user.id}`
+
     await db.promise().query(updateQuery, {
         l_name: body.lastName
     });
@@ -34,6 +36,7 @@ async function updateUserEmail(user, body) {
         ? 
     WHERE 
         id = ${user.id}`
+        
     await db.promise().query(updateQuery, {
         email: body.email
     });
