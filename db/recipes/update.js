@@ -62,7 +62,6 @@ function splitQuarterCounter(allIngredientsObject) {
 
 function splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter) {
     let ingredientObject = Object.create(null);
-
     let splitCounter = 0;
     let newIngredientsArray = [];
 
@@ -87,17 +86,13 @@ function splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter) 
 }
 
 function addIngredientGroupObjectToIngredientArray(ingredientObject, newIngredientsArray) {
-    let newIngredientObject = ingredientObject;
-
-    newIngredientsArray.push(newIngredientObject);
+    newIngredientsArray.push(ingredientObject);
 }
 
 function checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, recipeId) {
     if (splitQuarterCounter < currentRecipeIngredients.length) {
         for (let i = splitQuarterCounter; i < currentRecipeIngredients.length; i++) {
-            let deleteCurrentIngredient = currentRecipeIngredients[i];
-
-            Object.entries(deleteCurrentIngredient).forEach(([key, value]) => {
+            Object.entries(currentRecipeIngredients[i]).forEach(([key, value]) => {
                 if (key == "id") {
                     deleteIngredient(value);
                 }
@@ -105,10 +100,7 @@ function checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, new
         }
     } else {
         for (let i = 0; i < newIngredientsArray.length; i++) {
-            let newIngredientGroup = newIngredientsArray[i];
-            let currentIngredientGroup = currentRecipeIngredients[i];
-
-            getNewIngredientValue(recipeId, newIngredientGroup, currentIngredientGroup);
+            getNewIngredientValue(recipeId, newIngredientsArray[i], currentRecipeIngredients[i]);
         }
     }
 }
@@ -216,9 +208,7 @@ async function checkIfIngredientChange(id, recipeId, currentAmount, currentFract
         updateUnit = newUnit;
     }
 
-    let lowerCaseIngredient = newIngredient.toLowerCase();
-    let newIngredientId = await getIngredientId(lowerCaseIngredient);
-    // let updateIngredient = newIngredientId;
+    let newIngredientId = await getIngredientId(newIngredient.toLowerCase());
 
     updateNewIngredient(id, recipeId, updateAmount, updateFraction, updateUnit, newIngredientId);
 
@@ -252,6 +242,7 @@ async function updateNewIngredient(id, recipeId, updateAmount, updateFraction, u
         ?
     WHERE 
         id = ${id}`
+        
     const [_rows, _fields] = await db.promise().query(updateQuery, {
         recipe_id: recipeId,
         amount: updateAmount,

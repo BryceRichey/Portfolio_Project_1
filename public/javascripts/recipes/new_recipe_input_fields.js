@@ -1,4 +1,4 @@
-import { addValidationListener } from '/javascripts/new_recipe_validation.js';
+import { addValidationListener } from '/javascripts/recipes/new_recipe_validation.js';
 
 document.addEventListener('DOMContentLoaded', _e => {
     addIngredientField();

@@ -28,9 +28,13 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
 router.post('/recipes/new', cloudinary.upload.single('uploaded_file'), async (req, res, _next) => {
     try {
         await recipeCreateQueries.createRecipe(req.user, req.body, req.file);
+        const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
+        const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
+        const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
+        await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+        const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+        await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
         await recipeCreateQueries.createRecipePhoto(req.user, req.file);
-        await recipeCreateQueries.createRecipeIngredient(req.body);
-        await recipeCreateQueries.createRecipeDirections(req.body);
 
         res.redirect('/recipes');
     } catch (err) {
@@ -227,8 +231,7 @@ router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
 
         res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
     } catch (err) {
-        // res.status(500).render('errors/500.ejs');
-        console.log(err)
+        res.status(500).render('errors/500.ejs');
     }
 });
 
