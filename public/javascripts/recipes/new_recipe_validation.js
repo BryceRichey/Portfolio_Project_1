@@ -1,23 +1,21 @@
-const submit = document.getElementById('submit-recipe');
+const form = document.getElementById('create-recipe');
 
-submit.addEventListener('submit', e => {
-    e.preventDefault();
-    validateNewRecipe();
-    submit.submit();
+form.addEventListener('submit', e => {
+    if (!validateNewRecipe()) e.preventDefault();
 });
 
 function validateNewRecipe() {
-    validateRecipeDetails('recipe-title');
-    validateRecipeDetails('recipe-category');
-    validateRecipeDetails('recipe-description');
-    validateRecipeDetails('recipe-servings');
-    validateRecipeDetails('recipe-prep-time');
-    validateRecipeDetails('recipe-cook-time');
-    validateRecipeDetails('ingredient-amount');
-    validateRecipeDetails('ingredient-fraction');
-    validateRecipeDetails('ingredient-unit');
-    validateRecipeDetails('ingredient');
-    validateRecipeDetails('recipeDirection');
+    return validateRecipeDetails('recipe-title') &&
+        validateRecipeDetails('recipe-category') &&
+        validateRecipeDetails('recipe-description') &&
+        validateRecipeDetails('recipe-servings') &&
+        validateRecipeDetails('recipe-prep-time') &&
+        validateRecipeDetails('recipe-cook-time') &&
+        validateRecipeDetails('ingredient-amount') &&
+        validateRecipeDetails('ingredient-fraction') &&
+        validateRecipeDetails('ingredient-unit') &&
+        validateRecipeDetails('ingredient') &&
+        validateRecipeDetails('recipeDirection');
 }
 
 function validateRecipeDetails(name) {
@@ -34,9 +32,11 @@ function validateRecipeDetails(name) {
         invalidElement.innerHTML = errorMsg;
         element.classList.remove('normal-border');
         element.classList.add('invalid-border');
+        return false;
     } else {
         element.classList.remove('normal-border');
         element.classList.add('valid-border');
+        return true;
     }
 }
 
