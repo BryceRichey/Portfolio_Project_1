@@ -26,7 +26,7 @@ DB_PASS =
 ```
 
 ### Cloudinary
-ADD IN CLOUDINARY DETAILS LATER
+To configure the Cloudinary API, you should define the `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` parameters within your `.env` file. This setup is essential for enabling seamless photo uploads to your personal Cloudinary account. It's worth noting that this configuration is optional, as the project includes built-in mock Cloudinary API interactions.
 
 ## Run
 If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
@@ -37,7 +37,6 @@ If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
 - [cloudinary](https://www.npmjs.com/package/cloudinary)
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 - [daysjs](https://www.npmjs.com/package/dayjs)
-- [dotenv](https://www.npmjs.com/package/dotenv)
 - [ejs](https://ejs.co/)
 - [express](https://expressjs.com/)
 - [express-flash](https://www.npmjs.com/package/express-flash)
@@ -47,8 +46,11 @@ If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
 - [multer-storage-cloudinary](https://www.npmjs.com/package/multer-storage-cloudinary)
 - [mysql2](https://www.npmjs.com/package/mysql2)
 - [node.js](https://nodejs.org/en)
-- [nodemon](https://www.npmjs.com/package/nodemon)
 - [parseurl](https://www.npmjs.com/package/parseurl)
 - [passport](https://www.passportjs.org/)
 - [passport-local](https://www.npmjs.com/package/passport-local)
 - [path](https://www.npmjs.com/package/path)
+
+### Dev Dependencies
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [nodemon](https://www.npmjs.com/package/nodemon)
