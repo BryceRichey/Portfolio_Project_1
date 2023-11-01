@@ -1,3 +1,4 @@
+const mq = window.matchMedia("(max-width: 991px)");
 const selecteCategory = document.getElementsByClassName('active-category-link');
 
-selecteCategory[0].scrollIntoView({ behavior: "smooth" });
+if (mq.matches) selecteCategory[0].scrollIntoView({ behavior: "smooth" });

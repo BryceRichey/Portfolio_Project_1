@@ -25,53 +25,27 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
     }
 });
 
-if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME === '') {
-    router.post('/recipes/new', async (req, res, _next) => {
-        const recipeId = await recipeCreateQueries.getRecipeId();
+router.post('/recipes/new', cloudinary.create(), async (req, res, _next) => {
+    const recipeId = await recipeCreateQueries.getRecipeId();
+    await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
 
-        await recipeCreateQueries.createFakeRecipePhoto(req.user, recipeId);
+    try {
+        await recipeCreateQueries.createRecipe(req.user, req.body);
+        const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
+        const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
+        const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
+        await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+        const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+        await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
 
-        try {
-            await recipeCreateQueries.createRecipe(req.user, req.body);
-            const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
-            const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
-            const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
-            await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
-            const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-            await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
+        res.redirect('/recipes');
+    } catch (err) {
+        console.log(err)
 
-            res.redirect('/recipes');
-        } catch (err) {
-            console.log(err)
+        res.status(500).redirect('/errors/500.ejs');
+    }
+});
 
-            res.status(500).redirect('/errors/500.ejs');
-        }
-    });
-} else {
-    router.post('/recipes/new', async (req, res, _next) => {
-        cloudinary.upload.single('uploaded_file');
-
-        const recipeId = await recipeCreateQueries.getRecipeId();
-
-        await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
-
-        try {
-            await recipeCreateQueries.createRecipe(req.user, req.body);
-            const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
-            const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
-            const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
-            await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
-            const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-            await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
-
-            res.redirect('/recipes');
-        } catch (err) {
-            console.log(err)
-
-            res.status(500).redirect('/errors/500.ejs');
-        }
-    });
-}
 
 // router.post('/recipes/new', async (req, res, _next) => {
 //     if (cloudinary.cloudinary === undefined) {
@@ -316,7 +290,9 @@ router.get('/recipes/:recipeId/delete', passport.isAuth, async (req, res, _next)
 /////////
 router.post('/recipes/*/:publicId/:photoId/delete', async (req, res, _next) => {
     try {
-        cloudinary.uploader.destroy(req.body.publicId).then(result => {
+        cloudinary.destroy(req.body.publicId).then(result => {
+            if (!result) return;
+
             let resultValue;
 
             for (const [key, value] of Object.entries(result)) {
