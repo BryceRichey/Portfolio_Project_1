@@ -25,24 +25,88 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
     }
 });
 
-router.post('/recipes/new', cloudinary.upload.single('uploaded_file'), async (req, res, _next) => {
-    try {
-        await recipeCreateQueries.createRecipe(req.user, req.body, req.file);
-        const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
-        const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
-        const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
-        await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
-        const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-        await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
-        await recipeCreateQueries.createRecipePhoto(req.user, req.file);
+if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME === '') {
+    router.post('/recipes/new', async (req, res, _next) => {
+        const recipeId = await recipeCreateQueries.getRecipeId();
 
-        res.redirect('/recipes');
-    } catch (err) {
-        console.log(err)
+        await recipeCreateQueries.createFakeRecipePhoto(req.user, recipeId);
 
-        res.status(500).redirect('/errors/500.ejs');
-    }
-});
+        try {
+            await recipeCreateQueries.createRecipe(req.user, req.body);
+            const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
+            const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
+            const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
+            await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+            const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+            await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
+
+            res.redirect('/recipes');
+        } catch (err) {
+            console.log(err)
+
+            res.status(500).redirect('/errors/500.ejs');
+        }
+    });
+} else {
+    router.post('/recipes/new', async (req, res, _next) => {
+        cloudinary.upload.single('uploaded_file');
+
+        const recipeId = await recipeCreateQueries.getRecipeId();
+
+        await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
+
+        try {
+            await recipeCreateQueries.createRecipe(req.user, req.body);
+            const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
+            const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
+            const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
+            await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+            const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+            await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
+
+            res.redirect('/recipes');
+        } catch (err) {
+            console.log(err)
+
+            res.status(500).redirect('/errors/500.ejs');
+        }
+    });
+}
+
+// router.post('/recipes/new', async (req, res, _next) => {
+//     if (cloudinary.cloudinary === undefined) {
+//         // THIS CAUSES THE BODY TO NOT BE EMPTY BUT WHEN NOT PRESENT BODY IS EMPTY
+//         // cloudinary.upload.single('uploaded_file');
+
+//         console.log(req.body);
+
+//         const recipeId = await recipeCreateQueries.getRecipeId();
+
+//         await recipeCreateQueries.createFakeRecipePhoto(req.user, recipeId);
+
+//         try {
+//             await recipeCreateQueries.createRecipe(req.user, req.body);
+//             const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
+//             const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
+//             const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
+//             await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+//             const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+//             await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
+
+//             res.redirect('/recipes');
+//         } catch (err) {
+//             console.log(err)
+
+//             res.status(500).redirect('/errors/500.ejs');
+//         }
+//     } else {
+//         cloudinary.upload.single('uploaded_file');
+
+//         const recipeId = await recipeCreateQueries.getRecipeId();
+
+//         await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
+//     }
+// });
 
 router.post('/recipes/search', async (req, res, _next) => {
     try {

@@ -7,7 +7,7 @@ async function createRecipe(user, body) {
     SET 
         ?`
 
-    const [_rows, _fields] = await db.promise().query(createQuery, {
+    await db.promise().query(createQuery, {
         submit_user_id: user.id,
         submit_user_first_name: user.f_name,
         submit_user_last_name: user.l_name,
@@ -20,20 +20,7 @@ async function createRecipe(user, body) {
     });
 }
 
-async function createRecipePhoto(user, file) {
-    const getQuery = `
-    SELECT 
-        id 
-    FROM 
-        recipes 
-    ORDER BY 
-        id 
-    DESC LIMIT 1`
-
-    const [photoId, _fields] = await db.promise().query(getQuery);
-
-    let newRecipeId = (Object.values(photoId[0]));
-
+async function createRecipePhoto(user, file, recipeId) {
     if (file) {
         const createQuery = `
         INSERT INTO 
@@ -41,13 +28,39 @@ async function createRecipePhoto(user, file) {
         SET 
             ?`
 
-        const [_rows, _fields] = await db.promise().query(createQuery, {
-            recipe_id: newRecipeId,
-            user_id: user.id,
-            photo_url: file.path,
-            file_name: file.filename
+        await db.promise().query(createQuery, {
+            recipe_id: recipeId,
+            user_id: user.id
         });
     }
+}
+
+async function createFakeRecipePhoto(user, recipeId) {
+    const createQuery = `
+        INSERT INTO 
+            recipe_photos 
+        SET 
+            ?`
+
+    await db.promise().query(createQuery, {
+        recipe_id: recipeId,
+        user_id: user.id
+    });
+}
+
+async function getRecipeId() {
+    const getQuery = `
+        SELECT 
+            id 
+        FROM 
+            recipes 
+        ORDER BY 
+            id 
+        DESC LIMIT 1`
+
+    const [recipeId, _fields] = await db.promise().query(getQuery);
+
+    return Object.values(recipeId[0]);
 }
 
 ///////////////////////////////////////////////
@@ -226,7 +239,7 @@ async function createNewDirection(lastInsertedRecipeId, step, value) {
             recipe_directions (recipe_id, direction_step, direction)
         VALUES 
             (?, ?, ?)`
-            
+
     await db.promise().query(createQuery, [
         lastInsertedRecipeId,
         step,
@@ -241,6 +254,8 @@ async function createNewDirection(lastInsertedRecipeId, step, value) {
 module.exports = {
     createRecipe,
     createRecipePhoto,
+    createFakeRecipePhoto,
+    getRecipeId,
     createRecipeIngredientsObject,
     splitRecipeIngredientObject,
     getLastInsertedRecipeId,
