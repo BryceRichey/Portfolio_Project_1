@@ -1,5 +1,4 @@
 let directionsListOne = document.getElementById('direction-list-one');
-let directionsListTwo = document.getElementById('direction-list-two');
 let directionsListOneChildren = directionsListOne.children;
 let directionsListOneArray = Array.from(directionsListOneChildren);
 
@@ -11,8 +10,8 @@ let celsiusConversion;
 let celsiusRounded;
 let regexReplace;
 
-const regex = /\b((\d{3}) ((f|f°)|(degre)((e|es) (f|fahrenheit))))\b/gim;
-const regexTwo = /\b(\d{3})\b/gim;
+const regex = /(\b((\d{3})( f|f| f°|f°| fahrenheit|fahrenheit| degre(e|es) (f|f°|fahrenheit)))\b)|(\d{3})/gim;
+const regexTwo = /\b(\d{3})|\b(\d{3})\b/gim;
 
 directionsListOneArray.forEach(item => {
     text = item.innerHTML;
@@ -34,7 +33,7 @@ directionsListOneArray.forEach(item => {
     });
 });
 
-const element = document.getElementById('direction-list-two');
+let directionsListTwo = document.getElementById('direction-list-two');
 const fragment = new DocumentFragment();
 
 celsiusArray.forEach(item => {
@@ -44,4 +43,4 @@ celsiusArray.forEach(item => {
     fragment.appendChild(li);
 });
 
-element.appendChild(fragment);
+directionsListTwo.appendChild(fragment);

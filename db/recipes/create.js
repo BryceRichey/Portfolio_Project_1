@@ -30,7 +30,9 @@ async function createRecipePhoto(user, file, recipeId) {
 
         await db.promise().query(createQuery, {
             recipe_id: recipeId,
-            user_id: user.id
+            user_id: user.id,
+            photo_url: file.path,
+            file_name: file.filename
         });
     }
 }
@@ -167,10 +169,12 @@ async function checkIfIngredientExists(ingredient) {
         ingredientId = ingredientExists[0].id;
     } else {
         const createQuery = `
-            INSERT INTO 
+        INSERT 
+            INTO 
                 ingredients (ingredient)
-            VALUES 
-                (?)`
+        VALUES 
+            (?)
+        ON DUPLICATE KEY UPDATE ingredient=ingredient`
 
         const [insertedIngredient, _fields] = await db.promise().query(createQuery, [
             ingredient.toLowerCase()
@@ -207,17 +211,13 @@ async function createIngredientData(lastInsertedRecipeId, amountId, fractionId, 
 //////////////////////////////////////////////
 
 async function createRecipeDirections(body) {
-    let directionsObject = Object.create(null);
     let directionsArray = [];
 
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('recipeDirection')) {
-            directionsObject[`${key}`] = `${value}`;
-            directionsArray.push(directionsObject);
-            directionsObject = Object.create(null);
+            directionsArray.push(value);
         }
     }
-
     return directionsArray
 }
 
@@ -225,15 +225,13 @@ async function splitDirectionArray(directionsArray, lastInsertedRecipeId) {
     let directionStep = 1;
 
     directionsArray.forEach(direction => {
-        for (const [_key, value] of Object.entries(direction)) {
-            let step = directionStep++;
+        let step = directionStep++;
 
-            createNewDirection(lastInsertedRecipeId, step, value);
-        }
+        createNewDirection(lastInsertedRecipeId, step, direction);
     });
 }
 
-async function createNewDirection(lastInsertedRecipeId, step, value) {
+async function createNewDirection(lastInsertedRecipeId, step, direction) {
     const createQuery = `
         INSERT INTO 
             recipe_directions (recipe_id, direction_step, direction)
@@ -243,7 +241,7 @@ async function createNewDirection(lastInsertedRecipeId, step, value) {
     await db.promise().query(createQuery, [
         lastInsertedRecipeId,
         step,
-        value
+        direction
     ]);
 }
 

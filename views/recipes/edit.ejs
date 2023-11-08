@@ -28,7 +28,7 @@
                 <p><%= recipeTitle %></p>
             </header>
             <section class="recipe-wrapper">
-                <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe">
+                <form action="/recipes/<%= id %>/edit" method="post" class="create-recipe" enctype="multipart/form-data">
                     <section class="recipe-details-wrapper" aria-label="Recipe Details">
                         <h2>Recipe Details</h2>
                         <div class="input-two-fields">
@@ -230,7 +230,7 @@
                                 <div id="photo-buttons" class="single-photo-button">
                                     <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
                                     <label for="fileInput" class="button-muted">Select Photo</label>
-                                    <input type="file" hidden id="fileInput">
+                                    <input type="file" hidden id="fileInput" name="uploaded_file">
                                 </div>
                             </div>
                         <% } else { %>
@@ -249,7 +249,7 @@
                                 <div id="photo-buttons" class="single-photo-button">
                                     <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
                                     <label for="fileInput" class="button-muted">Select Photo</label>
-                                    <input type="file" hidden id="fileInput">
+                                    <input type="file" hidden id="fileInput" name="uploaded_file">
                                 </div>
                             </div>
                         </template>

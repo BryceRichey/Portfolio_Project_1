@@ -36,14 +36,19 @@
                 <div class="recipe-interaction">
                     <div id="recipeHeaderRating" class="recipe-rating">
                         <% const AVG = parseFloat(recipeData['recipe_rating_avg']) %>
-                        <p><%= Math.round(AVG) == AVG ? AVG : AVG.toFixed(1) %></p>
+                        <% recipeRoundedRating = Math.round(AVG) == AVG ? AVG : AVG.toFixed(1) %>
+                        <% if (recipeRoundedRating >= 0) { %>
+                            <p><%= recipeRoundedRating %></p>
+                        <% } else { %>
+                            <p>Not Rated</p>
+                        <% } %>
                         <% for (let index = 0; index < 5; index++) { %>
                             <i class="star-color bi bi-star<%= index < Math.round(AVG) ? '-fill' : '' %>"></i> 
                         <% } %>
                     </div>
                     <div>
                         <% if (recipeData['comments_count'] == 0) { %>
-                            <p>No comments</p>
+                            <p>No Comments</p>
                         <% } else if (recipeData['comments_count'] == 1) { %>
                             <p><%= recipeData['comments_count'] %> Comment</p>
                         <% } else { %>
@@ -201,13 +206,17 @@
                                             <% unit = 'ml' %>
                                             <% useAmountAndDecimal(gallonConversion) %>
                                         <% } else if (unit == 'ounce') { %>
-                                            <% unit = 'g' %>
+                                            <% unit = 'gram' %>
                                             <% useAmountAndDecimal(ounceConversion) %>
                                         <% } else if (unit == 'pound') { %>
-                                            <% unit = 'g' %>
+                                            <% unit = 'gram' %>
                                             <% useAmountAndDecimal(poundConversion) %>
                                         <% } else { %>
-                                            <%= amount + ' ' + name %>
+                                            <% if (amount == 0) { %>
+                                                <%= name %>
+                                            <% } else { %>
+                                                <%= amount + ' ' + name %>
+                                            <% } %>
                                         <% } %>
                                     <% } %>
                                     <% customaryToMetricConversion(); %>
@@ -333,67 +342,72 @@
                 </div>
                 <div class="comments-list-wrapper">
                     <ul class="comments-list" id="comment-list">
-                        <% comments.forEach(comment => { %>
-                            <div id="<%=`comment-container-${comment['id']}`%>" aria-label="user-comment-container">
-                                <div class="commenter-header">
-                                    <div aria-label="comment submitter">
-                                        <p><%= comment['first_name'] %></p>
-                                        <p><%= comment['last_name'] %></p>
+                        <%= comments %>
+                        <% if (comments.length == 0) { %>
+                            <p>No comments</p>
+                        <% } else { %>
+                            <% comments.forEach(comment => { %>
+                                <div id="<%=`comment-container-${comment['id']}`%>" aria-label="user-comment-container">
+                                    <div class="commenter-header">
+                                        <div aria-label="comment submitter">
+                                            <p><%= comment['first_name'] %></p>
+                                            <p><%= comment['last_name'] %></p>
+                                        </div>
+                                        <p>
+                                            <% const createdAt=comment['created_at'] %>
+                                            <%= 'Commented' %>
+                                            <%= dayjs(createdAt).fromNow() %>
+                                        </p>
                                     </div>
-                                    <p>
-                                        <% const createdAt=comment['created_at'] %>
-                                        <%= 'Commented' %>
-                                        <%= dayjs(createdAt).fromNow() %>
-                                    </p>
-                                </div>
-                                <div class="user-iteraction">
-                                    <p class="comment-item" id="<%=`comment-${comment['id']}`%>" aria-label="user comment"><%= comment['comment'] %></p>
-                                    <form action="<%=`/recipes/categories/${comment['recipe_category']}/${comment['recipe_id']}/comment/${comment['id']}/edit`%>" method="post"></form>
-                                    <div id="<%=`comment-${comment['id']}-like-container`%>" aria-label="comment like container">
-                                        <% if (currentUser) { %>
-                                            <button class="comment-button like-comment-button" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/like`%>" aria-label="comment like button">
+                                    <div class="user-iteraction">
+                                        <p class="comment-item" id="<%=`comment-${comment['id']}`%>" aria-label="user comment"><%= comment['comment'] %></p>
+                                        <form action="<%=`/recipes/categories/${comment['recipe_category']}/${comment['recipe_id']}/comment/${comment['id']}/edit`%>" method="post"></form>
+                                        <div id="<%=`comment-${comment['id']}-like-container`%>" aria-label="comment like container">
+                                            <% if (currentUser) { %>
+                                                <button class="comment-button like-comment-button" id="<%=`comment-${comment['id']}-like-btn`%>" data-comment-id="<%= comment['id']%>" data-url="<%=`/recipes/${comment['recipe_id']}/comment/${comment['id']}/like`%>" aria-label="comment like button">
+                                                    <div class="comment-button-interaction">
+                                                        <div>
+                                                            <p id="<%=`comment-${comment['id']}-like-count`%>" class="comment-like-count" aria-label="comment like count">
+                                                                <%=comment['likes']%>
+                                                            </p>
+                                                        </div>
+                                                        <div id="<%=`likeIcon-${comment['id']}`%>" aria-label="comment like heart icon">
+                                                            <% if (commentLikes.includes(comment['id'])) { %>
+                                                                <div id="<%=`likedSVG-${comment['id']}`%>" aria-label="comment like heart icon filled"></div>
+                                                            <% } else { %>
+                                                                <div id="<%=`unlikedSVG-${comment['id']}`%>" aria-label="comment like heart icon unfilled"></div>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            <% } else { %>
                                                 <div class="comment-button-interaction">
                                                     <div>
                                                         <p id="<%=`comment-${comment['id']}-like-count`%>" class="comment-like-count" aria-label="comment like count">
                                                             <%=comment['likes']%>
+                                                            <% if (comment['likes'] == 1) { %>
+                                                                like
+                                                            <% } else { %>
+                                                                likes
+                                                            <% } %>
                                                         </p>
                                                     </div>
-                                                    <div id="<%=`likeIcon-${comment['id']}`%>" aria-label="comment like heart icon">
-                                                        <% if (commentLikes.includes(comment['id'])) { %>
-                                                            <div id="<%=`likedSVG-${comment['id']}`%>" aria-label="comment like heart icon filled"></div>
-                                                        <% } else { %>
-                                                            <div id="<%=`unlikedSVG-${comment['id']}`%>" aria-label="comment like heart icon unfilled"></div>
-                                                        <% } %>
-                                                    </div>
                                                 </div>
-                                            </button>
-                                        <% } else { %>
-                                            <div class="comment-button-interaction">
-                                                <div>
-                                                    <p id="<%=`comment-${comment['id']}-like-count`%>" class="comment-like-count" aria-label="comment like count">
-                                                        <%=comment['likes']%>
-                                                        <% if (comment['likes'] == 1) { %>
-                                                            like
-                                                        <% } else { %>
-                                                            likes
-                                                        <% } %>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        <% } %>
+                                            <% } %>
+                                        </div>
                                     </div>
+                                    <% if(currentUser && currentUser.id === comment['user_id']) { %>
+                                        <div class="user-comment-buttons-wrapper" id="buttons-wrapper-user-edit">
+                                            <a href="<%=`/recipes/categories/${comment['comment[recipe_category]']}/${comment['recipe_id']}/comment/${comment['id']}/delete`%>"
+                                                onclick="return confirm('Are you sure you want to delete this comment?');"
+                                                class="delete-comment"
+                                                id="<%=`comment-delete-button-id-${comment['id']}`%>">Delete</a>
+                                            <button type="button" class="edit-comment" id="<%=`comment-edit-button-id-${comment['id']}`%>" data-comment-id="<%= comment['id']%>">Edit</button>
+                                        </div>
+                                    <% } %>
                                 </div>
-                                <% if(currentUser && currentUser.id === comment['user_id']) { %>
-                                    <div class="user-comment-buttons-wrapper" id="buttons-wrapper-user-edit">
-                                        <a href="<%=`/recipes/categories/${comment['comment[recipe_category]']}/${comment['recipe_id']}/comment/${comment['id']}/delete`%>"
-                                            onclick="return confirm('Are you sure you want to delete this comment?');"
-                                            class="delete-comment"
-                                            id="<%=`comment-delete-button-id-${comment['id']}`%>">Delete</a>
-                                        <button type="button" class="edit-comment" id="<%=`comment-edit-button-id-${comment['id']}`%>" data-comment-id="<%= comment['id']%>">Edit</button>
-                                    </div>
-                                <% } %>
-                            </div>
-                        <% }) %>
+                            <% }) %>
+                        <% } %>
                     </ul>
                 </div>
             </section>

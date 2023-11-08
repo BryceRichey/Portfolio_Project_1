@@ -26,9 +26,6 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
 });
 
 router.post('/recipes/new', cloudinary.create(), async (req, res, _next) => {
-    const recipeId = await recipeCreateQueries.getRecipeId();
-    await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
-
     try {
         await recipeCreateQueries.createRecipe(req.user, req.body);
         const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
@@ -38,49 +35,14 @@ router.post('/recipes/new', cloudinary.create(), async (req, res, _next) => {
         const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
         await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
 
+        let recipeId = await recipeCreateQueries.getRecipeId();
+        await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
+
         res.redirect('/recipes');
     } catch (err) {
-        console.log(err)
-
         res.status(500).redirect('/errors/500.ejs');
     }
 });
-
-
-// router.post('/recipes/new', async (req, res, _next) => {
-//     if (cloudinary.cloudinary === undefined) {
-//         // THIS CAUSES THE BODY TO NOT BE EMPTY BUT WHEN NOT PRESENT BODY IS EMPTY
-//         // cloudinary.upload.single('uploaded_file');
-
-//         console.log(req.body);
-
-//         const recipeId = await recipeCreateQueries.getRecipeId();
-
-//         await recipeCreateQueries.createFakeRecipePhoto(req.user, recipeId);
-
-//         try {
-//             await recipeCreateQueries.createRecipe(req.user, req.body);
-//             const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
-//             const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
-//             const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
-//             await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
-//             const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-//             await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
-
-//             res.redirect('/recipes');
-//         } catch (err) {
-//             console.log(err)
-
-//             res.status(500).redirect('/errors/500.ejs');
-//         }
-//     } else {
-//         cloudinary.upload.single('uploaded_file');
-
-//         const recipeId = await recipeCreateQueries.getRecipeId();
-
-//         await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
-//     }
-// });
 
 router.post('/recipes/search', async (req, res, _next) => {
     try {
@@ -257,7 +219,7 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
     }
 });
 
-router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
+router.post('/recipes/:recipeId/edit', cloudinary.create(), async (req, res, _next) => {
     try {
         await recipeUpdateQueries.updateRecipe(req.params.recipeId, req.body);
         const currentRecipeIngredients = await recipeUpdateQueries.getRecipeIngredients(req.params.recipeId);
@@ -265,11 +227,17 @@ router.post('/recipes/:recipeId/edit', async (req, res, _next) => {
         const splitQuarterCounter = recipeUpdateQueries.splitQuarterCounter(allIngredientsObject);
         const newIngredientsArray = recipeUpdateQueries.splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter);
         recipeUpdateQueries.checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, req.params.recipeId);
-        await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
+        const directionsArray = await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
+        
+        console.log(directionsArray)
+        await recipeUpdateQueries.splitDirectionArray(directionsArray, req.params.recipeId);
+
+        await recipeUpdateQueries.updateRecipePhoto(req.user, req.file, req.params.recipeId);
 
         res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
     } catch (err) {
-        res.status(500).render('errors/500.ejs');
+        console.log(err)
+        // res.status(500).render('errors/500.ejs');
     }
 });
 

@@ -14,8 +14,53 @@ async function updateRecipe(recipeId, body) {
         description: body.recipeDescription,
         servings: body.recipeServings,
         prep_time: body.recipePrepTime,
-        cook_time: body.recipeCookTime
+        cook_time: body.recipeCookTime,
+        category: body.recipeCategory
     });
+}
+
+async function updateRecipePhoto(user, file, recipeId) {
+    if (file) {
+        const getQuery = `
+        SELECT 
+            rp.id 
+        FROM 
+            recipe_photos rp 
+        WHERE 
+            id = ${recipeId}`
+
+        const [getRecipeId, _fields] = await db.promise().query(getQuery);
+
+        if (!getRecipeId.length) {
+            const createQuery = `
+                INSERT INTO 
+                    recipe_photos 
+                SET 
+                    ?`
+
+            await db.promise().query(createQuery, {
+                recipe_id: recipeId,
+                user_id: user.id,
+                photo_url: file.path,
+                file_name: file.filename
+            });
+        } else {
+            const updateQuery = `
+            UPDATE
+                recipe_photos 
+            SET 
+                ? 
+            WHERE 
+                id = ${recipeId}`
+
+            await db.promise().query(updateQuery, {
+                recipe_id: recipeId,
+                user_id: user.id,
+                photo_url: file.path,
+                file_name: file.filename
+            });
+        }
+    }
 }
 
 ///////////////////////////////////////////////
@@ -181,7 +226,7 @@ async function getCurrentIngredientValue(recipeId, newAmount, newFraction, newUn
     } else {
         let newIngredientId = await getIngredientId(newIngredient);
 
-        insertNewIngredient(recipeId, newAmount, newFraction, newUnit, newIngredientId);
+        insertUpdateIngredient(recipeId, newAmount, newFraction, newUnit, newIngredientId);
     }
 }
 
@@ -218,7 +263,7 @@ async function checkIfIngredientChange(id, recipeId, currentAmount, currentFract
     delete newIngredientId;
 }
 
-async function insertNewIngredient(recipeId, updateAmount, updateFraction, updateUnit, updateIngredient) {
+async function insertUpdateIngredient(recipeId, updateAmount, updateFraction, updateUnit, updateIngredient) {
     const insertQuery = `
     INSERT INTO 
         recipe_ingredients
@@ -242,7 +287,7 @@ async function updateNewIngredient(id, recipeId, updateAmount, updateFraction, u
         ?
     WHERE 
         id = ${id}`
-        
+
     const [_rows, _fields] = await db.promise().query(updateQuery, {
         recipe_id: recipeId,
         amount: updateAmount,
@@ -320,29 +365,24 @@ async function updateRecipeDirections(recipeId, body) {
 
     await db.promise().query(deleteQuery, [recipeId]);
 
-    let directionsObject = Object.create(null);
     let directionsArray = [];
 
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('recipeDirection')) {
-            directionsObject[`${key}`] = `${value}`;
-            directionsArray.push(directionsObject);
-            directionsObject = Object.create(null);
+            directionsArray.push(value);
         }
     }
 
-    splitDirectionArray(directionsArray, recipeId);
+    return directionsArray;
 }
 
 async function splitDirectionArray(directionsArray, recipeId) {
     let directionStep = 1;
 
     directionsArray.forEach(direction => {
-        for (const [_key, value] of Object.entries(direction)) {
-            let step = directionStep++;
+        let step = directionStep++;
 
-            createNewDirection(recipeId, step, value);
-        }
+        createNewDirection(recipeId, step, direction);
     });
 }
 
@@ -366,10 +406,12 @@ async function createNewDirection(recipeId, step, value) {
 
 module.exports = {
     updateRecipe,
+    updateRecipePhoto,
     getRecipeIngredients,
     createRecipeIngredientObject,
     splitQuarterCounter,
     splitRecipeIngredientObject,
     checkIngredientMatch,
-    updateRecipeDirections
+    updateRecipeDirections,
+    splitDirectionArray
 }

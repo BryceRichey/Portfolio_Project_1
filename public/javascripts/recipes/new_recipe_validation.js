@@ -28,11 +28,17 @@ function validateRecipeDetails(name) {
     invalidElement.innerHTML = '';
 
     if (element.value.trim().length < 1) {
-        const errorMsg = errorName + ' cannot be blank';
-        invalidElement.innerHTML = errorMsg;
-        element.classList.remove('normal-border');
-        element.classList.add('invalid-border');
-        return false;
+        if (element === 'fraction' || 'ingredient-unit') {
+            element.classList.remove('normal-border');
+            element.classList.add('valid-border');
+            return true;
+        } else {
+            const errorMsg = errorName + ' cannot be blank';
+            invalidElement.innerHTML = errorMsg;
+            element.classList.remove('normal-border');
+            element.classList.add('invalid-border');
+            return false;
+        }
     } else {
         element.classList.remove('normal-border');
         element.classList.add('valid-border');
