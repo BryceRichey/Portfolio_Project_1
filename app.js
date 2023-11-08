@@ -20,9 +20,6 @@ const relativeTime = require('dayjs/plugin/relativeTime');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const flash = require('express-flash');
 
-const CleanCSS = require('clean-css');
-new CleanCSS({level: 1}).minify(['public/app.css'])
-
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 

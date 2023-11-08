@@ -1,0 +1,26 @@
+/* || VARIABLES */
+:root {
+    --white-000: #fff;
+
+    --muted-neutral-100: #F9F1E8;
+
+    --neutrals-100: #F4F1ED;
+    --neutrals-300: #E9D8C3;
+    --neutrals-500: #EDC688;
+    --neutrals-700: #EDB458;
+    --neutrals-900: #F1A24C;
+
+    --greys-000: #F8F8F8;
+    --greys-100: #E5E5EA;
+    --greys-300: #D1D1D6;
+    --greys-500: #C7C7CC;
+    --greys-700: #AEAEB2;
+    --greys-900: #8E8E93;
+
+    --blacks-500: #636366;
+    --blacks-700: #48484A;
+    --blacks-900: #1C1C1E;
+
+    --font-family: "lato", sans-serif;
+    --font-style: normal;
+}
