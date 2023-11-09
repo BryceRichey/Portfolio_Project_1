@@ -29,7 +29,7 @@ DB_PASS =
 To configure the Cloudinary API, you should define the `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` parameters within your `.env` file. This setup is essential for enabling seamless photo uploads to your personal Cloudinary account. It's worth noting that this configuration is optional, as the project includes built-in mock Cloudinary API interactions.
 
 ## Run
-If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
+This project can be run by using `npm run watch`.
 
 ## Dependencies
 - [body-parser](https://www.npmjs.com/package/body-parser)
@@ -53,4 +53,6 @@ If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
 
 ### Dev Dependencies
 - [dotenv](https://www.npmjs.com/package/dotenv)
+- [esbuild](https://esbuild.github.io/api/)
 - [nodemon](https://www.npmjs.com/package/nodemon)
+- [npm-run-all](https://www.npmjs.com/package/npm-run-all)
