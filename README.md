@@ -54,5 +54,6 @@ This project can be run by using `npm run watch`.
 ### Dev Dependencies
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [esbuild](https://esbuild.github.io/api/)
+- [flydotio/dockerfile](https://www.npmjs.com/package/@flydotio/dockerfile)
 - [nodemon](https://www.npmjs.com/package/nodemon)
 - [npm-run-all](https://www.npmjs.com/package/npm-run-all)
