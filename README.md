@@ -54,3 +54,4 @@ If using `nodemon` run `nodemon app.js`. Alternatively you can run `npm start`.
 ### Dev Dependencies
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [nodemon](https://www.npmjs.com/package/nodemon)
+- [flydotio/dockerfile](https://www.npmjs.com/package/@flydotio/dockerfile)
