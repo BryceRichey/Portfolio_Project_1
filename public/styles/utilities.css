@@ -1,0 +1,41 @@
+body {
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+.no-border {
+    border: none;
+}
+
+.not-visible {
+    display: none;
+}
+
+.visually-hidden {
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    border: 0 !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    white-space: nowrap !important;
+    width: 1px !important;
+}
+
+.error-message {
+    display: flex;
+    position: absolute;
+    justify-self: center;
+    animation: fadeInOut 10s;
+    opacity: 0;
+}
+
+.error-message>p {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 600;
+    font-size: 1rem;
+}

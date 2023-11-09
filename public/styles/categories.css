@@ -1,0 +1,385 @@
+.categories-show-wrapper {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(5, auto);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 0rem 1.5rem 1.5rem 1.5rem;
+    height: auto;
+}
+
+a[class^=categories-header-side-item-] {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--blacks-700);
+    text-decoration: none;
+}
+
+.categories-header-wrapper {
+    grid-area: 1 / 1 / 3 / 14;
+    height: 300px;
+    border-radius: 1rem;
+    background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right 50px bottom -185px / 400px, linear-gradient(272deg, rgba(241, 162, 76, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%), #F8F8F8;
+}
+
+.categories-title-wrapper {
+    padding: 2rem 20% 0 2.5rem;
+    height: 100%;
+}
+
+.categories-title-wrapper>h1 {
+    color: var(--blacks-900);
+}
+
+.categories-title-wrapper>p {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--neutrals-900);
+    opacity: 0.90;
+    margin-bottom: 3rem;
+}
+
+.categories-title-wrapper>a::after {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='16' fill='%23F1A24C' viewBox='0 0 18 16'%3E%3Cpath d='M2.6514 0.941274C2.07094 0.452571 1.12567 0.449096 0.54007 0.933512C-0.0455266 1.41793 -0.0496906 2.2068 0.53077 2.6955L6.65415 7.85091L0.4969 12.9443C-0.0886971 13.4287 -0.0928605 14.2176 0.4876 14.7063C1.06806 15.195 2.01334 15.1985 2.59893 14.7141L9.81409 8.74553C10.3798 8.27757 10.4029 7.5255 9.88054 7.03437C9.8528 7.00657 9.82339 6.97953 9.7923 6.95336L2.6514 0.941274Z'%3E%3C/path%3E%3C/svg%3E");
+    margin-left: 0.5rem;
+    align-self: end;
+    bottom: 1px;
+    position: relative;
+}
+
+.categories-container-wrapper {
+    display: flex;
+    grid-area: 3 / 1 / 4 / 14;
+    margin-top: 2rem;
+    gap: 4rem;
+}
+
+.categories-container-wrapper>div>h1 {
+    padding-top: 0 !important;
+}
+
+.categories-container-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.categories-container,
+.navbar-nav {
+    border-radius: 1rem;
+    background-color: var(--greys-000);
+}
+
+.categories-container>li,
+.navbar-nav>li {
+    padding: 1rem 1.5rem;
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 1rem;
+}
+
+.categories-search-display-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 3rem;
+}
+
+.categories-search-filter-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 20%;
+}
+
+.category-select-filter {
+    border: none;
+}
+
+section[class$=-category-container] {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.no-category-container {
+    display: flex;
+    margin: 10rem auto 0 auto;
+    justify-content: center;
+}
+
+.category-recipe-all-cards {
+    display: flex;
+}
+
+.category-recipe-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 1rem;
+    background-color: var(--greys-000);
+    padding: 1.25rem;
+    width: 100%;
+    height: 100%;
+}
+
+.category-recipe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--greys-000);
+    border-radius: 1rem;
+    overflow: hidden;
+    height: 150px;
+    background-color: var(--muted-neutral-100);
+}
+
+.category-recipe-photo-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.category-recipe-photo {
+    overflow: hidden;
+}
+
+.category-recipe-photo>img {
+    width: 100%;
+}
+
+.no-photo-wrapper {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    color: var(--neutrals-900);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.category-recipe-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.category-recipe-card-details>p {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    color: var(--blacks-900);
+    font-weight: 700;
+}
+
+.category-recipe-card-submitter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-recipe-rating-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    color: var(--greys-900);
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.category-recipe-card-submitter>p {
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    color: var(--greys-700);
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 1200px) {
+    .categories-container {
+        display: flex;
+        flex-direction: column;
+        border-radius: 1rem;
+    }
+
+    .category-recipe-card {
+        flex: 0 1 33.333%;
+        padding: 0 2rem 2rem 0rem;
+        text-decoration: none;
+    }
+
+    section[class$=-category-container]>a:nth-child(3n) {
+        padding: 0 0 2rem 0rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .category-recipe-card {
+        flex: 0 1 50%;
+        padding: 0 2rem 2rem 0rem;
+        text-decoration: none;
+    }
+
+    section[class$=-category-container]>a:nth-child(2n) {
+        padding: 0 0 2rem 0rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .categories-header-wrapper {
+        height: auto;
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right 50px bottom -145px / 325px, linear-gradient(272deg, rgba(241, 162, 76, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%), #F8F8F8;
+    }
+
+    .categories-title-wrapper {
+        padding: 2rem 2.5rem 2.75rem 2.5rem;
+        height: 100%;
+    }
+
+    .categories-title-wrapper>h1 {
+        font-size: 2rem;
+        line-height: 2.25rem;
+    }
+
+    .categories-title-wrapper>p {
+        font-size: 1.25rem;
+    }
+
+    .categories-container-wrapper {
+        display: flex;
+        grid-area: 3 / 1 / 4 / 14;
+        margin-top: 2rem;
+        gap: 0rem;
+        flex-direction: column;
+    }
+
+    .categories-container-sidebar {
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+    .categories-search-filter-wrapper {
+        gap: 2rem;
+    }
+
+    .categories-container {
+        display: flex;
+        border-radius: 1rem;
+        overflow: scroll;
+        scrollbar-width: none;
+        height: 3rem;
+        -ms-overflow-style: none;
+    }
+
+    .categories-container>* {
+        animation: 1.25s categoryBounce 0.75s both ease-in-out;
+    }
+
+    .categories-container::-webkit-scrollbar {
+        width: 0 !important;
+    }
+
+
+    @keyframes categoryBounce {
+        0% {
+            transform: translateX(0px);
+        }
+
+        25% {
+            transform: translateX(-50px);
+        }
+
+        50% {
+            transform: translateX(0px);
+        }
+
+        75% {
+            transform: translateX(-50px);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
+    }
+
+    .no-category-container {
+        margin: 5rem auto;
+    }
+
+    .categories-search-display-wrapper {
+        gap: 1.5rem;
+    }
+
+    .categories-search-filter-wrapper {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .categories-container-sidebar {
+        flex-direction: column;
+        gap: 0;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 566px) {
+    .categories-header-wrapper {
+        background: url("https://res.cloudinary.com/djq3aojia/image/upload/v1694556650/BYTE%20branding/food_os1fdr.png") no-repeat right -50px bottom -145px / 325px, linear-gradient(272deg, rgba(241, 162, 76, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%), #F8F8F8;
+    }
+
+    .categories-title-wrapper>h1 {
+        font-size: 1.75rem;
+    }
+
+    .categories-title-wrapper>p {
+        font-size: 1.15rem;
+    }
+
+    .category-recipe-card {
+        flex: 1 1 100%;
+    }
+
+    section[class$=-category-container]>a,
+    section[class$=-category-container]>a:nth-child(2n),
+    section[class$=-category-container]>a:nth-child(3n) {
+        padding: 0 0 2rem 0;
+    }
+
+    .categories-search-filter-wrapper {
+        gap: 1rem;
+    }
+}
+
+/* CATEGORY PAGE */
+.category-show-wrapper {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(5, auto);
+    column-gap: 16px;
+    row-gap: 16px;
+    margin: 0rem 1.5rem 1.5rem 1.5rem;
+    height: auto;
+}
+
+.category-header-wrapper {
+    grid-area: 1 / 1 / 2 / 14;
+    height: 150px;
+    border-radius: 1rem;
+    background-color: var(--neutrals-900);
+}
+
+.category-title-wrapper {
+    padding: 2rem 25% 0 2.5rem;
+}
+
+.category-title-wrapper>* {
+    color: #fff;
+}

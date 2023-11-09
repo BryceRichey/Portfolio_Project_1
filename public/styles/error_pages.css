@@ -1,0 +1,21 @@
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 176px);
+}
+
+.error-container>h1 {
+    font-size: 8rem;
+    padding-bottom: 4rem;
+    color: var(--neutrals-900);
+}
+
+.error-container>p {
+    width: 425px;
+    text-align: center;
+    line-height: 1.5rem;
+    margin-bottom: 5rem;
+    font-size: 1.25rem;
+}

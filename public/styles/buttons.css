@@ -1,0 +1,41 @@
+.button-orange,
+.button-muted,
+.button-grey {
+    display: inline-flex;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    font-family: var(--font-family);
+    font-style: var(--font-style);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.5rem;
+    text-decoration: none;
+}
+
+.button-orange {
+    background: var(--neutrals-900);
+    color: var(--white-000);
+}
+
+.button-muted {
+    background: var(--muted-neutral-100);
+    color: var(--neutrals-900);
+}
+
+.button-grey {
+    background: var(--greys-000);
+    color: var(--blacks-500);
+}
+
+.button-back {
+    color: #AEAEB2;
+    text-decoration: none;
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 400;
+    line-height: 1.5rem;
+}

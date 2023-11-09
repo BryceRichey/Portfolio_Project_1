@@ -1,0 +1,16 @@
+.main-footer {
+    display: flex;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 1.5rem 1.5rem 1.5rem;
+    color: var(--blacks-900, #1C1C1E);
+    font-family: var(--font-family);
+    font-size: 1rem;
+    font-style: var(--font-style);
+    font-weight: 500;
+    line-height: 1.5rem;
+    border-radius: 1rem;
+    background-color: var(--greys-000);
+}
