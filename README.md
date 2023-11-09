@@ -18,11 +18,11 @@ This project contains a `.env.example` file that may be used to create the `.env
 ### Database
 The configuration file, `config/db.js`, includes a reference to several environment variables for the database. You must use these variables in your `.env` file for the database to function properly.
 ```
-DB_HOST =
-DB_USER =
-DB_NAME =
-DB_PORT =
-DB_PASS =
+DATABASE_URL =
+DATABASE_USER =
+DATABASE_NAME =
+DATABASE_PORT =
+DATABASE_PASS =
 ```
 
 ### Cloudinary
