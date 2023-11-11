@@ -25,14 +25,14 @@
                 <p class="bread-crumb"><%= categoryUC %></p>
             </li>
             <li class="bread-crumb-item">
-                <a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeTitle %></a>
+                <a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb" style="text-transform: capitalize"><%= recipeTitle %></a>
             </li>
         </ol>
     </nav>
     <section class="recipe-show-wrapper">
         <main class="recipe-main-wrapper" aria-label="recipe information">
             <header class="title-wrapper" aria-label="<%= recipeData['r_title'] %> details">
-                <h1><%= recipeTitle %></h1>
+                <h1 style="text-transform: capitalize"><%= recipeTitle %></h1>
                 <div class="recipe-interaction">
                     <div id="recipeHeaderRating" class="recipe-rating">
                         <% const AVG = parseFloat(recipeData['recipe_rating_avg']) %>

@@ -84,9 +84,7 @@
                             <% } else { %>
                                 <% recipes.forEach(recipe => { %>
                                     <div class="user-recipe">
-                                        <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>" class="user-recipe-link">
-                                            <%= recipe['r_title'].charAt(0).toUpperCase() + recipe['r_title'].slice(1) %>
-                                        </a>
+                                        <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>" class="user-recipe-link" style="text-transform: capitalize"><%= recipe['r_title'] %></a>
                                         <div class="user-recipe-buttons" aria-label="delete or edit recipe">
                                             <a href="/account/<%= recipe['id'] %>/delete" class="button-grey">Delete</a>
                                             <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>/edit" class="button-muted">Edit</a>
@@ -104,7 +102,7 @@
                             <% } else { %>
                                 <% comments.forEach(comment => { %>
                                     <div class="user-comments">
-                                        <div class="test">
+                                        <div class="elipsis">
                                             <% // TEXT OVERFLOW ELIPSIS NOT WORKING %>
                                             <p class="user-comment-text" id="user-comment-text"><%= comment['comment'] %></p>
                                         </div>

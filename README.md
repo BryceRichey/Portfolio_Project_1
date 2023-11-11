@@ -20,7 +20,7 @@ The configuration file, `config/db.js`, includes a reference to several environm
 ```
 DATABASE_URL =
 DATABASE_USER =
-DATABASE_NAME =
+DATABASE_NAME = byte_db
 DATABASE_PORT =
 DATABASE_PASS =
 ```
