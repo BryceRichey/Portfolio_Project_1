@@ -211,14 +211,15 @@ async function createIngredientData(lastInsertedRecipeId, amountId, fractionId, 
 //////////////////////////////////////////////
 
 async function createRecipeDirections(body) {
-    let directionsArray = [];
+    let directions;
 
     for (const [key, value] of Object.entries(body)) {
         if (key.includes('recipeDirection')) {
-            directionsArray.push(value);
+            directions = value;
         }
     }
-    return directionsArray
+
+    return directions
 }
 
 async function splitDirectionArray(directionsArray, lastInsertedRecipeId) {

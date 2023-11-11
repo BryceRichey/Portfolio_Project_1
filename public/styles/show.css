@@ -947,6 +947,10 @@
         object-fit: cover;
     }
 
+    .carousel-image {
+        width: 100%;
+    }
+
     .user-rating-wrapper {
         display: none;
     }

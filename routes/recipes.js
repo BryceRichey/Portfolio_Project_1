@@ -32,14 +32,17 @@ router.post('/recipes/new', cloudinary.create(), async (req, res, _next) => {
         const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
         const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
         await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
-        const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-        await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
+        // const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
+
+        // await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
 
         let recipeId = await recipeCreateQueries.getRecipeId();
         await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
 
         res.redirect('/recipes');
     } catch (err) {
+        console.log(err)
+
         res.status(500).redirect('/errors/500.ejs');
     }
 });
@@ -229,7 +232,6 @@ router.post('/recipes/:recipeId/edit', cloudinary.create(), async (req, res, _ne
         recipeUpdateQueries.checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, req.params.recipeId);
         const directionsArray = await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
         
-        console.log(directionsArray)
         await recipeUpdateQueries.splitDirectionArray(directionsArray, req.params.recipeId);
 
         await recipeUpdateQueries.updateRecipePhoto(req.user, req.file, req.params.recipeId);

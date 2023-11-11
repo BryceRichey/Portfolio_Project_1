@@ -121,7 +121,7 @@ confirmPassword.addEventListener('blur', e => {
     validateNewPasswordMatch(confirmPassword, e.target.value);
 });
 
-function validateNewPasswordMatch(confirmPassword, value) {
+function validateNewPasswordMatch(confirmPassword, _value) {
     const newPasswordValue = newPassword.value.trim();
     const confirmPasswordValue = confirmPassword.value.trim();
     const validElement = confirmPassword.parentElement.querySelector('.valid-message');
@@ -131,16 +131,22 @@ function validateNewPasswordMatch(confirmPassword, value) {
         confirmPassword.classList.remove('normal-border');
         confirmPassword.classList.remove('valid-border');
         confirmPassword.classList.add('invalid-border');
+        validElement.classList.add('not-visible');
+        invalidElement.classList.remove('not-visible');
         invalidElement.innerHTML = "Password cannot be blank";
     } else if (newPasswordValue != confirmPasswordValue) {
         confirmPassword.classList.remove('normal-border');
         confirmPassword.classList.remove('valid-border');
         confirmPassword.classList.add('invalid-border');
+        validElement.classList.add('not-visible');
+        invalidElement.classList.remove('not-visible');
         invalidElement.innerHTML = "Password must match";
     } else {
+        confirmPassword.classList.remove('invalid-border')
         confirmPassword.classList.remove('normal-border');
-        confirmPassword.classList.remove('invalid-border');
         confirmPassword.classList.add('valid-border');
+        validElement.classList.remove('not-visible');
+        invalidElement.classList.add('not-visible');
         validElement.innerHTML = "Passwords match";
     }
 }

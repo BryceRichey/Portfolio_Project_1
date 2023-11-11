@@ -96,13 +96,18 @@ async function getRecipeCategories(category) {
     const getQuery = `
     SELECT 
         r.*, 
-        rp.photo_url
+        rp.photo_url,
+        AVG(rr.rating) AS recipe_rating_avg
     FROM 
         recipes r
     LEFT JOIN 
         recipe_photos rp ON r.id = rp.recipe_id
+    LEFT JOIN 
+        recipe_ratings rr ON r.id = rr.recipe_id
     WHERE 
-        category = ?`
+        category = ?
+    GROUP BY
+        r.id, rp.id`
 
     const [categoryRecipes, _fields] = await db.promise().query(getQuery,
         ['breakfast']

@@ -33,7 +33,7 @@
                             </div>
                             <div class="input-two-fields-category">
                                 <label for="recipe-category">Category</label>
-                                <select name="recipeCategory" id="recipe-category" class="normal-border">
+                                <select name="recipeCategory" id="recipe-category" class="normal-border cursor-pointer">
                                     <option value="" default selected hidden>Select</option>
                                     <option value="breakfast">Breakfast</option>
                                     <option value="lunch">Lunch</option>
@@ -58,20 +58,20 @@
                         <div class="input-three-fields">
                             <div class="input-field">
                                 <label for="recipe-servings">Servings</label>
-                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings">
+                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings" min="0" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                 <div class="valid-message"></div>
                                 <div class="invalid-message"></div>
                             </div>
                             <div class="input-field-two-fields">
                                 <div class="input-field">
                                     <label for="recipe-prep-time">Prep Time</label>
-                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time">
+                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                     <div class="valid-message"></div>
                                     <div class="invalid-message"></div>
                                 </div>
                                 <div class="input-field">
                                     <label for="recipe-cook-time">Cook Time</label>
-                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time">
+                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                     <div class="valid-message"></div>
                                     <div class="invalid-message"></div>
                                 </div>
@@ -84,13 +84,13 @@
                             <div class="input-field-four-fields" id="ingredient-input">
                                 <div class="input-field">
                                     <label for="ingredient-amount">Amount</label>
-                                    <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount">
+                                    <input type="number" name="ingredientAmount_" class="normal-border" id="ingredient-amount" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                     <div class="valid-message"></div>
                                     <div class="invalid-message"></div>
                                 </div>
                                 <div class="input-field">
                                     <label for="ingredient-fraction">Fraction</label>
-                                    <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border">
+                                    <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border cursor-pointer">
                                         <option value="" default selected hidden>Select</option>
                                         <option value="8"></option>
                                         <option value="1">¾</option>
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="input-field">
                                     <label for="ingredient-unit">Unit</label>
-                                    <select name="ingredientUnit_" id="ingredient-unit" class="normal-border">
+                                    <select name="ingredientUnit_" id="ingredient-unit" class="normal-border cursor-pointer">
                                         <option value="" default selected hidden>Select</option>
                                         <option value=""></option>
                                         <option value="1">tablespoon</option>
@@ -165,7 +165,7 @@
                             </div>
                             <div id="photo-buttons" class="single-photo-button">
                                 <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
-                                <label for="fileInput" class="button-muted">Select Photo</label>
+                                <label for="fileInput" class="button-muted cursor-pointer">Select Photo</label>
                                 <input type="file" hidden id="fileInput" name="uploaded_file">
                             </div>
                         </div>

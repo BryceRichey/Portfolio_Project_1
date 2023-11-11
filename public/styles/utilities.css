@@ -8,7 +8,7 @@ body {
 }
 
 .not-visible {
-    display: none;
+    display: none !important;
 }
 
 .visually-hidden {

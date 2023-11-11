@@ -5,7 +5,7 @@ function roundRating() {
     
     ratingDiv && ratingDiv.forEach(div => {
         let divText = div.innerHTML;
-        let recipeRating = parseInt(divText);
+        let recipeRating = parseFloat(divText).toFixed(1);
 
         if (isNaN(recipeRating)) {
             div.innerHTML = "Not Rated";

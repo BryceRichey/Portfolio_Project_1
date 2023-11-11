@@ -7,6 +7,8 @@ commentButton && commentButton.addEventListener('click', _e => {
 
 
 function createComment() {
+    commentList.children[0].classList.add('not-visible');
+    
     const form = document.createElement('form');
     const recipeId = document.getElementById('recipe-id').innerHTML;
     const recipeCategory = document.getElementById('bread-crumb-category').innerHTML;
@@ -60,5 +62,6 @@ function createComment() {
         e.preventDefault();
         newCommentContainer.remove();
         commentNewComment.classList.remove('not-visible');
+        commentList.children[0].classList.remove('not-visible');
     });
 }

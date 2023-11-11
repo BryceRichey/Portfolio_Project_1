@@ -380,9 +380,11 @@ async function splitDirectionArray(directionsArray, recipeId) {
     let directionStep = 1;
 
     directionsArray.forEach(direction => {
-        let step = directionStep++;
+        let step = directionStep;
 
         createNewDirection(recipeId, step, direction);
+
+        directionStep++
     });
 }
 

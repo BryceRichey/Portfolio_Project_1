@@ -14,11 +14,21 @@
     <% const recipeDirections = directions %>
     <nav class="main-bread-crumbs-wrapper" aria-label="breadcrumb">
         <ol class="bread-crumb-list" aria-label="breadcrumbs">
-            <li class="bread-crumb-item"><a href="/" class="bread-crumb">Home</a></li>
-            <li class="bread-crumb-item"><a href="/recipes" class="bread-crumb">Recipes</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories" class="bread-crumb">Categories</a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>" class="bread-crumb"><%= categoryUC %></a></li>
-            <li class="bread-crumb-item"><a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a></li>
+            <li class="bread-crumb-item">
+                <a href="/" class="bread-crumb">Home</a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes" class="bread-crumb">Recipes</a>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes/categories" class="bread-crumb">Categories</a>
+            </li>
+            <li class="bread-crumb-item">
+                <p class="bread-crumb"><%= categoryUC %></p>
+            </li>
+            <li class="bread-crumb-item">
+                <a href="/recipes/categories/<%= categoryLC %>/<%= recipeData['id'] %>" class="bread-crumb"><%= recipeData['r_title'] %></a>
+            </li>
         </ol>
     </nav>
     <main>
@@ -38,9 +48,9 @@
                             </div>
                             <div class="input-two-fields-category">
                                 <label for="recipe-category">Category</label>
-                                <select name="recipeCategory" id="recipe-category" class="normal-border">
+                                <select name="recipeCategory" id="recipe-category" class="normal-border cursor-pointer">
                                     <% if (recipeData['category']) { %>
-                                        <option value="<%= recipeData['category'] %>" default selected hidden><%= recipeData['category'] %></option>
+                                        <option value="<%= recipeData['category'] %>" default selected hidden><%= recipeData['category'].charAt(0).toUpperCase() + recipeData['category'].slice(1) %></option>
                                     <% } else { %>
                                         <option value="" default selected hidden>Select Category</option>
                                     <% } %>
@@ -63,16 +73,16 @@
                         <div class="input-three-fields">
                             <div class="input-field">
                                 <label for="recipe-servings">Servings</label>
-                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings" value="<%= recipeData['servings'] %>">
+                                <input type="number" name="recipeServings" class="normal-border" id="recipe-servings" value="<%= recipeData['servings'] %>" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                             </div>
                             <div class="input-field-two-fields">
                                 <div class="input-field">
                                     <label for="recipe-prep-time">Prep Time</label>
-                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time" value="<%= recipeData['prep_time'] %>">
+                                    <input type="number" name="recipePrepTime" class="normal-border" id="recipe-prep-time" value="<%= recipeData['prep_time'] %>" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                 </div>
                                 <div class="input-field">
                                     <label for="recipe-cook-time">Cook Time</label>
-                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time" value="<%= recipeData['cook_time'] %>">
+                                    <input type="number" name="recipeCookTime" class="normal-border" id="recipe-cook-time" value="<%= recipeData['cook_time'] %>" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                 </div>
                             </div>
                         </div>
@@ -86,11 +96,11 @@
                                 <div class="input-field-four-fields" id="ingredient-input">
                                     <div class="input-field">
                                         <label for="ingredient-amount">Amount</label>
-                                        <input type="number" name="ingredientAmount_<%=count%>" class="normal-border" id="ingredient-amount" value="<%= ingredient[0] %>">
+                                        <input type="number" name="ingredientAmount_<%=count%>" class="normal-border" id="ingredient-amount" value="<%= ingredient[0] %>" onkeypress="return (event.charCode != 8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))">
                                     </div>
                                     <div class="input-field">
                                         <label for="ingredient-fraction">Fraction</label>
-                                        <select name="ingredientFraction_<%=count%>" id="ingredient-fraction" class="normal-border">
+                                        <select name="ingredientFraction_<%=count%>" id="ingredient-fraction" class="normal-border cursor-pointer">
                                             <% if (ingredient[1]) { %>
                                                 <option value="<%=ingredient[3] %>" default selected hidden><%=ingredient[1] %></option>
                                             <% } else { %>
@@ -108,7 +118,7 @@
                                     </div>
                                     <div class="input-field">
                                         <label for="ingredient-unit">Unit</label>
-                                        <select name="ingredientUnit_<%=count%>" id="ingredient-unit" class="normal-border">
+                                        <select name="ingredientUnit_<%=count%>" id="ingredient-unit" class="normal-border cursor-pointer">
                                             <% if (ingredient[2]) { %>
                                                 <option value="<%= ingredient[4] %>" default selected hidden><%= ingredient[2] %></option>
                                             <% } else { %>
@@ -146,6 +156,7 @@
                                         <label for="ingredient-fraction">Fraction</label>
                                         <select name="ingredientFraction_" id="ingredient-fraction" class="normal-border">
                                             <option value="" default selected hidden>Select Fraction</option>
+                                            <option value="8"></option>
                                             <option value="1">¾</option>
                                             <option value="2">⅔</option>
                                             <option value="3">½</option>
@@ -159,6 +170,7 @@
                                         <label for="ingredient-unit">Unit</label>
                                         <select name="ingredientUnit_" id="ingredient-unit" class="normal-border">
                                             <option value="" default selected hidden>Select unit</option>
+                                            <option value=""></option>
                                             <option value="1">tablespoon</option>
                                             <option value="2">teaspoon</option>
                                             <option value="3">ounce</option>
@@ -248,7 +260,7 @@
                                 </div>
                                 <div id="photo-buttons" class="single-photo-button">
                                     <button class="button-grey not-visible" id="delete-photos-button">Delete Photo</button>
-                                    <label for="fileInput" class="button-muted">Select Photo</label>
+                                    <label for="fileInput" class="button-muted cursor-pointer">Select Photo</label>
                                     <input type="file" hidden id="fileInput" name="uploaded_file">
                                 </div>
                             </div>

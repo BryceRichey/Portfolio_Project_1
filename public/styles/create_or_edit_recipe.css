@@ -70,6 +70,10 @@
     width: 100%;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .input-two-fields-category div:nth-child(2) {
     width: 33.333%;
 }
@@ -234,7 +238,7 @@
     border: none;
 }
 
-directions-input-field-two-fields {
+.directions-input-field-two-fields {
     display: inline-flex;
     width: 100%;
 }

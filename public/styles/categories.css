@@ -74,6 +74,10 @@ a[class^=categories-header-side-item-] {
     background-color: var(--greys-000);
 }
 
+.categories-container>li {
+    cursor: pointer;
+}
+
 .categories-container>li,
 .navbar-nav>li {
     padding: 1rem 1.5rem;
@@ -99,6 +103,7 @@ a[class^=categories-header-side-item-] {
 
 .category-select-filter {
     border: none;
+    cursor: pointer;
 }
 
 section[class$=-category-container] {

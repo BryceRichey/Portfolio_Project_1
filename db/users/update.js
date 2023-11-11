@@ -1,4 +1,5 @@
 const db = require('../../config/database');
+const passport = require('../../config/passport')
 
 async function updateUserFirstName(user, body) {
     const updateQuery = `
@@ -42,8 +43,27 @@ async function updateUserEmail(user, body) {
     });
 }
 
+async function updatePassword (user, confirmPassword) {
+    const genPassword = passport.genPassword;
+    const saltHash = genPassword(confirmPassword);
+    const salt = saltHash.salt;
+    const hash = saltHash.hash;
+    const updatePasswordQuery = `
+        UPDATE 
+            users
+        SET 
+            ? 
+        WHERE 
+            id = ${user.id}`
+    await db.promise().query(updatePasswordQuery, {
+        hash,
+        salt
+    });
+}
+
 module.exports = {
     updateUserFirstName,
     updateUserLastName,
-    updateUserEmail
+    updateUserEmail,
+    updatePassword
 }

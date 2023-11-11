@@ -78,7 +78,7 @@ function getSelectedCategory(categoryType) {
                         if (isNaN(recipeRating)) {
                             ratingDiv.innerHTML = "Not Rated";
                         } else {
-                            ratingDiv.innerHTML = parseInt(recipe['recipe_rating_avg']);
+                            ratingDiv.innerHTML = parseFloat(recipe['recipe_rating_avg']).toFixed(1);
                         }
 
                         checkPhotoURL(recipe, photoDiv);

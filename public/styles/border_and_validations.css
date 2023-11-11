@@ -1,0 +1,27 @@
+.normal-border {
+    background: #fff;
+    border: var(--greys-300) 2px solid;
+    border-radius: 1rem;
+}
+
+.valid-border {
+    background: #fff;
+    border: #198754 2px solid;
+    border-radius: 1rem;
+}
+
+.valid-message {
+    color: #198754;
+    margin-top: 0.25rem;
+}
+
+.invalid-border {
+    background: #fff;
+    border: #dc3545 2px solid;
+    border-radius: 1rem;
+}
+
+.invalid-message {
+    color: #dc3545;
+    margin-top: 0.25rem;
+}

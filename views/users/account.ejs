@@ -79,38 +79,42 @@
                 <section class="account-recipe-wrapper">
                         <section class="user-recipe-wrapper" aria-label="your sumbitted recipes">
                             <h2>Your recipes</h2>
-                            <% recipes.forEach(recipe => { %>
-                                <% if (recipe === []) { %>
-                                    <p>No recipes submitted</p>
-                                <% } else { %>
+                            <% if (recipes.length == 0 ) { %>
+                                <p>No recipes submitted</p>
+                            <% } else { %>
+                                <% recipes.forEach(recipe => { %>
                                     <div class="user-recipe">
                                         <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>" class="user-recipe-link">
                                             <%= recipe['r_title'].charAt(0).toUpperCase() + recipe['r_title'].slice(1) %>
                                         </a>
-                                <% } %>
                                         <div class="user-recipe-buttons" aria-label="delete or edit recipe">
                                             <a href="/account/<%= recipe['id'] %>/delete" class="button-grey">Delete</a>
                                             <a href="/recipes/categories/<%= recipe['category'] %>/<%= recipe['id'] %>/edit" class="button-muted">Edit</a>
                                         </div>
                                     </div>
-                            <% }); %>
+                                <% }); %>
+                            <% } %>
                         </section>
                 </section>
                 <section class="account-comment-wrapper">
                         <section class="user-comment-wrapper" aria-label="user comments">
                             <h2>Your Comments</h2>
-                            <% comments.forEach(comment => { %>
-                                <% if (comment === []) { %>
-                                    <p>No comments submitted</p>
-                                <% } else { %>
+                            <% if (comments.length == 0) { %>
+                                <p>No comments submitted</p>
+                            <% } else { %>
+                                <% comments.forEach(comment => { %>
                                     <div class="user-comments">
-                                        <a href="/recipes/categories/<%= comment['category'] %>/<%= comment['recipe_id'] %>" class="user-comment-link" id="user-comment-link"><%= comment['comment'] %></a>
-                                        <div class="user-recipe-buttons" aria-label="delete or edit recipe">
+                                        <div class="test">
+                                            <% // TEXT OVERFLOW ELIPSIS NOT WORKING %>
+                                            <p class="user-comment-text" id="user-comment-text"><%= comment['comment'] %></p>
+                                        </div>
+                                        <div class="user-recipe-buttons" aria-label="delete or edit comment">
                                             <a href="/account/<%= comment['id'] %>/delete" class="button-grey">Delete</a>
+                                            <a href="/recipes/categories/<%= comment['category'] %>/<%= comment['recipe_id'] %>" class="button-muted">View</a>
                                         </div>
                                     </div>
-                                <% } %>
-                            <% }); %>
+                                <% }); %>
+                            <% } %>
                         </section>
                 </section>
             </section>
