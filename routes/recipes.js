@@ -27,17 +27,14 @@ router.get('/recipes/new', passport.isAuth, (_req, res, _next) => {
 
 router.post('/recipes/new', cloudinary.create(), async (req, res, _next) => {
     try {
-        await recipeCreateQueries.createRecipe(req.user, req.body);
-        const allIngredientsObject = recipeCreateQueries.createRecipeIngredientsObject(req.body);
-        const newIngredientsArray = recipeCreateQueries.splitRecipeIngredientObject(allIngredientsObject);
-        const lastInsertedRecipeId = await recipeCreateQueries.getLastInsertedRecipeId();
-        await recipeCreateQueries.ingredientData(newIngredientsArray, lastInsertedRecipeId);
+        let recipeId = await recipeCreateQueries.createRecipe(req.user, req.body);
+
+        await recipeCreateQueries.createRecipeIngredients(req.body['ingredients'], recipeId);
         // const directionsArray = await recipeCreateQueries.createRecipeDirections(req.body);
-
-        // await recipeCreateQueries.splitDirectionArray(directionsArray, lastInsertedRecipeId);
-
-        let recipeId = await recipeCreateQueries.getRecipeId();
+        // await recipeCreateQueries.splitDirectionArray(directionsArray, recipeId);
         await recipeCreateQueries.createRecipePhoto(req.user, req.file, recipeId);
+
+        // console.log(req.body);
 
         res.redirect('/recipes');
     } catch (err) {
@@ -224,22 +221,17 @@ router.get('/recipes/categories/:category/:recipeId/edit', passport.isAuth, asyn
 
 router.post('/recipes/:recipeId/edit', cloudinary.create(), async (req, res, _next) => {
     try {
-        await recipeUpdateQueries.updateRecipe(req.params.recipeId, req.body);
-        const currentRecipeIngredients = await recipeUpdateQueries.getRecipeIngredients(req.params.recipeId);
-        const allIngredientsObject = recipeUpdateQueries.createRecipeIngredientObject(req.body);
-        const splitQuarterCounter = recipeUpdateQueries.splitQuarterCounter(allIngredientsObject);
-        const newIngredientsArray = recipeUpdateQueries.splitRecipeIngredientObject(allIngredientsObject, splitQuarterCounter);
-        recipeUpdateQueries.checkIngredientMatch(splitQuarterCounter, currentRecipeIngredients, newIngredientsArray, req.params.recipeId);
-        const directionsArray = await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
-        
-        await recipeUpdateQueries.splitDirectionArray(directionsArray, req.params.recipeId);
 
+        await recipeUpdateQueries.updateRecipe(req.params.recipeId, req.body);
+        await recipeUpdateQueries.updateRecipeIngredients(req.body['ingredients'], req.params.recipeId);
+
+        let directionsArray = await recipeUpdateQueries.updateRecipeDirections(req.params.recipeId, req.body);
+        await recipeUpdateQueries.splitDirectionArray(directionsArray, req.params.recipeId);
         await recipeUpdateQueries.updateRecipePhoto(req.user, req.file, req.params.recipeId);
 
         res.redirect(`/recipes/categories/baking/${req.params.recipeId}`);
     } catch (err) {
-        console.log(err)
-        // res.status(500).render('errors/500.ejs');
+        res.status(500).render('errors/500.ejs');
     }
 });
 

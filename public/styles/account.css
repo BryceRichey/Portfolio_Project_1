@@ -90,14 +90,17 @@
     line-height: 1.5rem;
 }
 
-.elipsis>p {
-    width: 400px;
+.ellipsis {
+    min-width: 0;
 }
 
-.elipsis {
+.ellipsis>span {
+    display: inline-block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 350px;
+    width: 100%;
 }
 
 .user-recipe-link::after {

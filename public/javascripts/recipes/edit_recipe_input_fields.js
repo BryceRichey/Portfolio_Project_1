@@ -10,17 +10,18 @@ function addIngredientField() {
     let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
     let allIngredientInputRows = document.querySelectorAll('#ingredient-input');
     let count = allIngredientInputRows.length;
-    let ingredientInputCount = count + 1;
-    let inputChildren = ingredientInputRow.children[0].children;
+    let ingredientInputCount = count;
 
-    Array.from(inputChildren).forEach(input => {
-        childrenName = input.children[1].name;
-        let newName = childrenName + ingredientInputCount;
-        input.children[1].name = nameString(newName);
+    Array.from(ingredientInputRow.children[0].children).forEach(input => {
+        let childName = input.children[1].name;
+        let newName = `ingredients[${ingredientInputCount}][${childName}]`
+        input.children[0].for = newName;
+        input.children[1].name = newName;
+        input.children[1].id = newName;
     });
 
     const appendInput = document.getElementById('ingredients-container');
-    appendInput.insertAdjacentElement("beforeend", ingredientInputRow);
+    appendInput.append(ingredientInputRow);
 }
 
 ['delete-ingredient-button', 'delete-step-button'].forEach(button => {
@@ -77,10 +78,6 @@ function addDirectionField() {
     appendInput.insertAdjacentElement('beforeend', directionInputRow);
 }
 
-
-function nameString(newName) {
-    return newName;
-}
 
 const ingredientButtonDiv = document.getElementById('ingredient-buttons');
 const deleteIngredientButton = document.getElementById('delete-ingredient-button');

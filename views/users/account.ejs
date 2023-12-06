@@ -102,9 +102,9 @@
                             <% } else { %>
                                 <% comments.forEach(comment => { %>
                                     <div class="user-comments">
-                                        <div class="elipsis">
+                                        <div class="ellipsis">
                                             <% // TEXT OVERFLOW ELIPSIS NOT WORKING %>
-                                            <p class="user-comment-text" id="user-comment-text"><%= comment['comment'] %></p>
+                                            <span class="user-comment-text" id="user-comment-text"><%= comment['comment'] %></span>
                                         </div>
                                         <div class="user-recipe-buttons" aria-label="delete or edit comment">
                                             <a href="/account/<%= comment['id'] %>/delete" class="button-grey">Delete</a>

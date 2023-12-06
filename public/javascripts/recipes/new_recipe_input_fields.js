@@ -17,16 +17,18 @@ function addIngredientField() {
     let ingredientInputRow = templateElement.cloneNode(true).querySelector('div');
     let allIngredientInputRows = document.querySelectorAll('#ingredient-input');
     let count = allIngredientInputRows.length;
-    let ingredientInputCount = count + 1;
+    let ingredientInputCount = count;
 
     Array.from(ingredientInputRow.children).forEach(input => {
-        let childrenName = input.children[1].name;
-        let newName = childrenName + ingredientInputCount;
+        let childName = input.children[1].name;
+        let newName = `ingredients[${ingredientInputCount}][${childName}]`
+        input.children[0].for = nameString(newName);
         input.children[1].name = nameString(newName);
+        input.children[1].id = nameString(newName);
     });
     const appendInput = document.getElementById('ingredient-input-row');
     appendInput.append(ingredientInputRow);
-    
+
     const inputs = ingredientInputRow.querySelectorAll('input, select');
     inputs.forEach(addValidationListener);
 }
