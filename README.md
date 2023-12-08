@@ -20,7 +20,7 @@ The configuration file, `config/db.js`, includes a reference to several environm
 ```
 DATABASE_URL =
 DATABASE_USER =
-DATABASE_NAME = byte_db
+DATABASE_NAME = byte_recipes_db
 DATABASE_PORT =
 DATABASE_PASS =
 ```
@@ -38,6 +38,7 @@ This project can be run by using `npm run watch`.
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser)
 - [daysjs](https://www.npmjs.com/package/dayjs)
 - [ejs](https://ejs.co/)
+- [esbuild](https://esbuild.github.io/api/)
 - [express](https://expressjs.com/)
 - [express-flash](https://www.npmjs.com/package/express-flash)
 - [express-mysql-session](https://www.npmjs.com/package/express-mysql-session)
@@ -45,7 +46,7 @@ This project can be run by using `npm run watch`.
 - [multer](https://www.npmjs.com/package/multer)
 - [multer-storage-cloudinary](https://www.npmjs.com/package/multer-storage-cloudinary)
 - [mysql2](https://www.npmjs.com/package/mysql2)
-- [node.js](https://nodejs.org/en)
+- [node](https://nodejs.org/en)
 - [parseurl](https://www.npmjs.com/package/parseurl)
 - [passport](https://www.passportjs.org/)
 - [passport-local](https://www.npmjs.com/package/passport-local)
